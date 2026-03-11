@@ -173,8 +173,7 @@
 		<div class="hero-content">
 			<div class="hero-badge cascade cascade--1">AI Teams as a Service · Orquestación en tiempo real</div>
 			<h1 class="hero-title cascade cascade--2">
-				Ver trabajar tu equipo de IA<br />
-				<em>antes de confiar en él.</em>
+				Ver trabajar tu equipo de IA <em>antes de confiar en él.</em>
 			</h1>
 			<p class="hero-sub cascade cascade--3">
 				Tus agentes IA ejecutan. Tú verificas que no se pierdan entre sí. Dashboard en tiempo real que elimina la incertidumbre de la orquestación autónoma.
@@ -532,9 +531,9 @@
 
 	.hero-title {
 		font-family: var(--display);
-		font-size: clamp(52px, 8vw, 92px);
+		font-size: clamp(36px, 4vw, 52px);
 		font-weight: 800;
-		line-height: 1.0;
+		line-height: 1.15;
 		letter-spacing: -0.02em;
 		color: var(--text);
 		margin: 0 0 28px;

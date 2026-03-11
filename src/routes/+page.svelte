@@ -28,27 +28,27 @@
 </script>
 
 <svelte:head>
-	<title>Pixel Office — AI Teams as a Service | Watch Your AI Agents Work Live</title>
-	<meta name="description" content="Pixel Office: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
+	<title>AI Agent Office — AI Teams as a Service | Watch Your AI Agents Work Live</title>
+	<meta name="description" content="AI Agent Office: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
 	<link rel="canonical" href="https://pixel-office-web.vercel.app/" />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Pixel Office — AI Teams as a Service" />
+	<meta property="og:title" content="AI Agent Office — AI Teams as a Service" />
 	<meta property="og:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes. Gratis, sin configuración." />
 	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
-	<meta property="og:site_name" content="Pixel Office" />
+	<meta property="og:site_name" content="AI Agent Office" />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Pixel Office — AI Teams as a Service" />
+	<meta name="twitter:title" content="AI Agent Office — AI Teams as a Service" />
 	<meta name="twitter:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso. Gratis, sin configuración." />
 
 	<!-- Additional meta -->
 	<meta name="robots" content="index, follow" />
-	<meta name="author" content="Pixel Office" />
-	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, Pixel Office, agentes IA, equipos de IA" />
+	<meta name="author" content="AI Agent Office" />
+	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, AI Agent Office, agentes IA, equipos de IA" />
 
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -59,7 +59,7 @@
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		"name": "Pixel Office",
+		"name": "AI Agent Office",
 		"url": "https://pixel-office-web.vercel.app",
 		"description": "AI Teams as a Service — equipos de agentes IA autónomos que trabajan 24/7 con monitoreo en tiempo real",
 		"sameAs": []
@@ -69,11 +69,11 @@
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
-		"name": "Pixel Office",
+		"name": "AI Agent Office",
 		"url": "https://pixel-office-web.vercel.app",
 		"applicationCategory": "BusinessApplication",
 		"operatingSystem": "Web",
-		"description": "Pixel Office: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",
+		"description": "AI Agent Office: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",
 		"offers": {
 			"@type": "Offer",
 			"price": "0",
@@ -97,10 +97,10 @@
 		"mainEntity": [
 			{
 				"@type": "Question",
-				"name": "¿Qué es Pixel Office?",
+				"name": "¿Qué es AI Agent Office?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Pixel Office es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
+					"text": "AI Agent Office es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
 				}
 			},
 			{
@@ -108,7 +108,7 @@
 				"name": "¿Cómo funcionan los equipos de agentes IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Los equipos de agentes IA en Pixel Office operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
+					"text": "Los equipos de agentes IA en AI Agent Office operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
 				}
 			},
 			{
@@ -116,7 +116,7 @@
 				"name": "¿Qué es AI Teams as a Service?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Teams as a Service es el modelo de Pixel Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
+					"text": "AI Teams as a Service es el modelo de AI Agent Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
 				}
 			},
 			{
@@ -124,7 +124,7 @@
 				"name": "¿Puedo ver mis agentes IA trabajar en tiempo real?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Sí, esa es la propuesta central de Pixel Office. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
+					"text": "Sí, esa es la propuesta central de AI Agent Office. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
 				}
 			},
 			{
@@ -132,7 +132,7 @@
 				"name": "¿Cuántos agentes puede tener un equipo de IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Pixel Office soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
+					"text": "AI Agent Office soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
 				}
 			}
 		]
@@ -148,7 +148,7 @@
 	<div class="bg-radial bg-radial--1"></div>
 	<div class="bg-radial bg-radial--2"></div>
 	<div class="bg-radial bg-radial--3"></div>
-	<div class="bg-watermark">PIXEL OFFICE</div>
+	<div class="bg-watermark">AI AGENT OFFICE</div>
 </div>
 
 <div class="landing">
@@ -158,8 +158,8 @@
 	<!-- Nav -->
 	<nav class="nav" bind:this={navEl}>
 		<span class="logo">
-			<span class="logo-pixel">PX</span>
-			<span class="logo-name">Pixel Office</span>
+			<span class="logo-pixel">AI</span>
+			<span class="logo-name">Agent Office</span>
 		</span>
 		<a href="https://pixel-office-app.vercel.app/office" class="nav-cta">Open Dashboard →</a>
 	</nav>
@@ -243,7 +243,7 @@
 	<section class="quote-section">
 		<blockquote class="quote">
 			<div class="quote-mark" aria-hidden="true">"</div>
-			<p>"Pasamos de revisar reportes manuales cada 30 min a confiar en que nuestros agentes se auto-corrigen en tiempo real. Pixel Office es el único lugar donde vemos eso suceder."</p>
+			<p>"Pasamos de revisar reportes manuales cada 30 min a confiar en que nuestros agentes se auto-corrigen en tiempo real. AI Agent Office es el único lugar donde vemos eso suceder."</p>
 			<cite>— Coordinador de Equipos IA, 2026</cite>
 		</blockquote>
 	</section>
@@ -258,8 +258,8 @@
 
 	<!-- Footer -->
 	<footer class="footer">
-		<span class="footer-logo">PX</span>
-		<span class="footer-copy">Pixel Office · Built with SvelteKit 5 &amp; Claude SDK</span>
+		<span class="footer-logo">AI</span>
+		<span class="footer-copy">AI Agent Office · Built with SvelteKit 5 &amp; Claude SDK</span>
 	</footer>
 </div>
 

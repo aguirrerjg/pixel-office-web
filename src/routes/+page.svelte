@@ -38,6 +38,13 @@
 			observer.observe(el);
 		});
 
+		// Fallback: ensure all elements become visible after animations should complete
+		setTimeout(() => {
+			document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+				el.classList.add('in-view');
+			});
+		}, 1500);
+
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 			observer.disconnect();

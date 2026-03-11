@@ -29,13 +29,13 @@
 
 <svelte:head>
 	<title>Pixel Office — AI Teams as a Service | Watch Your AI Agents Work Live</title>
-	<meta name="description" content="Pixel Office: 9 agentes IA autónomos en 2 plataformas con 97% de errores de coordinación eliminados. Dashboard en tiempo real — verifica delegación, errores y progreso en 30 segundos, sin reportes manuales. Gratis, sin configuración." />
+	<meta name="description" content="Pixel Office: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
 	<link rel="canonical" href="https://pixel-office-web.vercel.app/" />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="Pixel Office — AI Teams as a Service" />
-	<meta property="og:description" content="9 agentes IA autónomos, 2 plataformas, 97% errores de coordinación eliminados. Verifica delegación y progreso en 30 segundos. Dashboard en vivo, gratis, sin datos, sin configuración." />
+	<meta property="og:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes. Gratis, sin configuración." />
 	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
 	<meta property="og:site_name" content="Pixel Office" />
 	<meta property="og:locale" content="en_US" />
@@ -43,7 +43,7 @@
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Pixel Office — AI Teams as a Service" />
-	<meta name="twitter:description" content="9 agentes IA autónomos, 2 plataformas, 97% errores de coordinación eliminados. Verifica delegación y progreso en 30 segundos. Dashboard en vivo, gratis, sin configuración." />
+	<meta name="twitter:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso. Gratis, sin configuración." />
 
 	<!-- Additional meta -->
 	<meta name="robots" content="index, follow" />
@@ -73,7 +73,7 @@
 		"url": "https://pixel-office-web.vercel.app",
 		"applicationCategory": "BusinessApplication",
 		"operatingSystem": "Web",
-		"description": "Pixel Office: 9 agentes IA autónomos en 2 plataformas con 97% de errores de coordinación eliminados. Dashboard en tiempo real — verifica delegación, errores y progreso en 30 segundos sin reportes manuales. Gratis, 0 configuración.",
+		"description": "Pixel Office: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",
 		"offers": {
 			"@type": "Offer",
 			"price": "0",
@@ -82,11 +82,11 @@
 		},
 		"featureList": [
 			"Real-time AI agent monitoring",
-			"Multi-platform support (Telegram + Slack)",
-			"Visual task delegation with paper toss animations",
-			"9 autonomous agents across 2 teams",
-			"2-second polling interval",
-			"Zero-latency SvelteKit 5 UI"
+			"Multi-platform unified dashboard",
+			"Visual task delegation tracking",
+			"Scalable autonomous agent teams",
+			"Instant status updates",
+			"Zero-configuration setup"
 		]
 	})}</script>`}
 
@@ -100,7 +100,7 @@
 				"name": "¿Qué es Pixel Office?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Pixel Office es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. 9 agentes autónomos en 2 plataformas (Telegram + Slack) con 97% de errores de coordinación eliminados. Dashboard en vivo con actualizaciones cada 2 segundos — verifica delegación, errores y progreso sin esperar reportes manuales."
+					"text": "Pixel Office es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
 				}
 			},
 			{
@@ -108,7 +108,7 @@
 				"name": "¿Cómo funcionan los equipos de agentes IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Los equipos de agentes IA en Pixel Office operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué, evitando loops infinitos y tareas perdidas. Antes: 3 emails de follow-up para saber el estado. Ahora: 1 click. Los equipos funcionan en Telegram y Slack con un dashboard unificado que reduce el context-switching en un 70%."
+					"text": "Los equipos de agentes IA en Pixel Office operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
 				}
 			},
 			{
@@ -116,7 +116,7 @@
 				"name": "¿Qué es AI Teams as a Service?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Teams as a Service es el modelo de Pixel Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados (chief, architect, developer, PMO, research, community, content) que se coordinan entre sí con 97% menos errores de coordinación. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en 30 segundos que no se pierden entre sí."
+					"text": "AI Teams as a Service es el modelo de Pixel Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
 				}
 			},
 			{
@@ -124,7 +124,7 @@
 				"name": "¿Puedo ver mis agentes IA trabajar en tiempo real?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Sí, esa es la propuesta central de Pixel Office. El dashboard en vivo muestra el estado de cada agente con actualizaciones cada 2 segundos vs 10+ minutos de revisión manual. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos. Accede en 30 segundos desde https://pixel-office-app.vercel.app/office."
+					"text": "Sí, esa es la propuesta central de Pixel Office. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
 				}
 			},
 			{
@@ -132,7 +132,7 @@
 				"name": "¿Cuántos agentes puede tener un equipo de IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Actualmente Pixel Office opera con 9 agentes en paralelo distribuidos en 2 equipos: Miles (6 agentes en Telegram) y PMO (3 agentes + system_agent en Slack). Setup: 0 horas — ya funciona. La arquitectura es escalable y permite agregar más agentes y equipos según las necesidades del proyecto."
+					"text": "Pixel Office soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
 				}
 			}
 		]
@@ -166,13 +166,13 @@
 
 	<!-- Hero -->
 	<section class="hero">
-		<div class="hero-badge cascade cascade--1">Orquestación de IA en tiempo real · Ya usado por 7 equipos</div>
+		<div class="hero-badge cascade cascade--1">AI Teams as a Service · Orquestación en tiempo real</div>
 		<h1 class="hero-title cascade cascade--2">
 			Ver trabajar tu equipo de IA<br />
 			<em>antes de confiar en él.</em>
 		</h1>
 		<p class="hero-sub cascade cascade--3">
-			9 agentes autónomos coordinándose en 2 plataformas (Telegram + Slack). Reducción de errores de coordinación: 97%. Dashboard en tiempo real: verifica delegación, errores y progreso sin esperar reportes manuales.
+			Tus agentes IA ejecutan. Tú verificas que no se pierdan entre sí. Dashboard en tiempo real que elimina la incertidumbre de la orquestación autónoma.
 		</p>
 		<div class="hero-actions cascade cascade--4">
 			<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo (30 segundos)</a>
@@ -191,23 +191,23 @@
 	<!-- Stats bar -->
 	<div class="stats-bar">
 		<div class="stat">
-			<span class="stat-num">97%</span>
-			<span class="stat-label">Errores coordinación eliminados</span>
+			<span class="stat-num">Segundos</span>
+			<span class="stat-label">Para verificar estado de todo tu equipo</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">2s</span>
-			<span class="stat-label">Visibilidad vs 10+ min manual</span>
+			<span class="stat-num">Cero</span>
+			<span class="stat-label">Reportes manuales necesarios</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">9</span>
-			<span class="stat-label">Agentes en paralelo</span>
+			<span class="stat-num">N</span>
+			<span class="stat-label">Agentes. Tú defines cuántos.</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">0h</span>
-			<span class="stat-label">Setup. Ya funciona.</span>
+			<span class="stat-num">0</span>
+			<span class="stat-label">Configuración. Funciona ya.</span>
 		</div>
 	</div>
 
@@ -223,19 +223,19 @@
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">✈</div>
 			<h3>Delegación visual (sin sorpresas)</h3>
-			<p>Ver qué agente delegó a quién y por qué. Evita loops infinitos y tareas perdidas. Antes: 3 emails de follow-up. Ahora: 1 click.</p>
+			<p>Ver qué agente delegó a quién y por qué. Sin loops infinitos, sin tareas perdidas. Un click en vez de perseguir updates.</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.2s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⬡</div>
 			<h3>Un panel para todos tus agentes</h3>
-			<p>Miles en Telegram, PMO en Slack, Researchers en Notion. Un dashboard unificado. 70% menos context-switching.</p>
+			<p>No importa dónde corren tus agentes. Un dashboard unificado para verlos a todos. Menos tabs, más claridad.</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.3s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⚡</div>
 			<h3>Respuesta sin lag</h3>
-			<p>SvelteKit 5 + stores reactivos. Cada cambio en 2 segundos, no 2 minutos. La diferencia entre 'listo' e 'esperando a que cargue'.</p>
+			<p>Actualizaciones instantáneas. Cada cambio de estado aparece en tiempo real. La diferencia entre saber y adivinar.</p>
 		</div>
 	</section>
 

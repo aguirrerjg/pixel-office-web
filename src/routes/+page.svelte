@@ -180,7 +180,6 @@
 			</p>
 			<div class="hero-actions cascade cascade--4">
 				<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo</a>
-				<span class="hero-hint">Gratis · Sin datos · Sin email</span>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">
@@ -259,7 +258,6 @@
 		<h2 class="cta-title">No es sólo observar. Es confiar.</h2>
 		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Verifica en 30 segundos que tus agentes no se pierden entre sí.</p>
 		<a href="https://pixel-office-app.vercel.app/office" class="btn-primary btn-primary--large">Abrir demo en vivo</a>
-		<p style="font-family: var(--mono); font-size: 13px; color: var(--text-muted); margin-top: 16px;">✓ Gratis · ✓ 0 configuración · ✓ 0 datos sensibles · ✓ Cierra cuando quieras</p>
 	</section>
 
 	<!-- Footer -->

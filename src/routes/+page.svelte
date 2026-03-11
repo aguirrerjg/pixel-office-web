@@ -21,33 +21,8 @@
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 
-		// Intersection Observer for staggered animations
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('in-view');
-						observer.unobserve(entry.target);
-					}
-				});
-			},
-			{ threshold: 0.15 }
-		);
-
-		document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-			observer.observe(el);
-		});
-
-		// Fallback: ensure all elements become visible after animations should complete
-		setTimeout(() => {
-			document.querySelectorAll('.animate-on-scroll').forEach((el) => {
-				el.classList.add('in-view');
-			});
-		}, 1500);
-
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
-			observer.disconnect();
 		};
 	});
 </script>
@@ -111,7 +86,7 @@
 	</section>
 
 	<!-- Stats bar -->
-	<div class="stats-bar animate-on-scroll">
+	<div class="stats-bar">
 		<div class="stat">
 			<span class="stat-num">2</span>
 			<span class="stat-label">Teams</span>
@@ -135,25 +110,25 @@
 
 	<!-- Feature cards -->
 	<section class="features">
-		<div class="feature-card animate-on-scroll" style="--card-delay: 0s">
+		<div class="feature-card" style="--card-delay: 0s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">◉</div>
 			<h3>Live Status</h3>
 			<p>Every agent's state updates in real time. Idle, thinking, working, delegating — always visible.</p>
 		</div>
-		<div class="feature-card feature-card--accent animate-on-scroll" style="--card-delay: 0.1s">
+		<div class="feature-card feature-card--accent" style="--card-delay: 0.1s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">✈</div>
 			<h3>Paper Toss</h3>
 			<p>Delegation is visual. Watch animated paper arcs fly between agents when tasks are handed off.</p>
 		</div>
-		<div class="feature-card animate-on-scroll" style="--card-delay: 0.2s">
+		<div class="feature-card" style="--card-delay: 0.2s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⬡</div>
 			<h3>Multi-platform</h3>
 			<p>Miles on Telegram, PMO on Slack — two teams, one unified office view. Platform icons included.</p>
 		</div>
-		<div class="feature-card animate-on-scroll" style="--card-delay: 0.3s">
+		<div class="feature-card" style="--card-delay: 0.3s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⚡</div>
 			<h3>Zero-latency UI</h3>
@@ -162,7 +137,7 @@
 	</section>
 
 	<!-- Quote -->
-	<section class="quote-section animate-on-scroll">
+	<section class="quote-section">
 		<blockquote class="quote">
 			<div class="quote-mark" aria-hidden="true">"</div>
 			<p>"The office of the future isn't a place you go.<br />It's a system you observe."</p>
@@ -171,7 +146,7 @@
 	</section>
 
 	<!-- Final CTA -->
-	<section class="cta-section animate-on-scroll">
+	<section class="cta-section">
 		<h2 class="cta-title">Ready to watch them work?</h2>
 		<a href="https://pixel-office-app.vercel.app/office" class="btn-primary btn-primary--large">Open Pixel Office</a>
 	</section>
@@ -524,14 +499,8 @@
 		border-top: 1px solid var(--border);
 		border-bottom: 1px solid var(--border);
 		margin-bottom: 80px;
+		animation: cascadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
 		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.7s ease, transform 0.7s ease;
-	}
-
-	.stats-bar.in-view {
-		opacity: 1;
-		transform: translateY(0);
 	}
 
 	.stat {
@@ -576,18 +545,12 @@
 		border: 1px solid var(--border);
 		border-radius: 12px;
 		padding: 32px 28px;
-		transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
 		position: relative;
 		overflow: hidden;
-		/* scroll animation */
 		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.6s ease var(--card-delay, 0s), transform 0.6s ease var(--card-delay, 0s), border-color 0.3s, box-shadow 0.3s;
-	}
-
-	.feature-card.in-view {
-		opacity: 1;
-		transform: translateY(0);
+		animation: cascadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+		animation-delay: calc(1.3s + var(--card-delay, 0s));
+		transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
 	}
 
 	.feature-glow {
@@ -667,13 +630,7 @@
 		display: flex;
 		justify-content: center;
 		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.7s ease, transform 0.7s ease;
-	}
-
-	.quote-section.in-view {
-		opacity: 1;
-		transform: translateY(0);
+		animation: cascadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.8s forwards;
 	}
 
 	.quote {
@@ -726,13 +683,7 @@
 		text-align: center;
 		padding: 80px 0;
 		opacity: 0;
-		transform: translateY(20px);
-		transition: opacity 0.7s ease, transform 0.7s ease;
-	}
-
-	.cta-section.in-view {
-		opacity: 1;
-		transform: translateY(0);
+		animation: cascadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.1s forwards;
 	}
 
 	.cta-title {

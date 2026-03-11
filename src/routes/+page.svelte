@@ -168,34 +168,32 @@
 		<a href="https://pixel-office-app.vercel.app/office" class="nav-cta">Open Dashboard →</a>
 	</nav>
 
-	<!-- Hero -->
+	<!-- Hero — split banner -->
 	<section class="hero">
-		<div class="hero-badge cascade cascade--1">AI Teams as a Service · Orquestación en tiempo real</div>
-		<h1 class="hero-title cascade cascade--2">
-			Ver trabajar tu equipo de IA<br />
-			<em>antes de confiar en él.</em>
-		</h1>
-		<p class="hero-sub cascade cascade--3">
-			Tus agentes IA ejecutan. Tú verificas que no se pierdan entre sí. Dashboard en tiempo real que elimina la incertidumbre de la orquestación autónoma.
-		</p>
-		<div class="hero-actions cascade cascade--4">
-			<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo (30 segundos)</a>
-			<span class="hero-hint">Gratis, sin datos, sin email</span>
-		</div>
-
-	</section>
-
-	<!-- Hero image — "This is what you get" -->
-	<div class="hero-image-wrap cascade cascade--5">
-		<div class="hero-image-glow" aria-hidden="true"></div>
-		<a href="https://pixel-office-app.vercel.app/office" class="hero-image-link">
-			<img src="/hero-office.webp" alt="AI Agent Office — equipos de agentes IA trabajando en tiempo real" class="hero-image" width="1024" height="1049" loading="eager" />
-			<div class="hero-image-overlay">
-				<span class="hero-image-cta">Ver en vivo →</span>
+		<div class="hero-content">
+			<div class="hero-badge cascade cascade--1">AI Teams as a Service · Orquestación en tiempo real</div>
+			<h1 class="hero-title cascade cascade--2">
+				Ver trabajar tu equipo de IA<br />
+				<em>antes de confiar en él.</em>
+			</h1>
+			<p class="hero-sub cascade cascade--3">
+				Tus agentes IA ejecutan. Tú verificas que no se pierdan entre sí. Dashboard en tiempo real que elimina la incertidumbre de la orquestación autónoma.
+			</p>
+			<div class="hero-actions cascade cascade--4">
+				<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo</a>
+				<span class="hero-hint">Gratis · Sin datos · Sin email</span>
 			</div>
-		</a>
-		<p class="hero-image-caption">Así se ve tu equipo de IA trabajando. En tiempo real. Ahora mismo.</p>
-	</div>
+		</div>
+		<div class="hero-visual cascade cascade--5">
+			<div class="hero-image-glow" aria-hidden="true"></div>
+			<a href="https://pixel-office-app.vercel.app/office" class="hero-image-link">
+				<img src="/hero-office.webp" alt="AI Agent Office — equipos de agentes IA trabajando en tiempo real" class="hero-image" width="1024" height="1049" loading="eager" />
+				<div class="hero-image-overlay">
+					<span class="hero-image-cta">Ver en vivo →</span>
+				</div>
+			</a>
+		</div>
+	</section>
 
 	<!-- Stats bar -->
 	<div class="stats-bar">
@@ -388,7 +386,7 @@
 		position: relative;
 		z-index: 1;
 		min-height: 100vh;
-		max-width: 1120px;
+		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 24px;
 	}
@@ -459,10 +457,27 @@
 		box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
 	}
 
-	/* ── Hero ── */
+	/* ── Hero (split banner) ── */
 	.hero {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 48px;
+		align-items: center;
 		padding: 140px 0 64px;
-		max-width: 720px;
+		min-height: calc(100vh - 140px);
+	}
+
+	.hero-content {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.hero-visual {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	/* ── Cascade entrance animations ── */
@@ -568,15 +583,9 @@
 	}
 
 	/* ── Hero image ── */
-	.hero-image-wrap {
-		position: relative;
-		max-width: 680px;
-		margin: 0 auto 64px;
-	}
-
 	.hero-image-glow {
 		position: absolute;
-		inset: -40px;
+		inset: -30px;
 		border-radius: 32px;
 		background: radial-gradient(ellipse at center, var(--gold-glow) 0%, rgba(99, 102, 241, 0.1) 40%, transparent 70%);
 		filter: blur(40px);
@@ -585,8 +594,8 @@
 	}
 
 	@keyframes pulseGlow {
-		0%, 100% { opacity: 0.6; }
-		50% { opacity: 1; }
+		0%, 100% { opacity: 0.5; }
+		50% { opacity: 0.9; }
 	}
 
 	.hero-image-link {
@@ -596,13 +605,14 @@
 		border-radius: 16px;
 		overflow: hidden;
 		border: 1px solid var(--gold-border);
-		box-shadow: 0 8px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(201, 168, 76, 0.08);
+		box-shadow: 0 8px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 168, 76, 0.06);
 		transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+		max-width: 480px;
 	}
 
 	.hero-image-link:hover {
-		transform: translateY(-6px) scale(1.01);
-		box-shadow: 0 16px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(201, 168, 76, 0.15);
+		transform: translateY(-6px) scale(1.02);
+		box-shadow: 0 16px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(201, 168, 76, 0.12);
 	}
 
 	.hero-image {
@@ -618,7 +628,7 @@
 		display: flex;
 		align-items: flex-end;
 		justify-content: center;
-		padding-bottom: 24px;
+		padding-bottom: 20px;
 		opacity: 0;
 		transition: opacity 0.35s ease;
 	}
@@ -629,25 +639,15 @@
 
 	.hero-image-cta {
 		font-family: var(--mono);
-		font-size: 14px;
+		font-size: 13px;
 		color: var(--gold);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		border: 1px solid var(--gold-border);
-		padding: 8px 20px;
+		padding: 7px 18px;
 		border-radius: 6px;
 		background: rgba(201, 168, 76, 0.1);
 		backdrop-filter: blur(8px);
-	}
-
-	.hero-image-caption {
-		text-align: center;
-		font-family: var(--mono);
-		font-size: 13px;
-		color: var(--text-muted);
-		margin: 16px 0 0;
-		position: relative;
-		z-index: 1;
 	}
 
 	/* ── Stats bar ── */
@@ -940,7 +940,7 @@
 
 	/* ── Responsive ── */
 	@media (max-width: 640px) {
-		.hero { padding: 120px 0 40px; }
+		.hero { padding: 120px 0 40px; grid-template-columns: 1fr; gap: 32px; min-height: auto; }
 		.nav { padding: 16px 20px; }
 		.stats-bar { gap: 24px; flex-wrap: wrap; }
 		.stat-divider { display: none; }
@@ -948,6 +948,6 @@
 		.quote { padding: 40px 24px; }
 		.quote p { font-size: 18px; }
 		.quote-mark { font-size: 80px; }
-		.hero-image-wrap { margin-bottom: 40px; }
+		.hero-image-link { max-width: 100%; }
 	}
 </style>

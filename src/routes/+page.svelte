@@ -28,11 +28,115 @@
 </script>
 
 <svelte:head>
-	<title>Pixel Office — Your AI Team, Live</title>
-	<meta name="description" content="Watch your AI agents work in real time. Pixel Office visualizes multi-agent orchestration with live status, paper toss animations, and zero-latency updates." />
+	<title>Pixel Office — AI Teams as a Service | Watch Your AI Agents Work Live</title>
+	<meta name="description" content="Pixel Office es la plataforma de AI Teams as a Service que te permite ver equipos de agentes IA autónomos trabajar en tiempo real. 9 agentes, 2 plataformas, dashboard en vivo con delegación visual y actualizaciones cada 2 segundos." />
+	<link rel="canonical" href="https://pixel-office-web.vercel.app/" />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Pixel Office — AI Teams as a Service" />
+	<meta property="og:description" content="Watch 9 autonomous AI agents across 2 platforms work, think, and delegate in real time. The office of the future is a system you observe." />
+	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
+	<meta property="og:site_name" content="Pixel Office" />
+	<meta property="og:locale" content="en_US" />
+
+	<!-- Twitter Card -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="Pixel Office — AI Teams as a Service" />
+	<meta name="twitter:description" content="Watch 9 autonomous AI agents work, think, and delegate in real time. Live dashboard with paper toss animations and zero-latency updates." />
+
+	<!-- Additional meta -->
+	<meta name="robots" content="index, follow" />
+	<meta name="author" content="Pixel Office" />
+	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, Pixel Office, agentes IA, equipos de IA" />
+
+	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+	<!-- Organization Schema -->
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Organization",
+		"name": "Pixel Office",
+		"url": "https://pixel-office-web.vercel.app",
+		"description": "AI Teams as a Service — equipos de agentes IA autónomos que trabajan 24/7 con monitoreo en tiempo real",
+		"sameAs": []
+	})}</script>`}
+
+	<!-- SoftwareApplication Schema -->
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "SoftwareApplication",
+		"name": "Pixel Office",
+		"url": "https://pixel-office-web.vercel.app",
+		"applicationCategory": "BusinessApplication",
+		"operatingSystem": "Web",
+		"description": "Pixel Office es una plataforma de AI Teams as a Service que permite visualizar en tiempo real el trabajo de equipos de agentes IA autónomos. Dashboard en vivo con 9 agentes, delegación visual con animaciones paper toss, y actualizaciones cada 2 segundos.",
+		"offers": {
+			"@type": "Offer",
+			"price": "0",
+			"priceCurrency": "USD",
+			"description": "Free live dashboard access"
+		},
+		"featureList": [
+			"Real-time AI agent monitoring",
+			"Multi-platform support (Telegram + Slack)",
+			"Visual task delegation with paper toss animations",
+			"9 autonomous agents across 2 teams",
+			"2-second polling interval",
+			"Zero-latency SvelteKit 5 UI"
+		]
+	})}</script>`}
+
+	<!-- FAQ Schema -->
+	{@html `<script type="application/ld+json">${JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "FAQPage",
+		"mainEntity": [
+			{
+				"@type": "Question",
+				"name": "¿Qué es Pixel Office?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Pixel Office es una plataforma de AI Teams as a Service que visualiza en tiempo real el trabajo de equipos de agentes IA autónomos. Muestra un dashboard tipo oficina virtual donde puedes observar 9 agentes IA trabajando, pensando y delegando tareas entre sí, con actualizaciones cada 2 segundos."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "¿Cómo funcionan los equipos de agentes IA?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Los equipos de agentes IA en Pixel Office operan de forma autónoma 24/7. Un agente chief orquesta el trabajo, delegando tareas a agentes especializados como architect, developer, PMO y research. La delegación es visual: puedes ver animaciones de paper toss cuando un agente pasa trabajo a otro. Los equipos funcionan en múltiples plataformas (Telegram y Slack) con una vista de oficina unificada."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "¿Qué es AI Teams as a Service?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "AI Teams as a Service es el modelo de Pixel Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados (chief, architect, developer, PMO, research, community, content) que se coordinan entre sí para completar tareas complejas, similar a un equipo humano pero operando 24/7 sin interrupciones."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "¿Puedo ver mis agentes IA trabajar en tiempo real?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Sí, esa es la propuesta central de Pixel Office. El dashboard en vivo muestra el estado de cada agente (idle, thinking, working, delegating) con actualizaciones cada 2 segundos. Puedes ver las animaciones de delegación entre agentes, el estado de actividad actual, y todo sin necesidad de login. Accede directamente desde https://pixel-office-app.vercel.app/office."
+				}
+			},
+			{
+				"@type": "Question",
+				"name": "¿Cuántos agentes puede tener un equipo de IA?",
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": "Actualmente Pixel Office opera con 9 agentes distribuidos en 2 equipos: Miles (6 agentes en Telegram) y PMO (3 agentes + system_agent en Slack). Los equipos incluyen roles como chief, architect, developer, PMO, research, community y content. La arquitectura es escalable y permite agregar más agentes y equipos según las necesidades del proyecto."
+				}
+			}
+		]
+	})}</script>`}
 </svelte:head>
 
 <!-- Gold accent stripe -->

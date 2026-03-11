@@ -37,12 +37,16 @@
 	<meta property="og:title" content="AI Agent Office — AI Teams as a Service" />
 	<meta property="og:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes. Gratis, sin configuración." />
 	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
+	<meta property="og:image" content="https://pixel-office-web.vercel.app/og-image.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta property="og:site_name" content="AI Agent Office" />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="AI Agent Office — AI Teams as a Service" />
+	<meta name="twitter:image" content="https://pixel-office-web.vercel.app/og-image.png" />
 	<meta name="twitter:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso. Gratis, sin configuración." />
 
 	<!-- Additional meta -->

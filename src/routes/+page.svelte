@@ -28,31 +28,31 @@
 </script>
 
 <svelte:head>
-	<title>AI Agent Office — AI Teams as a Service | Watch Your AI Agents Work Live</title>
-	<meta name="description" content="AI Agent Office: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
+	<title>Agent Squad — AI Teams as a Service | Watch Your AI Agents Work Live</title>
+	<meta name="description" content="Agent Squad: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
 	<link rel="canonical" href="https://pixel-office-web.vercel.app/" />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="AI Agent Office — AI Teams as a Service" />
+	<meta property="og:title" content="Agent Squad — AI Teams as a Service" />
 	<meta property="og:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes. Gratis, sin configuración." />
 	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
 	<meta property="og:image" content="https://pixel-office-web.vercel.app/og-image.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
-	<meta property="og:site_name" content="AI Agent Office" />
+	<meta property="og:site_name" content="Agent Squad" />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="AI Agent Office — AI Teams as a Service" />
+	<meta name="twitter:title" content="Agent Squad — AI Teams as a Service" />
 	<meta name="twitter:image" content="https://pixel-office-web.vercel.app/og-image.png" />
 	<meta name="twitter:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso. Gratis, sin configuración." />
 
 	<!-- Additional meta -->
 	<meta name="robots" content="index, follow" />
-	<meta name="author" content="AI Agent Office" />
-	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, AI Agent Office, agentes IA, equipos de IA" />
+	<meta name="author" content="Agent Squad" />
+	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, Agent Squad, agentes IA, equipos de IA" />
 
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,7 +63,7 @@
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		"name": "AI Agent Office",
+		"name": "Agent Squad",
 		"url": "https://pixel-office-web.vercel.app",
 		"description": "AI Teams as a Service — equipos de agentes IA autónomos que trabajan 24/7 con monitoreo en tiempo real",
 		"sameAs": []
@@ -73,11 +73,11 @@
 	{@html `<script type="application/ld+json">${JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
-		"name": "AI Agent Office",
+		"name": "Agent Squad",
 		"url": "https://pixel-office-web.vercel.app",
 		"applicationCategory": "BusinessApplication",
 		"operatingSystem": "Web",
-		"description": "AI Agent Office: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",
+		"description": "Agent Squad: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",
 		"offers": {
 			"@type": "Offer",
 			"price": "0",
@@ -101,10 +101,10 @@
 		"mainEntity": [
 			{
 				"@type": "Question",
-				"name": "¿Qué es AI Agent Office?",
+				"name": "¿Qué es Agent Squad?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Agent Office es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
+					"text": "Agent Squad es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
 				}
 			},
 			{
@@ -112,7 +112,7 @@
 				"name": "¿Cómo funcionan los equipos de agentes IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Los equipos de agentes IA en AI Agent Office operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
+					"text": "Los equipos de agentes IA en Agent Squad operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
 				}
 			},
 			{
@@ -120,7 +120,7 @@
 				"name": "¿Qué es AI Teams as a Service?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Teams as a Service es el modelo de AI Agent Office donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
+					"text": "AI Teams as a Service es el modelo de Agent Squad donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
 				}
 			},
 			{
@@ -128,7 +128,7 @@
 				"name": "¿Puedo ver mis agentes IA trabajar en tiempo real?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Sí, esa es la propuesta central de AI Agent Office. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
+					"text": "Sí, esa es la propuesta central de Agent Squad. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
 				}
 			},
 			{
@@ -136,7 +136,7 @@
 				"name": "¿Cuántos agentes puede tener un equipo de IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Agent Office soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
+					"text": "Agent Squad soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
 				}
 			}
 		]
@@ -152,7 +152,7 @@
 	<div class="bg-radial bg-radial--1"></div>
 	<div class="bg-radial bg-radial--2"></div>
 	<div class="bg-radial bg-radial--3"></div>
-	<div class="bg-watermark">AI AGENT OFFICE</div>
+	<div class="bg-watermark">AGENT SQUAD</div>
 </div>
 
 <div class="landing">
@@ -162,8 +162,8 @@
 	<!-- Nav -->
 	<nav class="nav" bind:this={navEl}>
 		<span class="logo">
-			<span class="logo-pixel">AI</span>
-			<span class="logo-name">Agent Office</span>
+			<span class="logo-pixel">AS</span>
+			<span class="logo-name">Agent Squad</span>
 		</span>
 		<a href="https://pixel-office-app.vercel.app/office" class="nav-cta">Open Dashboard →</a>
 	</nav>
@@ -171,12 +171,12 @@
 	<!-- Hero — split banner -->
 	<section class="hero">
 		<div class="hero-content">
-			<div class="hero-badge cascade cascade--1">AI Teams as a Service · Orquestación en tiempo real</div>
+			<div class="hero-badge cascade cascade--1">AI Teams as a Service</div>
 			<h1 class="hero-title cascade cascade--2">
-				Ver trabajar tu equipo de IA <em>antes de confiar en él.</em>
+				Menos excusas para no escalar. <em>Más Squads a tu servicio.</em>
 			</h1>
 			<p class="hero-sub cascade cascade--3">
-				Tus agentes IA ejecutan. Tú verificas que no se pierdan entre sí. Dashboard en tiempo real que elimina la incertidumbre de la orquestación autónoma.
+				Define tu proyecto, describe tus dolores, conecta tus fuentes. Tu squad de agentes IA analiza, ejecuta y aprende de cada corrección. Sin onboarding. Sin rotación. Sin excusas.
 			</p>
 			<div class="hero-actions cascade cascade--4">
 				<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo</a>
@@ -185,7 +185,7 @@
 		<div class="hero-visual cascade cascade--5">
 			<div class="hero-image-glow" aria-hidden="true"></div>
 			<a href="https://pixel-office-app.vercel.app/office" class="hero-image-link">
-				<img src="/hero-office.webp" alt="AI Agent Office — equipos de agentes IA trabajando en tiempo real" class="hero-image" width="1024" height="1049" loading="eager" />
+				<img src="/hero-office.webp" alt="Agent Squad — equipos de agentes IA trabajando en tiempo real" class="hero-image" width="1024" height="1049" loading="eager" />
 				<div class="hero-image-overlay">
 					<span class="hero-image-cta">Ver en vivo →</span>
 				</div>
@@ -248,7 +248,7 @@
 	<section class="quote-section">
 		<blockquote class="quote">
 			<div class="quote-mark" aria-hidden="true">"</div>
-			<p>"Pasamos de revisar reportes manuales cada 30 min a confiar en que nuestros agentes se auto-corrigen en tiempo real. AI Agent Office es el único lugar donde vemos eso suceder."</p>
+			<p>"Pasamos de revisar reportes manuales cada 30 min a confiar en que nuestros agentes se auto-corrigen en tiempo real. Agent Squad es el único lugar donde vemos eso suceder."</p>
 			<cite>— Coordinador de Equipos IA, 2026</cite>
 		</blockquote>
 	</section>
@@ -263,7 +263,7 @@
 	<!-- Footer -->
 	<footer class="footer">
 		<span class="footer-logo">AI</span>
-		<span class="footer-copy">AI Agent Office · Built with SvelteKit 5 &amp; Claude SDK</span>
+		<span class="footer-copy">Agent Squad · Built with SvelteKit 5 &amp; Claude SDK</span>
 	</footer>
 </div>
 

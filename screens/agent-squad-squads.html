@@ -1,0 +1,2860 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Asignación de Squads — Agent Squad AI Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #12121a;
+      --surface2:  #1a1a26;
+      --border:    #1e1e2e;
+      --border2:   #2a2a3e;
+      --text:      #f0f0f8;
+      --muted:     #8888a8;
+      --subtle:    #444466;
+      --accent:    #6366f1;
+      --accent2:   #8b5cf6;
+      --accent3:   #a78bfa;
+      --success:   #22c55e;
+      --warning:   #f59e0b;
+      --ai-bg:     rgba(99,102,241,0.06);
+      --ai-border: rgba(99,102,241,0.22);
+      --radius:    12px;
+      --radius-lg: 20px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NOISE TEXTURE ──────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── AMBIENT GLOW ───────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg { width: 18px; height: 18px; }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text span {
+      background: linear-gradient(90deg, var(--accent3), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { color: var(--text); background: var(--surface2); }
+
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    /* ─── MAIN CONTENT ───────────────────────────────── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 40px 32px 80px;
+      align-items: start;
+    }
+
+    /* ─── LEFT COLUMN ────────────────────────────────── */
+    .form-col {
+      padding-right: 48px;
+    }
+
+    /* ─── PROGRESS STEPS ─────────────────────────────── */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .step.active .step-circle {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 16px rgba(99,102,241,0.4);
+    }
+
+    .step.pending .step-circle {
+      background: var(--surface2);
+      color: var(--subtle);
+      border: 1px solid var(--border2);
+    }
+
+    .step.done .step-circle {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .step.active .step-label { color: var(--text); }
+    .step.pending .step-label { color: var(--subtle); }
+    .step.done .step-label { color: var(--success); }
+
+    .step-connector {
+      height: 1px;
+      width: 32px;
+      background: var(--border2);
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    .step-connector.done {
+      background: var(--success);
+      opacity: 0.5;
+    }
+
+    /* ─── SECTION TITLE ──────────────────────────────── */
+    .section-title {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 8px;
+    }
+
+    .section-title h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ─── COPILOT BANNER ─────────────────────────────── */
+    .copilot-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--ai-bg);
+      border: 1px solid var(--ai-border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copilot-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent);
+    }
+
+    .copilot-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.25));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .copilot-text { flex: 1; }
+
+    .copilot-text strong {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .copilot-text p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── SQUAD ASSIGNMENT SECTION ───────────────────── */
+    .squads-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.35s ease both;
+      animation-delay: 0.05s;
+    }
+
+    .squads-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
+    }
+
+    .squad-assignments {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    /* ─── ASSIGNMENT CARD ────────────────────────────── */
+    .assignment-card {
+      background: rgba(99,102,241,0.07);
+      border: 1px dashed rgba(99,102,241,0.35);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .assignment-card:nth-child(1) { animation-delay: 0.07s; }
+    .assignment-card:nth-child(2) { animation-delay: 0.14s; }
+    .assignment-card:nth-child(3) { animation-delay: 0.21s; }
+
+    .assignment-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.03));
+      pointer-events: none;
+    }
+
+    /* ─── KPI CONTEXT STRIP ──────────────────────────── */
+    .kpi-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(10,10,15,0.5);
+      border-bottom: 1px solid rgba(99,102,241,0.15);
+      gap: 12px;
+    }
+
+    .kpi-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .kpi-index {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(99,102,241,0.18);
+      border: 1px solid rgba(99,102,241,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent3);
+      flex-shrink: 0;
+    }
+
+    .kpi-strip-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kpi-strip-meta {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .kpi-strip-meta span {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.18);
+      padding: 3px 9px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+
+    .ai-badge svg { width: 10px; height: 10px; flex-shrink: 0; }
+
+    /* ─── SQUAD BODY ─────────────────────────────────── */
+    .squad-body {
+      padding: 18px 20px 20px;
+    }
+
+    .squad-selector-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    .squad-chosen {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .squad-emoji {
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .squad-name-block {}
+
+    .squad-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent3);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shared-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--warning);
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.2);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    .squad-type {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .btn-change-squad {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-change-squad:hover {
+      color: var(--accent3);
+      border-color: rgba(99,102,241,0.4);
+      background: rgba(99,102,241,0.05);
+    }
+
+    .btn-change-squad svg { width: 12px; height: 12px; }
+
+    .squad-description {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 14px;
+      padding-left: 30px;
+    }
+
+    /* ─── AGENTS ROW ─────────────────────────────────── */
+    .agents-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 30px;
+    }
+
+    .agents-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--subtle);
+      flex-shrink: 0;
+    }
+
+    .agent-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .agent-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      position: relative;
+    }
+
+    .agent-chip:hover {
+      color: var(--text);
+      border-color: rgba(99,102,241,0.5);
+      background: rgba(99,102,241,0.1);
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(99,102,241,0.15);
+    }
+
+    .agent-chip:hover::after {
+      content: 'Ver detalle';
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30,30,46,0.97);
+      border: 1px solid var(--border2);
+      color: var(--accent3);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 50;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .agent-chip::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      transition: background 0.18s;
+    }
+
+    .agent-chip:hover::before {
+      background: var(--accent3);
+    }
+
+    /* ─── AGENT MODAL — REDESIGN ─────────────────────── */
+    .agent-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,5,12,0.78);
+      backdrop-filter: blur(6px);
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+
+    .agent-modal-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .agent-modal {
+      background: #0e0e18;
+      border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      overflow-x: visible;
+      position: relative;
+      box-shadow:
+        0 0 0 1px rgba(99,102,241,0.08),
+        0 32px 80px rgba(0,0,0,0.7),
+        0 0 60px rgba(99,102,241,0.06);
+      transform: scale(0.88) translateY(24px);
+      transition: transform 0.4s cubic-bezier(0.34,1.4,0.64,1), opacity 0.28s ease;
+      opacity: 0;
+    }
+
+    .agent-modal-overlay.visible .agent-modal {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    /* Scrollbar inside modal */
+    .agent-modal::-webkit-scrollbar { width: 4px; }
+    .agent-modal::-webkit-scrollbar-track { background: transparent; }
+    .agent-modal::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.3); border-radius: 4px; }
+
+    /* Top accent line — more intense */
+    .agent-modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 24px 24px 0 0;
+    }
+
+    .agent-modal.squad-sales::before   { background: linear-gradient(90deg, transparent, #f97316, #ef4444, #f97316, transparent); }
+    .agent-modal.squad-ops::before     { background: linear-gradient(90deg, transparent, #3b82f6, #818cf8, #3b82f6, transparent); }
+    .agent-modal.squad-service::before { background: linear-gradient(90deg, transparent, #22c55e, #34d399, #22c55e, transparent); }
+
+    /* Close button */
+    .modal-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      transition: all 0.18s;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .modal-close-btn:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: rotate(90deg);
+    }
+
+    .modal-close-btn svg { width: 14px; height: 14px; }
+
+    /* ── Modal HERO — avatar section ── */
+    .modal-header {
+      padding: 40px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      position: relative;
+      overflow: visible;
+    }
+
+    /* Ambient hero glow behind avatar */
+    .modal-header::after {
+      content: '';
+      position: absolute;
+      top: -30px; left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 180px;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .agent-modal.squad-sales   .modal-header::after { background: radial-gradient(ellipse, rgba(249,115,22,0.5) 0%, transparent 70%); }
+    .agent-modal.squad-ops     .modal-header::after { background: radial-gradient(ellipse, rgba(99,130,246,0.5) 0%, transparent 70%); }
+    .agent-modal.squad-service .modal-header::after { background: radial-gradient(ellipse, rgba(34,197,94,0.5) 0%, transparent 70%); }
+
+    /* ── Avatar — círculo con foto del personaje ── */
+    .modal-avatar {
+      width: 140px;
+      height: 140px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 24px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      background: rgba(15,15,25,0.8);
+      animation: idCardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+      animation-delay: 0.08s;
+    }
+
+    .modal-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transform: scale(1.18);
+      transform-origin: center top;
+      display: block;
+    }
+
+    @keyframes idCardIn {
+      from { transform: scale(0.75) translateY(12px); opacity: 0; }
+      to   { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    /* Glow ambiental del avatar según squad */
+    .agent-modal.squad-sales   .modal-avatar {
+      border: 2px solid #f97316;
+      box-shadow: 0 0 20px 4px rgba(249,115,22,0.7);
+      animation: idCardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both, avatarFloat 4s ease-in-out infinite, pulseGlowSales 2s ease-in-out infinite;
+      animation-delay: 0.08s, 0.6s, 0.6s;
+    }
+    .agent-modal.squad-ops     .modal-avatar {
+      border: 2px solid #6366f1;
+      box-shadow: 0 0 20px 4px rgba(99,102,241,0.7);
+      animation: idCardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both, avatarFloat 4s ease-in-out infinite, pulseGlowOps 2s ease-in-out infinite;
+      animation-delay: 0.08s, 0.6s, 0.6s;
+    }
+    .agent-modal.squad-service .modal-avatar {
+      border: 2px solid #22c55e;
+      box-shadow: 0 0 20px 4px rgba(34,197,94,0.7);
+      animation: idCardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both, avatarFloat 4s ease-in-out infinite, pulseGlowService 2s ease-in-out infinite;
+      animation-delay: 0.08s, 0.6s, 0.6s;
+    }
+
+    @keyframes pulseGlowSales {
+      0%, 100% { box-shadow: 0 0 20px 4px rgba(249,115,22,0.7); }
+      50%       { box-shadow: 0 0 32px 10px rgba(249,115,22,0.95); }
+    }
+    @keyframes pulseGlowOps {
+      0%, 100% { box-shadow: 0 0 20px 4px rgba(99,102,241,0.7); }
+      50%       { box-shadow: 0 0 32px 10px rgba(99,102,241,0.95); }
+    }
+    @keyframes pulseGlowService {
+      0%, 100% { box-shadow: 0 0 20px 4px rgba(34,197,94,0.7); }
+      50%       { box-shadow: 0 0 32px 10px rgba(34,197,94,0.95); }
+    }
+
+    @keyframes avatarFloat {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    /* SVG isométrico — full size (legacy, no usado) */
+    .agent-iso-svg {
+      width: 160px;
+      height: 160px;
+      display: block;
+    }
+
+    /* Agent name — Syne bold, grande, gradiente */
+    .modal-agent-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .agent-modal.squad-sales   .modal-agent-name { background: linear-gradient(135deg, #fff 30%, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .agent-modal.squad-ops     .modal-agent-name { background: linear-gradient(135deg, #fff 30%, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .agent-modal.squad-service .modal-agent-name { background: linear-gradient(135deg, #fff 30%, #4ade80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    .modal-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-squad-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .agent-modal.squad-sales   .modal-squad-badge { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.35); color: #fb923c; }
+    .agent-modal.squad-ops     .modal-squad-badge { background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.35); color: #818cf8; }
+    .agent-modal.squad-service .modal-squad-badge { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.35); color: #4ade80; }
+
+    .modal-status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+    }
+
+    .modal-status-chip.active {
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: #4ade80;
+    }
+
+    .modal-status-chip.active::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: statusPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes statusPulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* divider entre header y body */
+    .modal-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+      margin: 0 28px;
+    }
+
+    /* ── Modal Body ── */
+    .modal-body {
+      padding: 24px 28px 28px;
+    }
+
+    .modal-section {
+      margin-bottom: 24px;
+    }
+
+    .modal-section:last-child { margin-bottom: 0; }
+
+    /* Label de sección — Space Grotesk con acento de color */
+    .modal-section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .agent-modal.squad-sales   .modal-section-title { color: rgba(251,146,60,0.7); }
+    .agent-modal.squad-ops     .modal-section-title { color: rgba(129,140,248,0.7); }
+    .agent-modal.squad-service .modal-section-title { color: rgba(74,222,128,0.7); }
+
+    .modal-section-title::before {
+      content: '';
+      display: block;
+      width: 16px;
+      height: 2px;
+      border-radius: 2px;
+    }
+
+    .agent-modal.squad-sales   .modal-section-title::before { background: #fb923c; }
+    .agent-modal.squad-ops     .modal-section-title::before { background: #818cf8; }
+    .agent-modal.squad-service .modal-section-title::before { background: #4ade80; }
+
+    /* ── Habilidades / capacidades con barra de poder ── */
+    .modal-functions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal-function-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 11px 14px 11px 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-left: none;
+      border-radius: 12px;
+      font-size: 13px;
+      color: #d4d4e8;
+      line-height: 1.45;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-function-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      border-radius: 3px 0 0 3px;
+    }
+
+    .agent-modal.squad-sales   .modal-function-item::before { background: linear-gradient(180deg, #f97316, #ef4444); }
+    .agent-modal.squad-ops     .modal-function-item::before { background: linear-gradient(180deg, #6366f1, #818cf8); }
+    .agent-modal.squad-service .modal-function-item::before { background: linear-gradient(180deg, #22c55e, #34d399); }
+
+    .modal-function-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+      color: #f0f0f8;
+      transform: translateX(2px);
+    }
+
+    .modal-fn-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .modal-fn-text {
+      flex: 1;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: #d4d4e8;
+    }
+
+    /* Barra de poder — nivel de capacidad */
+    .modal-fn-power {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+
+    .power-bar {
+      width: 18px;
+      height: 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.13);
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .power-bar.filled {
+      border-color: transparent;
+    }
+
+    .power-bar.filled::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+    }
+
+    .agent-modal.squad-sales   .power-bar.filled { box-shadow: 0 0 6px rgba(249,115,22,0.6); }
+    .agent-modal.squad-ops     .power-bar.filled { box-shadow: 0 0 6px rgba(99,102,241,0.6); }
+    .agent-modal.squad-service .power-bar.filled { box-shadow: 0 0 6px rgba(34,197,94,0.6); }
+
+    .agent-modal.squad-sales   .power-bar.filled::after { background: linear-gradient(90deg, #f97316, #ef4444); }
+    .agent-modal.squad-ops     .power-bar.filled::after { background: linear-gradient(90deg, #6366f1, #818cf8); }
+    .agent-modal.squad-service .power-bar.filled::after { background: linear-gradient(90deg, #22c55e, #34d399); }
+
+    /* ── Conecta con chips — más coloridos ── */
+    .modal-connects-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .modal-connect-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 5px 12px;
+      border-radius: 20px;
+      transition: all 0.18s;
+    }
+
+    .modal-connect-chip:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-1px);
+    }
+
+    .modal-connect-chip .chip-icon {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* ── Modal Footer — CTA agresivo ── */
+    .modal-footer {
+      padding: 20px 28px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .modal-btn-close {
+      padding: 10px 18px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--muted);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+
+    .modal-btn-close:hover { color: var(--text); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04); }
+
+    /* CTA principal — energético con glow */
+    .modal-btn-config {
+      padding: 11px 22px;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Shimmer effect en hover */
+    .modal-btn-config::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.4s ease;
+    }
+
+    .modal-btn-config:hover::after { left: 150%; }
+
+    .agent-modal.squad-sales   .modal-btn-config {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      box-shadow: 0 4px 24px rgba(249,115,22,0.4), 0 0 0 1px rgba(249,115,22,0.2);
+    }
+    .agent-modal.squad-ops     .modal-btn-config {
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      box-shadow: 0 4px 24px rgba(99,102,241,0.45), 0 0 0 1px rgba(99,102,241,0.25);
+    }
+    .agent-modal.squad-service .modal-btn-config {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      box-shadow: 0 4px 24px rgba(34,197,94,0.4), 0 0 0 1px rgba(34,197,94,0.2);
+    }
+
+    .modal-btn-config:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.12);
+    }
+
+    .modal-btn-config:active { transform: translateY(0); }
+
+    /* ─── SQUAD DROPDOWN ─────────────────────────────── */
+    .squad-dropdown-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: transparent;
+      display: none;
+    }
+
+    .squad-dropdown-overlay.open { display: block; }
+
+    .squad-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      width: 260px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.08);
+      z-index: 200;
+      overflow: hidden;
+      animation: dropIn 0.18s ease both;
+      display: none;
+    }
+
+    .squad-dropdown.open { display: block; }
+
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .dropdown-header {
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dropdown-header span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--subtle);
+    }
+
+    .dropdown-list {
+      padding: 8px;
+    }
+
+    .dropdown-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .dropdown-option:hover {
+      background: rgba(99,102,241,0.08);
+    }
+
+    .dropdown-option.active {
+      background: rgba(99,102,241,0.1);
+    }
+
+    .dropdown-option-emoji { font-size: 16px; line-height: 1; }
+
+    .dropdown-option-text { flex: 1; }
+
+    .dropdown-option-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .dropdown-option-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .dropdown-option-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      opacity: 0;
+    }
+
+    .dropdown-option.active .dropdown-option-check { opacity: 1; }
+
+    .dropdown-option-check svg { width: 9px; height: 9px; }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 6px 10px;
+    }
+
+    .dropdown-option.create {
+      color: var(--accent3);
+    }
+
+    .dropdown-option.create .dropdown-option-name { color: var(--accent3); }
+
+    /* ─── CTA ROW ─────────────────────────────────────── */
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 4px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.2px;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.3);
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+    }
+
+    .btn-cta:active { transform: translateY(0); }
+    .btn-cta svg { width: 16px; height: 16px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { color: var(--text); border-color: var(--subtle); }
+
+    /* ─── RIGHT SIDEBAR ──────────────────────────────── */
+    .sidebar {
+      padding-top: 76px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 104px;
+    }
+
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.35s ease both;
+      animation-delay: 0.1s;
+    }
+
+    .sidebar-card.accent-card {
+      background: linear-gradient(145deg, rgba(99,102,241,0.08), rgba(139,92,246,0.06));
+      border-color: rgba(99,102,241,0.2);
+    }
+
+    .sidebar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.25), transparent);
+    }
+
+    .sidebar-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-card-title svg { width: 14px; height: 14px; }
+
+    /* Summary project block */
+    .project-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .project-chip-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .project-chip-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .project-chip-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* KPI list in sidebar */
+    .sidebar-kpi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-kpi-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .sidebar-kpi-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+
+    .sidebar-kpi-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .sidebar-kpi-meta {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .sidebar-kpi-meta span {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* Counter */
+    .assignments-counter {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: var(--radius);
+      margin-bottom: 0;
+    }
+
+    .counter-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .counter-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent3);
+    }
+
+    /* Tip */
+    .tip-item {
+      display: flex;
+      gap: 10px;
+    }
+
+    .tip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .tip-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tip-text strong { color: var(--text); }
+
+    /* Footer hint */
+    .footer-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--subtle);
+      padding: 20px 0 0;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 28px 20px 60px;
+      }
+      .form-col { padding-right: 0; }
+      .sidebar { display: none; }
+      header { padding: 0 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .section-title h1 { font-size: 22px; }
+      .squads-section { padding: 20px 16px; }
+      .kpi-strip { flex-wrap: wrap; }
+      .kpi-strip-meta { display: none; }
+      .progress-bar { gap: 4px; }
+      .step-label { display: none; }
+      .cta-row { flex-direction: column; gap: 12px; align-items: stretch; }
+      .btn-cta, .btn-secondary { justify-content: center; width: 100%; }
+      .squad-dropdown { width: 230px; }
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title  { animation: fadeUp 0.35s ease both; }
+    .progress-bar   { animation: fadeUp 0.35s ease both; animation-delay: 0.02s; }
+    .copilot-banner { animation: fadeUp 0.35s ease both; animation-delay: 0.06s; }
+
+    /* ─── SELECTOR WRAPPER (relative) ───────────────── */
+    .change-squad-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ─── HEADER ─────────────────────────────────────── -->
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Agent <span>Squad</span></span>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Squads
+      </a>
+      <div class="nav-avatar">GE</div>
+    </nav>
+  </header>
+
+  <!-- ─── MAIN ──────────────────────────────────────── -->
+  <main>
+
+    <!-- LEFT: FORM COLUMN -->
+    <div class="form-col">
+
+      <!-- Progress -->
+      <div class="progress-bar">
+        <div class="step done">
+          <div class="step-circle">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="step-label">Proyecto</span>
+        </div>
+        <div class="step-connector done"></div>
+        <div class="step done">
+          <div class="step-circle">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="step-label">KPIs</span>
+        </div>
+        <div class="step-connector done"></div>
+        <div class="step active">
+          <div class="step-circle">3</div>
+          <span class="step-label">Squads</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step pending">
+          <div class="step-circle">4</div>
+          <span class="step-label">Activar</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="section-title">
+        <div class="eyebrow">Paso 3 de 4 — Asignación de Squads</div>
+        <h1>¿Qué Squads trabajarán en tu proyecto?</h1>
+        <p>Basándonos en tus KPIs, te sugerimos estos Squads. Puedes reasignarlos según tu criterio.</p>
+      </div>
+
+      <!-- Copilot Banner -->
+      <div class="copilot-banner">
+        <div class="copilot-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <div class="copilot-text">
+          <strong>Squads sugeridos según el perfil de cada KPI</strong>
+          <p>Analizamos el tipo de problema detrás de cada indicador y seleccionamos el Squad con mayor cobertura. Un Squad puede cubrir varios KPIs si los problemas están relacionados.</p>
+        </div>
+      </div>
+
+      <!-- Squads Section -->
+      <div class="squads-section">
+
+        <div class="squad-assignments" id="squad-assignments">
+
+          <!-- ── KPI 1: Tasa de Cierre de Ventas → Sales Squad ── -->
+          <div class="assignment-card" id="card-1" data-kpi-id="1">
+            <div class="kpi-strip">
+              <div class="kpi-strip-left">
+                <div class="kpi-index">1</div>
+                <div class="kpi-strip-name">Tasa de Cierre de Ventas</div>
+              </div>
+              <div class="kpi-strip-meta">Actual: 6.7% → Meta: <span>10%</span></div>
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+            </div>
+            <div class="squad-body">
+              <div class="squad-selector-row">
+                <div class="squad-chosen">
+                  <div class="squad-emoji" id="emoji-1">🎯</div>
+                  <div class="squad-name-block">
+                    <div class="squad-name" id="squad-name-1">
+                      Sales Squad
+                      <!-- shared badge injected by JS when needed -->
+                    </div>
+                    <div class="squad-type" id="squad-type-1">Automatización de ventas y prospección</div>
+                  </div>
+                </div>
+                <div class="change-squad-wrapper">
+                  <button class="btn-change-squad" onclick="toggleDropdown(1, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                    Cambiar Squad
+                  </button>
+                  <div class="squad-dropdown" id="dropdown-1">
+                    <div class="dropdown-header"><span>Seleccionar Squad</span></div>
+                    <div class="dropdown-list">
+                      <div class="dropdown-option active" onclick="selectSquad(1,'🎯','Sales Squad','Automatización de ventas y prospección','Agente Prospector','Agente CRM','Agente Follow-up',this)">
+                        <span class="dropdown-option-emoji">🎯</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Sales Squad</div>
+                          <div class="dropdown-option-sub">Ventas y prospección</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(1,'📦','Operations Squad','Coordinación operativa y entregas','Agente Ruteo','Agente Confirmación','Agente Incidencias',this)">
+                        <span class="dropdown-option-emoji">📦</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Operations Squad</div>
+                          <div class="dropdown-option-sub">Coordinación operativa</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(1,'🎧','Service Squad','Atención y resolución de reclamos','Agente Intake','Agente Escalación','Agente SLA',this)">
+                        <span class="dropdown-option-emoji">🎧</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Service Squad</div>
+                          <div class="dropdown-option-sub">Atención al cliente</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(1,'📊','Analytics Squad','Análisis de datos y reportes de negocio','Agente Data','Agente KPI','Agente Report',this)">
+                        <span class="dropdown-option-emoji">📊</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Analytics Squad</div>
+                          <div class="dropdown-option-sub">Datos y reportes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(1,'🤝','Customer Success Squad','Retención y expansión de cuentas activas','Agente Onboarding','Agente Renewal','Agente NPS',this)">
+                        <span class="dropdown-option-emoji">🤝</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Customer Success Squad</div>
+                          <div class="dropdown-option-sub">Retención de clientes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="dropdown-option create" onclick="closeDropdown(1)">
+                        <span class="dropdown-option-emoji">➕</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Crear Squad personalizado</div>
+                          <div class="dropdown-option-sub">Define agentes a medida</div>
+                        </div>
+                        <div class="dropdown-option-check"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="squad-description" id="desc-1">Automatiza seguimiento de prospectos, recordatorios y scoring. Cierra más sin contratar.</p>
+              <div class="agents-row">
+                <span class="agents-label">Agentes:</span>
+                <div class="agent-chips" id="agents-1">
+                  <span class="agent-chip" onclick="openAgentModal('prospector')">Agente Prospector</span>
+                  <span class="agent-chip" onclick="openAgentModal('crm')">Agente CRM</span>
+                  <span class="agent-chip" onclick="openAgentModal('followup')">Agente Follow-up</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── KPI 2: Entregas al Primer Intento → Operations Squad ── -->
+          <div class="assignment-card" id="card-2" data-kpi-id="2">
+            <div class="kpi-strip">
+              <div class="kpi-strip-left">
+                <div class="kpi-index">2</div>
+                <div class="kpi-strip-name">Entregas al Primer Intento</div>
+              </div>
+              <div class="kpi-strip-meta">Actual: 78% → Meta: <span>83%</span></div>
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+            </div>
+            <div class="squad-body">
+              <div class="squad-selector-row">
+                <div class="squad-chosen">
+                  <div class="squad-emoji" id="emoji-2">📦</div>
+                  <div class="squad-name-block">
+                    <div class="squad-name" id="squad-name-2">Operations Squad</div>
+                    <div class="squad-type" id="squad-type-2">Coordinación operativa y entregas</div>
+                  </div>
+                </div>
+                <div class="change-squad-wrapper">
+                  <button class="btn-change-squad" onclick="toggleDropdown(2, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                    Cambiar Squad
+                  </button>
+                  <div class="squad-dropdown" id="dropdown-2">
+                    <div class="dropdown-header"><span>Seleccionar Squad</span></div>
+                    <div class="dropdown-list">
+                      <div class="dropdown-option" onclick="selectSquad(2,'🎯','Sales Squad','Automatización de ventas y prospección','Agente Prospector','Agente CRM','Agente Follow-up',this)">
+                        <span class="dropdown-option-emoji">🎯</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Sales Squad</div>
+                          <div class="dropdown-option-sub">Ventas y prospección</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option active" onclick="selectSquad(2,'📦','Operations Squad','Coordinación operativa y entregas','Agente Ruteo','Agente Confirmación','Agente Incidencias',this)">
+                        <span class="dropdown-option-emoji">📦</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Operations Squad</div>
+                          <div class="dropdown-option-sub">Coordinación operativa</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(2,'🎧','Service Squad','Atención y resolución de reclamos','Agente Intake','Agente Escalación','Agente SLA',this)">
+                        <span class="dropdown-option-emoji">🎧</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Service Squad</div>
+                          <div class="dropdown-option-sub">Atención al cliente</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(2,'📊','Analytics Squad','Análisis de datos y reportes de negocio','Agente Data','Agente KPI','Agente Report',this)">
+                        <span class="dropdown-option-emoji">📊</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Analytics Squad</div>
+                          <div class="dropdown-option-sub">Datos y reportes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(2,'🤝','Customer Success Squad','Retención y expansión de cuentas activas','Agente Onboarding','Agente Renewal','Agente NPS',this)">
+                        <span class="dropdown-option-emoji">🤝</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Customer Success Squad</div>
+                          <div class="dropdown-option-sub">Retención de clientes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="dropdown-option create" onclick="closeDropdown(2)">
+                        <span class="dropdown-option-emoji">➕</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Crear Squad personalizado</div>
+                          <div class="dropdown-option-sub">Define agentes a medida</div>
+                        </div>
+                        <div class="dropdown-option-check"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="squad-description" id="desc-2">Coordina confirmaciones previas por WhatsApp, optimiza rutas y registra incidencias en tiempo real.</p>
+              <div class="agents-row">
+                <span class="agents-label">Agentes:</span>
+                <div class="agent-chips" id="agents-2">
+                  <span class="agent-chip" onclick="openAgentModal('ruteo')">Agente Ruteo</span>
+                  <span class="agent-chip" onclick="openAgentModal('confirmacion')">Agente Confirmación</span>
+                  <span class="agent-chip" onclick="openAgentModal('incidencias')">Agente Incidencias</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── KPI 3: Tiempo de Resolución de Reclamos → Service Squad ── -->
+          <div class="assignment-card" id="card-3" data-kpi-id="3">
+            <div class="kpi-strip">
+              <div class="kpi-strip-left">
+                <div class="kpi-index">3</div>
+                <div class="kpi-strip-name">Tiempo de Resolución de Reclamos</div>
+              </div>
+              <div class="kpi-strip-meta">Actual: 3–7 días → Meta: <span>1–3 días</span></div>
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+            </div>
+            <div class="squad-body">
+              <div class="squad-selector-row">
+                <div class="squad-chosen">
+                  <div class="squad-emoji" id="emoji-3">🎧</div>
+                  <div class="squad-name-block">
+                    <div class="squad-name" id="squad-name-3">Service Squad</div>
+                    <div class="squad-type" id="squad-type-3">Atención y resolución de reclamos</div>
+                  </div>
+                </div>
+                <div class="change-squad-wrapper">
+                  <button class="btn-change-squad" onclick="toggleDropdown(3, event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                    Cambiar Squad
+                  </button>
+                  <div class="squad-dropdown" id="dropdown-3">
+                    <div class="dropdown-header"><span>Seleccionar Squad</span></div>
+                    <div class="dropdown-list">
+                      <div class="dropdown-option" onclick="selectSquad(3,'🎯','Sales Squad','Automatización de ventas y prospección','Agente Prospector','Agente CRM','Agente Follow-up',this)">
+                        <span class="dropdown-option-emoji">🎯</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Sales Squad</div>
+                          <div class="dropdown-option-sub">Ventas y prospección</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(3,'📦','Operations Squad','Coordinación operativa y entregas','Agente Ruteo','Agente Confirmación','Agente Incidencias',this)">
+                        <span class="dropdown-option-emoji">📦</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Operations Squad</div>
+                          <div class="dropdown-option-sub">Coordinación operativa</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option active" onclick="selectSquad(3,'🎧','Service Squad','Atención y resolución de reclamos','Agente Intake','Agente Escalación','Agente SLA',this)">
+                        <span class="dropdown-option-emoji">🎧</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Service Squad</div>
+                          <div class="dropdown-option-sub">Atención al cliente</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(3,'📊','Analytics Squad','Análisis de datos y reportes de negocio','Agente Data','Agente KPI','Agente Report',this)">
+                        <span class="dropdown-option-emoji">📊</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Analytics Squad</div>
+                          <div class="dropdown-option-sub">Datos y reportes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-option" onclick="selectSquad(3,'🤝','Customer Success Squad','Retención y expansión de cuentas activas','Agente Onboarding','Agente Renewal','Agente NPS',this)">
+                        <span class="dropdown-option-emoji">🤝</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Customer Success Squad</div>
+                          <div class="dropdown-option-sub">Retención de clientes</div>
+                        </div>
+                        <div class="dropdown-option-check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div class="dropdown-option create" onclick="closeDropdown(3)">
+                        <span class="dropdown-option-emoji">➕</span>
+                        <div class="dropdown-option-text">
+                          <div class="dropdown-option-name">Crear Squad personalizado</div>
+                          <div class="dropdown-option-sub">Define agentes a medida</div>
+                        </div>
+                        <div class="dropdown-option-check"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="squad-description" id="desc-3">Clasifica reclamos automáticamente, asigna prioridad y escala según SLA definido.</p>
+              <div class="agents-row">
+                <span class="agents-label">Agentes:</span>
+                <div class="agent-chips" id="agents-3">
+                  <span class="agent-chip" onclick="openAgentModal('intake')">Agente Intake</span>
+                  <span class="agent-chip" onclick="openAgentModal('escalacion')">Agente Escalación</span>
+                  <span class="agent-chip" onclick="openAgentModal('sla')">Agente SLA</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /squad-assignments -->
+
+        <!-- CTA -->
+        <div class="cta-row">
+          <button class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Volver a KPIs
+          </button>
+          <button class="btn-cta">
+            Confirmar Squads y Activar
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+      </div><!-- /squads-section -->
+
+      <p class="footer-hint">Podrás reasignar Squads o crear nuevos desde la configuración del proyecto en cualquier momento.</p>
+
+    </div><!-- /form-col -->
+
+    <!-- RIGHT: SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Project Summary -->
+      <div class="sidebar-card accent-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          Proyecto
+        </div>
+        <div class="project-chip">
+          <div class="project-chip-icon">🚚</div>
+          <div>
+            <div class="project-chip-name">Grupo Enlace Logística</div>
+            <div class="project-chip-sub">3 KPIs activos</div>
+          </div>
+        </div>
+
+        <!-- KPI list (read-only) -->
+        <div class="sidebar-kpi-list">
+          <div class="sidebar-kpi-item">
+            <div class="sidebar-kpi-dot"></div>
+            <div>
+              <div class="sidebar-kpi-name">Tasa de Cierre de Ventas</div>
+              <div class="sidebar-kpi-meta">6.7% → <span>10%</span></div>
+            </div>
+          </div>
+          <div class="sidebar-kpi-item">
+            <div class="sidebar-kpi-dot"></div>
+            <div>
+              <div class="sidebar-kpi-name">Entregas al Primer Intento</div>
+              <div class="sidebar-kpi-meta">78% → <span>83%</span></div>
+            </div>
+          </div>
+          <div class="sidebar-kpi-item">
+            <div class="sidebar-kpi-dot"></div>
+            <div>
+              <div class="sidebar-kpi-name">Tiempo de Resolución de Reclamos</div>
+              <div class="sidebar-kpi-meta">3–7 días → <span>1–3 días</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Counter -->
+        <div class="assignments-counter">
+          <span class="counter-label" id="counter-label">3 KPIs · 3 Squads asignados</span>
+          <span class="counter-value" id="unique-squads-count">3 únicos</span>
+        </div>
+      </div>
+
+      <!-- Tip -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Sobre la asignación
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Un Squad, varios KPIs.</strong> Si dos problemas son del mismo dominio, el mismo Squad puede cubrirlos con más contexto.</p>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+</div>
+
+<!-- ─── AGENT DETAIL MODAL ──────────────────────────── -->
+<div class="agent-modal-overlay" id="agent-modal-overlay" onclick="closeAgentModal(event)">
+  <div class="agent-modal" id="agent-modal" onclick="event.stopPropagation()">
+    <button class="modal-close-btn" onclick="closeAgentModalDirect()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Header -->
+    <div class="modal-header" id="modal-header">
+      <!-- Avatar grid injected by JS — cuadrícula de agentes estilo landing -->
+      <div class="modal-avatar" id="modal-avatar"></div>
+      <div class="modal-agent-name" id="modal-agent-name">Nombre del Agente</div>
+      <div class="modal-meta-row">
+        <span class="modal-squad-badge" id="modal-squad-badge">Squad</span>
+        <span class="modal-status-chip active">En línea</span>
+      </div>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Capacidades con barras de poder -->
+      <div class="modal-section">
+        <div class="modal-section-title">Capacidades</div>
+        <div class="modal-functions-list" id="modal-functions-list"></div>
+      </div>
+      <!-- Stack tecnológico -->
+      <div class="modal-section">
+        <div class="modal-section-title">Stack conectado</div>
+        <div class="modal-connects-row" id="modal-connects-row"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="modal-btn-close" onclick="closeAgentModalDirect()">Cancelar</button>
+      <button class="modal-btn-config" id="modal-btn-config">
+        Activar este agente
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Estado de asignaciones ─────────────────────────
+  const assignments = {
+    1: 'Sales Squad',
+    2: 'Operations Squad',
+    3: 'Service Squad'
+  };
+
+  let openDropdownId = null;
+
+  // ── Toggle dropdown ────────────────────────────────
+  function toggleDropdown(id, event) {
+    event.stopPropagation();
+    if (openDropdownId && openDropdownId !== id) {
+      closeDropdown(openDropdownId);
+    }
+    const dd = document.getElementById('dropdown-' + id);
+    if (dd.classList.contains('open')) {
+      closeDropdown(id);
+    } else {
+      dd.classList.add('open');
+      openDropdownId = id;
+    }
+  }
+
+  function closeDropdown(id) {
+    const dd = document.getElementById('dropdown-' + id);
+    if (dd) dd.classList.remove('open');
+    if (openDropdownId === id) openDropdownId = null;
+  }
+
+  // Close on outside click
+  document.addEventListener('click', function() {
+    if (openDropdownId !== null) closeDropdown(openDropdownId);
+  });
+
+  // ── Select squad ───────────────────────────────────
+  function selectSquad(cardId, emoji, name, type, agent1, agent2, agent3, optionEl) {
+    // Update assignment state
+    assignments[cardId] = name;
+
+    // Update UI
+    document.getElementById('emoji-' + cardId).textContent = emoji;
+    document.getElementById('squad-type-' + cardId).textContent = type;
+
+    // Agents — map agent names to their IDs for onclick
+    const agentIdMap = {
+      'Agente Prospector': 'prospector', 'Agente CRM': 'crm', 'Agente Follow-up': 'followup',
+      'Agente Ruteo': 'ruteo', 'Agente Confirmación': 'confirmacion', 'Agente Incidencias': 'incidencias',
+      'Agente Intake': 'intake', 'Agente Escalación': 'escalacion', 'Agente SLA': 'sla',
+      'Agente Data': 'data', 'Agente KPI': 'kpi', 'Agente Report': 'report',
+      'Agente Onboarding': 'onboarding', 'Agente Renewal': 'renewal', 'Agente NPS': 'nps'
+    };
+    const agentsEl = document.getElementById('agents-' + cardId);
+    agentsEl.innerHTML = [agent1, agent2, agent3].map(a => {
+      const aid = agentIdMap[a];
+      const onc = aid ? `onclick="openAgentModal('${aid}')"` : '';
+      return `<span class="agent-chip" ${onc}>${a}</span>`;
+    }).join('');
+
+    // Description mapping
+    const descriptions = {
+      'Sales Squad':           'Automatiza seguimiento de prospectos, recordatorios y scoring. Cierra más sin contratar.',
+      'Operations Squad':      'Coordina confirmaciones previas por WhatsApp, optimiza rutas y registra incidencias en tiempo real.',
+      'Service Squad':         'Clasifica reclamos automáticamente, asigna prioridad y escala según SLA definido.',
+      'Analytics Squad':       'Centraliza datos de todos los canales, genera reportes automáticos y detecta anomalías en tus métricas.',
+      'Customer Success Squad':'Gestiona el ciclo de vida del cliente, automatiza check-ins de salud de cuenta y previene churn.'
+    };
+    document.getElementById('desc-' + cardId).textContent = descriptions[name] || '';
+
+    // Mark active option in dropdown
+    const dd = document.getElementById('dropdown-' + cardId);
+    dd.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('active'));
+    optionEl.classList.add('active');
+
+    // Squad name + shared badge
+    updateSquadNameEl(cardId, name);
+
+    // Close dropdown
+    closeDropdown(cardId);
+
+    // Update shared badges for all cards
+    refreshSharedBadges();
+
+    // Update sidebar counter
+    updateCounter();
+  }
+
+  function updateSquadNameEl(cardId, name) {
+    const nameEl = document.getElementById('squad-name-' + cardId);
+    // Keep text, remove old badge
+    nameEl.textContent = name;
+    // Badge will be re-added by refreshSharedBadges if needed
+  }
+
+  function refreshSharedBadges() {
+    // Count frequency
+    const freq = {};
+    Object.values(assignments).forEach(sq => {
+      freq[sq] = (freq[sq] || 0) + 1;
+    });
+
+    // Update each card name el
+    [1, 2, 3].forEach(id => {
+      const nameEl = document.getElementById('squad-name-' + id);
+      const squad = assignments[id];
+      // Clear and rebuild
+      nameEl.innerHTML = '';
+      const textNode = document.createTextNode(squad);
+      nameEl.appendChild(textNode);
+
+      if (freq[squad] > 1) {
+        const badge = document.createElement('span');
+        badge.className = 'shared-badge';
+        badge.textContent = 'Compartido';
+        nameEl.appendChild(badge);
+      }
+    });
+  }
+
+  function updateCounter() {
+    const uniqueSquads = new Set(Object.values(assignments));
+    const uniqueCount = uniqueSquads.size;
+    document.getElementById('counter-label').textContent = `3 KPIs · ${Object.keys(assignments).length} Squads asignados`;
+    document.getElementById('unique-squads-count').textContent = uniqueCount + (uniqueCount === 1 ? ' único' : ' únicos');
+  }
+
+  // Initial state
+  refreshSharedBadges();
+  updateCounter();
+
+  // ── SVG Robot Avatars ───────────────────────────────
+  // Cada agente tiene un SVG robot con color/acento único
+  const AGENT_AVATARS = {
+    // Sales Squad — naranja/rojo
+    prospector: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-s1" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#7c2d12"/></radialGradient>
+        <radialGradient id="ag-eye-s1" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff"/><stop offset="100%" stop-color="#fed7aa"/></radialGradient>
+      </defs>
+      <!-- Body -->
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-s1)"/>
+      <!-- Head -->
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-s1)"/>
+      <!-- Antenna -->
+      <line x1="48" y1="14" x2="48" y2="4" stroke="#f97316" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="48" cy="3" r="4" fill="#ef4444"/>
+      <!-- Eyes -->
+      <rect x="30" y="25" width="14" height="12" rx="4" fill="url(#ag-eye-s1)"/>
+      <rect x="52" y="25" width="14" height="12" rx="4" fill="url(#ag-eye-s1)"/>
+      <circle cx="37" cy="31" r="4" fill="#f97316"/>
+      <circle cx="59" cy="31" r="4" fill="#f97316"/>
+      <circle cx="38" cy="30" r="1.5" fill="#fff"/>
+      <circle cx="60" cy="30" r="1.5" fill="#fff"/>
+      <!-- Mouth -->
+      <path d="M36 46 Q48 52 60 46" stroke="#fed7aa" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Chest badge -->
+      <rect x="34" y="55" width="28" height="18" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <circle cx="48" cy="64" r="5" fill="#f97316" opacity="0.9"/>
+      <!-- Arms -->
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-s1)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-s1)"/>
+    </svg>`,
+
+    crm: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-crm" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#ea580c"/><stop offset="100%" stop-color="#7c2d12"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-crm)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-crm)"/>
+      <!-- Antenna doble -->
+      <line x1="40" y1="14" x2="36" y2="4" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="56" y1="14" x2="60" y2="4" stroke="#f97316" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="36" cy="3" r="3.5" fill="#fbbf24"/>
+      <circle cx="60" cy="3" r="3.5" fill="#fbbf24"/>
+      <!-- Eyes rectangulares -->
+      <rect x="29" y="24" width="16" height="13" rx="3" fill="#1c1c2e"/>
+      <rect x="51" y="24" width="16" height="13" rx="3" fill="#1c1c2e"/>
+      <rect x="31" y="26" width="12" height="9" rx="2" fill="#f97316" opacity="0.8"/>
+      <rect x="53" y="26" width="12" height="9" rx="2" fill="#f97316" opacity="0.8"/>
+      <!-- Mouth línea recta -->
+      <rect x="36" y="44" width="24" height="3" rx="2" fill="#fed7aa"/>
+      <!-- Chest panel -->
+      <rect x="30" y="54" width="36" height="20" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <rect x="33" y="57" width="12" height="3" rx="1.5" fill="#f97316"/>
+      <rect x="33" y="62" width="18" height="3" rx="1.5" fill="#f97316" opacity="0.6"/>
+      <rect x="33" y="67" width="8" height="3" rx="1.5" fill="#f97316" opacity="0.4"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-crm)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-crm)"/>
+    </svg>`,
+
+    followup: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-fu" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#dc2626"/><stop offset="100%" stop-color="#7f1d1d"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-fu)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-fu)"/>
+      <!-- Bell antenna -->
+      <line x1="48" y1="14" x2="48" y2="5" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      <path d="M42 5 Q48 0 54 5" stroke="#fca5a5" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- Eyes — redondos expressivos -->
+      <circle cx="37" cy="31" r="8" fill="#1c1c2e"/>
+      <circle cx="59" cy="31" r="8" fill="#1c1c2e"/>
+      <circle cx="37" cy="31" r="5" fill="#ef4444"/>
+      <circle cx="59" cy="31" r="5" fill="#ef4444"/>
+      <circle cx="35" cy="29" r="2" fill="#fff"/>
+      <circle cx="57" cy="29" r="2" fill="#fff"/>
+      <!-- Smile -->
+      <path d="M37 46 Q48 54 59 46" stroke="#fca5a5" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Chest notification dot -->
+      <circle cx="48" cy="64" r="9" fill="rgba(0,0,0,0.3)"/>
+      <circle cx="48" cy="64" r="5" fill="#ef4444"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-fu)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-fu)"/>
+    </svg>`,
+
+    // Operations Squad — azul/índigo
+    ruteo: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-rt" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1e1b4b"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-rt)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-rt)"/>
+      <line x1="48" y1="14" x2="48" y2="4" stroke="#818cf8" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="48" cy="3" r="4" fill="#6366f1"/>
+      <!-- Visor panorámico -->
+      <rect x="26" y="23" width="44" height="16" rx="5" fill="#1e1b4b"/>
+      <rect x="28" y="25" width="40" height="12" rx="4" fill="#1e40af"/>
+      <!-- Dos puntos de luz en visor -->
+      <circle cx="38" cy="31" r="4" fill="#60a5fa"/>
+      <circle cx="58" cy="31" r="4" fill="#60a5fa"/>
+      <circle cx="37" cy="30" r="1.5" fill="#bfdbfe"/>
+      <circle cx="57" cy="30" r="1.5" fill="#bfdbfe"/>
+      <!-- Mouth -->
+      <rect x="36" y="44" width="24" height="2.5" rx="1.5" fill="#93c5fd"/>
+      <!-- Chest — mapa/grid -->
+      <rect x="30" y="54" width="36" height="20" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <path d="M36 66 L44 59 L52 64 L60 58" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-rt)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-rt)"/>
+    </svg>`,
+
+    confirmacion: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-cf" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#1e1b4b"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-cf)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-cf)"/>
+      <line x1="40" y1="14" x2="40" y2="5" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="56" y1="14" x2="56" y2="5" stroke="#818cf8" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="40" cy="4" r="3" fill="#a5b4fc"/>
+      <circle cx="56" cy="4" r="3" fill="#a5b4fc"/>
+      <!-- Eyes cuadrados -->
+      <rect x="29" y="24" width="15" height="14" rx="3" fill="#0f172a"/>
+      <rect x="52" y="24" width="15" height="14" rx="3" fill="#0f172a"/>
+      <polyline points="33,33 36,36 43,27" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <polyline points="56,33 59,36 66,27" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Mouth -->
+      <path d="M36 46 Q48 53 60 46" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Chest check -->
+      <circle cx="48" cy="64" r="9" fill="rgba(0,0,0,0.3)"/>
+      <polyline points="43,64 46,68 54,59" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-cf)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-cf)"/>
+    </svg>`,
+
+    incidencias: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-inc" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1e3a8a"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-inc)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-inc)"/>
+      <!-- Alert antenna -->
+      <line x1="48" y1="14" x2="48" y2="3" stroke="#f59e0b" stroke-width="3" stroke-linecap="round"/>
+      <path d="M44 3 L48 -2 L52 3" fill="#f59e0b"/>
+      <!-- Eyes — alerta -->
+      <rect x="29" y="23" width="16" height="14" rx="4" fill="#0f172a"/>
+      <rect x="51" y="23" width="16" height="14" rx="4" fill="#0f172a"/>
+      <rect x="31" y="25" width="12" height="10" rx="2" fill="#f59e0b" opacity="0.9"/>
+      <rect x="53" y="25" width="12" height="10" rx="2" fill="#f59e0b" opacity="0.9"/>
+      <!-- Boca seria -->
+      <rect x="36" y="45" width="24" height="2.5" rx="1.5" fill="#93c5fd"/>
+      <!-- Chest warning -->
+      <rect x="30" y="53" width="36" height="21" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <path d="M48 57 L44 67 H52 Z" fill="#f59e0b"/>
+      <rect x="47" y="59" width="2" height="5" rx="1" fill="#0f172a"/>
+      <circle cx="48" cy="66" r="1" fill="#0f172a"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-inc)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-inc)"/>
+    </svg>`,
+
+    // Service Squad — verde esmeralda
+    intake: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-int" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#16a34a"/><stop offset="100%" stop-color="#064e3b"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-int)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-int)"/>
+      <line x1="48" y1="14" x2="48" y2="4" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="48" cy="3" r="4" fill="#22c55e"/>
+      <!-- Eyes amigables -->
+      <circle cx="37" cy="31" r="8" fill="#052e16"/>
+      <circle cx="59" cy="31" r="8" fill="#052e16"/>
+      <circle cx="37" cy="31" r="5" fill="#22c55e"/>
+      <circle cx="59" cy="31" r="5" fill="#22c55e"/>
+      <circle cx="35.5" cy="29.5" r="2" fill="#fff"/>
+      <circle cx="57.5" cy="29.5" r="2" fill="#fff"/>
+      <!-- Smile amplio -->
+      <path d="M34 46 Q48 56 62 46" stroke="#86efac" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Chest inbox -->
+      <rect x="29" y="53" width="38" height="21" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <path d="M32 65 L48 57 L64 65" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-int)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-int)"/>
+    </svg>`,
+
+    escalacion: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-esc" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#064e3b"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-esc)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-esc)"/>
+      <!-- Lightning antenna -->
+      <line x1="48" y1="14" x2="44" y2="4" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M44 4 L50 0 L46 6 L52 4" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Eyes angulares — energéticos -->
+      <path d="M28 23 L44 23 L42 37 L30 37 Z" fill="#052e16"/>
+      <path d="M52 23 L68 23 L66 37 L54 37 Z" fill="#052e16"/>
+      <path d="M30 25 L42 25 L40 35 L32 35 Z" fill="#10b981"/>
+      <path d="M54 25 L66 25 L64 35 L56 35 Z" fill="#10b981"/>
+      <!-- Mouth energética -->
+      <path d="M36 44 L42 49 L48 44 L54 49 L60 44" stroke="#6ee7b7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Chest lightning -->
+      <rect x="30" y="53" width="36" height="21" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <path d="M52 56 L44 64 L49 64 L44 72 L56 62 L50 62 Z" fill="#4ade80"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-esc)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-esc)"/>
+    </svg>`,
+
+    sla: `<svg class="avatar-svg" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="ag-body-sla" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#0d9488"/><stop offset="100%" stop-color="#042f2e"/></radialGradient>
+      </defs>
+      <rect x="18" y="42" width="60" height="42" rx="10" fill="url(#ag-body-sla)"/>
+      <rect x="22" y="14" width="52" height="36" rx="12" fill="url(#ag-body-sla)"/>
+      <!-- Clock antenna -->
+      <line x1="48" y1="14" x2="48" y2="5" stroke="#2dd4bf" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="48" cy="3" r="4" fill="#2dd4bf" stroke="#042f2e" stroke-width="1.5"/>
+      <line x1="48" y1="3" x2="48" y2="0" stroke="#042f2e" stroke-width="1" stroke-linecap="round"/>
+      <line x1="48" y1="3" x2="50" y2="4" stroke="#042f2e" stroke-width="1" stroke-linecap="round"/>
+      <!-- Eyes reloj -->
+      <circle cx="37" cy="31" r="8" fill="#042f2e"/>
+      <circle cx="59" cy="31" r="8" fill="#042f2e"/>
+      <circle cx="37" cy="31" r="6" stroke="#2dd4bf" stroke-width="1.5" fill="none"/>
+      <circle cx="59" cy="31" r="6" stroke="#2dd4bf" stroke-width="1.5" fill="none"/>
+      <line x1="37" y1="31" x2="37" y2="27" stroke="#2dd4bf" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="37" y1="31" x2="40" y2="31" stroke="#2dd4bf" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="59" y1="31" x2="59" y2="27" stroke="#2dd4bf" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="59" y1="31" x2="62" y2="31" stroke="#2dd4bf" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Mouth -->
+      <path d="M36 46 Q48 52 60 46" stroke="#99f6e4" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Chest SLA gauge -->
+      <rect x="30" y="53" width="36" height="21" rx="5" fill="rgba(0,0,0,0.3)"/>
+      <path d="M36 70 A12 12 0 0 1 60 70" stroke="rgba(255,255,255,0.15)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M36 70 A12 12 0 0 1 55 58" stroke="#2dd4bf" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <rect x="8" y="47" width="10" height="24" rx="5" fill="url(#ag-body-sla)"/>
+      <rect x="78" y="47" width="10" height="24" rx="5" fill="url(#ag-body-sla)"/>
+    </svg>`
+  };
+
+  // ── Agent Data ──────────────────────────────────────
+  const AGENT_DATA = {
+    prospector: {
+      name: 'Agente Prospector',
+      squad: 'Sales Squad',
+      squadClass: 'squad-sales',
+      power: [4, 3, 4, 3],
+      functions: [
+        'Clasifica leads según criterios de calificación definidos',
+        'Enriquece datos de contacto automáticamente',
+        'Prioriza prospectos por score de intención',
+        'Notifica al vendedor cuando un lead está listo'
+      ],
+      connects: [
+        { icon: '💼', label: 'HubSpot' },
+        { icon: '📧', label: 'Gmail' },
+        { icon: '🔗', label: 'LinkedIn' },
+        { icon: '📊', label: 'Sheets' }
+      ]
+    },
+    crm: {
+      name: 'Agente CRM',
+      squad: 'Sales Squad',
+      squadClass: 'squad-sales',
+      power: [3, 4, 4, 3],
+      functions: [
+        'Actualiza el CRM después de cada interacción',
+        'Registra llamadas, emails y reuniones automáticamente',
+        'Genera resúmenes de conversación con IA',
+        'Detecta oportunidades estancadas y las escala'
+      ],
+      connects: [
+        { icon: '💼', label: 'HubSpot' },
+        { icon: '📅', label: 'Calendar' },
+        { icon: '📧', label: 'Gmail' },
+        { icon: '📝', label: 'Notion' }
+      ]
+    },
+    followup: {
+      name: 'Agente Follow-up',
+      squad: 'Sales Squad',
+      squadClass: 'squad-sales',
+      power: [4, 3, 3, 4],
+      functions: [
+        'Envía recordatorios automáticos al prospecto',
+        'Personaliza mensajes según el stage del pipeline',
+        'Detecta cuándo reactivar un lead frío',
+        'Mide tasa de respuesta por canal'
+      ],
+      connects: [
+        { icon: '💬', label: 'WhatsApp' },
+        { icon: '📧', label: 'Gmail' },
+        { icon: '💼', label: 'HubSpot' },
+        { icon: '📣', label: 'Slack' }
+      ]
+    },
+    ruteo: {
+      name: 'Agente Ruteo',
+      squad: 'Operations Squad',
+      squadClass: 'squad-ops',
+      power: [4, 4, 3, 3],
+      functions: [
+        'Optimiza rutas de entrega en tiempo real',
+        'Considera tráfico, ventanas horarias y capacidad',
+        'Reduce km recorridos hasta un 23%',
+        'Exporta hoja de ruta al conductor'
+      ],
+      connects: [
+        { icon: '🗺️', label: 'Google Maps' },
+        { icon: '📦', label: 'ERP / WMS' },
+        { icon: '📱', label: 'App Conductor' },
+        { icon: '📊', label: 'Sheets' }
+      ]
+    },
+    confirmacion: {
+      name: 'Agente Confirmación',
+      squad: 'Operations Squad',
+      squadClass: 'squad-ops',
+      power: [3, 4, 4, 3],
+      functions: [
+        'Envía WhatsApp 24h antes de la entrega',
+        'Confirma disponibilidad del receptor',
+        'Reagenda automáticamente si no hay respuesta',
+        'Actualiza el sistema con el resultado'
+      ],
+      connects: [
+        { icon: '💬', label: 'WhatsApp' },
+        { icon: '📦', label: 'ERP / WMS' },
+        { icon: '📅', label: 'Calendario' },
+        { icon: '📣', label: 'Slack' }
+      ]
+    },
+    incidencias: {
+      name: 'Agente Incidencias',
+      squad: 'Operations Squad',
+      squadClass: 'squad-ops',
+      power: [4, 3, 4, 4],
+      functions: [
+        'Registra fallas de entrega con foto y motivo',
+        'Genera reporte diario de incidencias',
+        'Detecta patrones por zona o conductor',
+        'Escala casos repetidos al supervisor'
+      ],
+      connects: [
+        { icon: '📱', label: 'App Campo' },
+        { icon: '📦', label: 'ERP / WMS' },
+        { icon: '📣', label: 'Slack' },
+        { icon: '📧', label: 'Email' }
+      ]
+    },
+    intake: {
+      name: 'Agente Intake',
+      squad: 'Service Squad',
+      squadClass: 'squad-service',
+      power: [4, 4, 3, 3],
+      functions: [
+        'Recibe reclamos por WhatsApp, email o formulario',
+        'Clasifica por tipo: entrega, factura, daño, retraso',
+        'Asigna número de ticket y confirma recepción',
+        'Detecta duplicados y consolida casos similares'
+      ],
+      connects: [
+        { icon: '💬', label: 'WhatsApp' },
+        { icon: '📧', label: 'Gmail' },
+        { icon: '🎫', label: 'Zendesk' },
+        { icon: '📝', label: 'Formularios' }
+      ]
+    },
+    escalacion: {
+      name: 'Agente Escalación',
+      squad: 'Service Squad',
+      squadClass: 'squad-service',
+      power: [3, 4, 4, 4],
+      functions: [
+        'Evalúa prioridad según impacto y antigüedad del cliente',
+        'Escala a humano cuando el reclamo supera el SLA',
+        'Notifica al gerente por casos críticos',
+        'Sugiere solución basada en casos similares'
+      ],
+      connects: [
+        { icon: '📣', label: 'Slack' },
+        { icon: '🎫', label: 'Zendesk' },
+        { icon: '📧', label: 'Email' },
+        { icon: '📱', label: 'WhatsApp' }
+      ]
+    },
+    sla: {
+      name: 'Agente SLA',
+      squad: 'Service Squad',
+      squadClass: 'squad-service',
+      power: [4, 3, 4, 3],
+      functions: [
+        'Monitorea tiempo de respuesta en tiempo real',
+        'Alerta al equipo cuando se acerca el vencimiento del SLA',
+        'Genera reporte semanal de cumplimiento',
+        'Propone ajustes al SLA según histórico'
+      ],
+      connects: [
+        { icon: '🎫', label: 'Zendesk' },
+        { icon: '📣', label: 'Slack' },
+        { icon: '📈', label: 'Dashboard' },
+        { icon: '📧', label: 'Email' }
+      ]
+    }
+  };
+
+  // ── Open/Close modal ────────────────────────────────
+  function renderPowerBars(level) {
+    // level: 1-4, barras de 4 total
+    let bars = '';
+    for (let i = 1; i <= 4; i++) {
+      bars += `<div class="power-bar ${i <= level ? 'filled' : ''}"></div>`;
+    }
+    return `<div class="modal-fn-power">${bars}</div>`;
+  }
+
+  // ── Avatar Grid data — icono + compañeros por squad ────
+  const AVATAR_GRID = {
+    // Sales Squad — naranja/rojo
+    prospector:  { icon: '◎', peers: ['✦','⟡','◈','⊕','◉','⟐','✧','◇'] },
+    crm:         { icon: '⊞', peers: ['◎','⟡','◈','⊕','◉','⟐','✧','◇'] },
+    followup:    { icon: '⟐', peers: ['◎','⊞','◈','⊕','◉','⟡','✧','◇'] },
+    // Operations Squad — azul/índigo
+    ruteo:       { icon: '⬡', peers: ['◎','✦','◈','⊕','◉','⟐','✧','◇'] },
+    confirmacion:{ icon: '◈', peers: ['⬡','✦','◎','⊕','◉','⟐','✧','◇'] },
+    incidencias: { icon: '⊕', peers: ['⬡','◈','◎','✦','◉','⟐','✧','◇'] },
+    // Service Squad — verde esmeralda
+    intake:      { icon: '◉', peers: ['◎','✦','◈','⊕','⬡','⟐','✧','◇'] },
+    escalacion:  { icon: '✧', peers: ['◉','✦','◈','⊕','◎','⟐','⬡','◇'] },
+    sla:         { icon: '◇', peers: ['◉','✧','◈','⊕','◎','⟐','⬡','✦'] },
+    // Analytics Squad
+    data:        { icon: '⬡', peers: ['◎','✦','◈','⊕','◉','⟐','✧','◇'] },
+    kpi:         { icon: '◈', peers: ['⬡','✦','◎','⊕','◉','⟐','✧','◇'] },
+    report:      { icon: '⊕', peers: ['⬡','◈','◎','✦','◉','⟐','✧','◇'] },
+    // Customer Success Squad
+    onboarding:  { icon: '◉', peers: ['◎','✦','◈','⊕','⬡','⟐','✧','◇'] },
+    renewal:     { icon: '✧', peers: ['◉','✦','◈','⊕','◎','⟐','⬡','◇'] },
+    nps:         { icon: '◇', peers: ['◉','✧','◈','⊕','◎','⟐','⬡','✦'] },
+  };
+
+  // Colores de squad para el ID card (fill y glow del busto)
+  const SQUAD_COLORS = {
+    'squad-sales':   { fill: '#f97316', fillAlt: '#ef4444', fillOpacity: '0.82' },
+    'squad-ops':     { fill: '#6366f1', fillAlt: '#818cf8', fillOpacity: '0.82' },
+    'squad-service': { fill: '#22c55e', fillAlt: '#34d399', fillOpacity: '0.82' },
+  };
+
+  function buildIdCard(agentId, squadClass) {
+    // Avatar con imagen real — mismo para todos los agentes por ahora
+    return `<img src="https://screens.agentsquadai.com/assets/avatar-architect-400.png" alt="Agent avatar" loading="eager" onerror="this.style.display='none'">`;
+
+    // ── LEGACY CODE (isometric SVG) — kept for reference ──────────────
+    const colors = SQUAD_COLORS[squadClass] || SQUAD_COLORS['squad-ops'];
+    const c1  = colors.fill;
+    const c2  = colors.fillAlt;
+    const avatarGrid = AVATAR_GRID[agentId] || { icon: '◎' };
+    const symbol = avatarGrid.icon;
+
+    // IDs únicos para evitar colisión de defs
+    const uid = agentId + '-' + Math.random().toString(36).slice(2,6);
+
+    // Isometric palette derived from squad color
+    // Top face = lighter, left face = base color, right face = darker
+    // We use a hex-circle as base for the isometric platform
+    // The figure sits on top: body (torso) + head, all isometric-style
+
+    return `
+      <svg class="agent-iso-svg" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Dot grid background — igual que landing -->
+          <pattern id="grid-${uid}" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+            <circle cx="0.8" cy="0.8" r="0.55" fill="rgba(255,255,255,0.055)"/>
+          </pattern>
+          <!-- Outer ring radial — ambient glow -->
+          <radialGradient id="glow-${uid}" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.18"/>
+            <stop offset="60%"  stop-color="${c1}" stop-opacity="0.06"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Platform top face gradient -->
+          <linearGradient id="plat-top-${uid}" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0.14"/>
+          </linearGradient>
+          <!-- Platform left face -->
+          <linearGradient id="plat-left-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.42"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0.22"/>
+          </linearGradient>
+          <!-- Platform right face -->
+          <linearGradient id="plat-right-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="${c2}" stop-opacity="0.30"/>
+            <stop offset="100%" stop-color="${c2}" stop-opacity="0.14"/>
+          </linearGradient>
+          <!-- Body top face (shoulders) -->
+          <linearGradient id="body-top-${uid}" x1="80" y1="75" x2="80" y2="95" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0.65"/>
+          </linearGradient>
+          <!-- Body left face -->
+          <linearGradient id="body-left-${uid}" x1="60" y1="75" x2="60" y2="115" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.82"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0.5"/>
+          </linearGradient>
+          <!-- Body right face (darker) -->
+          <linearGradient id="body-right-${uid}" x1="100" y1="75" x2="100" y2="115" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="${c2}" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="${c2}" stop-opacity="0.28"/>
+          </linearGradient>
+          <!-- Head gradient -->
+          <linearGradient id="head-${uid}" x1="80" y1="40" x2="80" y2="78" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="${c2}" stop-opacity="0.7"/>
+          </linearGradient>
+          <!-- Gold highlight — landing uses #c9a84c gold -->
+          <linearGradient id="gold-${uid}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="transparent"/>
+            <stop offset="40%"  stop-color="#c9a84c"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </linearGradient>
+          <!-- Hologram circle glow -->
+          <radialGradient id="holo-${uid}" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="${c1}" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="${c1}" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Outer ring stroke glow filter -->
+          <filter id="gf-${uid}" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="hf-${uid}" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- 1. Ambient circle glow behind everything -->
+        <circle cx="80" cy="80" r="72" fill="url(#glow-${uid})"/>
+
+        <!-- 2. Outer ring — thin, like landing border elements -->
+        <circle cx="80" cy="80" r="72" stroke="${c1}" stroke-width="0.6" stroke-opacity="0.22" fill="none"/>
+        <circle cx="80" cy="80" r="66" stroke="${c1}" stroke-width="0.3" stroke-opacity="0.12" fill="none" stroke-dasharray="4 6"/>
+
+        <!-- 3. Dot grid fill -->
+        <circle cx="80" cy="80" r="72" fill="url(#grid-${uid})"/>
+
+        <!-- 4. Base background -->
+        <circle cx="80" cy="80" r="72" fill="#0a0a0f" fill-opacity="0.55"/>
+        <!-- Re-apply dot grid on top -->
+        <circle cx="80" cy="80" r="72" fill="url(#grid-${uid})"/>
+
+        <!-- ── ISOMETRIC PLATFORM ─────────────────────────────── -->
+        <!-- Platform = isometric cube/slab sitting at bottom center -->
+        <!-- Top face — rhombus -->
+        <path d="M80 108 L54 95 L80 82 L106 95 Z" fill="url(#plat-top-${uid})" stroke="${c1}" stroke-width="0.5" stroke-opacity="0.35"/>
+        <!-- Left face -->
+        <path d="M54 95 L54 108 L80 121 L80 108 Z" fill="url(#plat-left-${uid})" stroke="${c1}" stroke-width="0.5" stroke-opacity="0.25"/>
+        <!-- Right face -->
+        <path d="M106 95 L106 108 L80 121 L80 108 Z" fill="url(#plat-right-${uid})" stroke="${c2}" stroke-width="0.5" stroke-opacity="0.2"/>
+        <!-- Platform top edge highlight — gold -->
+        <path d="M54 95 L80 82 L106 95" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.45" fill="none"/>
+
+        <!-- ── ISOMETRIC BODY (torso + shoulders) ──────────────── -->
+        <!-- Shoulders top — isometric top face (wider trapezoid) -->
+        <path d="M80 76 L62 67 L80 58 L98 67 Z"
+              fill="url(#body-top-${uid})" filter="url(#gf-${uid})"/>
+        <!-- Torso left face -->
+        <path d="M62 67 L62 95 L80 104 L80 76 Z"
+              fill="url(#body-left-${uid})"/>
+        <!-- Torso right face -->
+        <path d="M98 67 L98 95 L80 104 L80 76 Z"
+              fill="url(#body-right-${uid})"/>
+        <!-- Shoulder top edge highlight -->
+        <path d="M62 67 L80 58 L98 67" stroke="#c9a84c" stroke-width="1" stroke-opacity="0.55" fill="none"/>
+        <!-- Torso bottom edges -->
+        <path d="M62 95 L80 104 L98 95" stroke="${c1}" stroke-width="0.5" stroke-opacity="0.3" fill="none"/>
+
+        <!-- Collar / neck highlight line -->
+        <path d="M72 69 L80 65 L88 69" stroke="white" stroke-width="0.5" stroke-opacity="0.18" fill="none"/>
+
+        <!-- ── HEAD — isometric-ish rounded cube ───────────────── -->
+        <!-- Head top face -->
+        <path d="M80 43 L66 51 L80 59 L94 51 Z"
+              fill="${c1}" fill-opacity="0.88" filter="url(#gf-${uid})"/>
+        <!-- Head left face -->
+        <path d="M66 51 L66 66 L80 74 L80 59 Z"
+              fill="${c1}" fill-opacity="0.65"/>
+        <!-- Head right face -->
+        <path d="M94 51 L94 66 L80 74 L80 59 Z"
+              fill="${c2}" fill-opacity="0.45"/>
+        <!-- Head top highlight — gold edge -->
+        <path d="M66 51 L80 43 L94 51" stroke="#c9a84c" stroke-width="1.2" stroke-opacity="0.7" fill="none"/>
+        <!-- Face — subtle white window on left face -->
+        <path d="M68 55 L68 64 L78 70 L78 61 Z" fill="white" fill-opacity="0.055"/>
+        <!-- Eye slots — horizontal lines on face -->
+        <line x1="69" y1="58" x2="77" y2="63" stroke="${c1}" stroke-width="1" stroke-opacity="0.7"/>
+        <line x1="69" y1="62" x2="77" y2="67" stroke="${c1}" stroke-width="0.5" stroke-opacity="0.4"/>
+        <!-- Head glow top -->
+        <ellipse cx="80" cy="50" rx="12" ry="7" fill="${c1}" fill-opacity="0.12" filter="url(#hf-${uid})"/>
+
+        <!-- ── HOLOGRAM SYMBOL above head ──────────────────────── -->
+        <!-- Projection beam -->
+        <line x1="80" y1="43" x2="80" y2="28" stroke="${c1}" stroke-width="0.6" stroke-opacity="0.35" stroke-dasharray="2 3"/>
+        <!-- Holo circle -->
+        <circle cx="80" cy="24" r="10" fill="url(#holo-${uid})" stroke="${c1}" stroke-width="0.8" stroke-opacity="0.55"/>
+        <!-- Agent symbol inside holo -->
+        <text x="80" y="28.5" text-anchor="middle" font-size="11" fill="${c1}" fill-opacity="0.9" font-family="monospace">${symbol}</text>
+        <!-- Gold ring around holo -->
+        <circle cx="80" cy="24" r="13" fill="none" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="3 4"/>
+
+        <!-- ── GROUND SHADOW — ellipse at platform base ────────── -->
+        <ellipse cx="80" cy="122" rx="28" ry="5" fill="${c1}" fill-opacity="0.12" filter="url(#hf-${uid})"/>
+
+        <!-- ── GRID LINES on platform top ─────────────────────── -->
+        <!-- subtle iso grid on platform face -->
+        <line x1="67" y1="88.5" x2="80" y2="82" stroke="${c1}" stroke-width="0.3" stroke-opacity="0.25"/>
+        <line x1="93" y1="88.5" x2="80" y2="82" stroke="${c2}" stroke-width="0.3" stroke-opacity="0.18"/>
+
+        <!-- ── GOLD ACCENT LINE — like landing top stripe ─────── -->
+        <path d="M44 136 L116 136" stroke="url(#gold-${uid})" stroke-width="1" stroke-opacity="0.5"/>
+
+        <!-- ── STATUS PULSE — bottom ring ─────────────────────── -->
+        <circle cx="80" cy="80" r="70" fill="none" stroke="${c1}" stroke-width="1.5" stroke-opacity="0.08"/>
+
+      </svg>
+    `;
+  }
+
+  function openAgentModal(agentId) {
+    const data   = AGENT_DATA[agentId];
+    if (!data) return;
+
+    const overlay = document.getElementById('agent-modal-overlay');
+    const modal   = document.getElementById('agent-modal');
+
+    // Squad class → colores
+    modal.className = 'agent-modal ' + data.squadClass;
+
+    // ID Card futurista
+    const avatarEl = document.getElementById('modal-avatar');
+    avatarEl.innerHTML = buildIdCard(agentId, data.squadClass);
+
+    // Name
+    document.getElementById('modal-agent-name').textContent  = data.name;
+    document.getElementById('modal-squad-badge').textContent = data.squad;
+
+    // Capacidades con barras de poder
+    const fnList = document.getElementById('modal-functions-list');
+    fnList.innerHTML = data.functions.map((fn, i) => `
+      <div class="modal-function-item">
+        <div class="modal-fn-top">
+          <span class="modal-fn-text">${fn}</span>
+          ${renderPowerBars(data.power[i] || 3)}
+        </div>
+      </div>
+    `).join('');
+
+    // Stack tecnológico chips
+    const connectsRow = document.getElementById('modal-connects-row');
+    connectsRow.innerHTML = data.connects.map(c => `
+      <span class="modal-connect-chip">
+        <span class="chip-icon">${c.icon}</span>${c.label}
+      </span>
+    `).join('');
+
+    // Show
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAgentModal(event) {
+    if (event.target === document.getElementById('agent-modal-overlay')) {
+      closeAgentModalDirect();
+    }
+  }
+
+  function closeAgentModalDirect() {
+    const overlay = document.getElementById('agent-modal-overlay');
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAgentModalDirect();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KPIs del Proyecto — Agent Squad AI Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #12121a;
+      --surface2:  #1a1a26;
+      --border:    #1e1e2e;
+      --border2:   #2a2a3e;
+      --text:      #f0f0f8;
+      --muted:     #8888a8;
+      --subtle:    #444466;
+      --accent:    #6366f1;
+      --accent2:   #8b5cf6;
+      --accent3:   #a78bfa;
+      --success:   #22c55e;
+      --ai-bg:     rgba(99,102,241,0.06);
+      --ai-border: rgba(99,102,241,0.22);
+      --radius:    12px;
+      --radius-lg: 20px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NOISE TEXTURE ──────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── AMBIENT GLOW ───────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg { width: 18px; height: 18px; }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text span {
+      background: linear-gradient(90deg, var(--accent3), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { color: var(--text); background: var(--surface2); }
+
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    /* ─── MAIN CONTENT ───────────────────────────────── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 40px 32px 80px;
+      align-items: start;
+    }
+
+    /* ─── LEFT COLUMN ────────────────────────────────── */
+    .form-col {
+      padding-right: 48px;
+    }
+
+    /* ─── PROGRESS STEPS ─────────────────────────────── */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .step.active .step-circle {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 16px rgba(99,102,241,0.4);
+    }
+
+    .step.pending .step-circle {
+      background: var(--surface2);
+      color: var(--subtle);
+      border: 1px solid var(--border2);
+    }
+
+    .step.done .step-circle {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .step.active .step-label { color: var(--text); }
+    .step.pending .step-label { color: var(--subtle); }
+    .step.done .step-label { color: var(--success); }
+
+    .step-connector {
+      height: 1px;
+      width: 32px;
+      background: var(--border2);
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    .step-connector.done {
+      background: var(--success);
+      opacity: 0.5;
+    }
+
+    /* ─── SECTION TITLE ──────────────────────────────── */
+    .section-title {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 8px;
+    }
+
+    .section-title h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ─── COPILOT BANNER ─────────────────────────────── */
+    .copilot-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 20px;
+      background: var(--ai-bg);
+      border: 1px solid var(--ai-border);
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copilot-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent);
+    }
+
+    .copilot-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.25));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .copilot-text {
+      flex: 1;
+    }
+
+    .copilot-text strong {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .copilot-text p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ─── KPI LIST ───────────────────────────────────── */
+    .kpi-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    /* ─── KPI CARD (sugerido por IA) ─────────────────── */
+    .kpi-card {
+      background: rgba(99,102,241,0.07);
+      border: 1px dashed rgba(99,102,241,0.35);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+    .kpi-card:nth-child(2) { animation-delay: 0.12s; }
+    .kpi-card:nth-child(3) { animation-delay: 0.19s; }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(139,92,246,0.03));
+      pointer-events: none;
+    }
+
+    .kpi-card:focus-within {
+      border-color: rgba(99,102,241,0.45);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.08);
+    }
+
+    /* KPI card confirmada (agregada manualmente) */
+    .kpi-card.custom {
+      border-style: solid;
+      border-color: var(--border2);
+      background: var(--surface2);
+    }
+
+    .kpi-card.custom::before {
+      background: none;
+    }
+
+    /* ─── KPI CARD HEADER ────────────────────────────── */
+    .kpi-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.18);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .ai-badge svg { width: 10px; height: 10px; flex-shrink: 0; }
+
+    .custom-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border2);
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .btn-remove-kpi {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--subtle);
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+    }
+
+    .btn-remove-kpi:hover {
+      background: rgba(239,68,68,0.1);
+      border-color: rgba(239,68,68,0.3);
+      color: #f87171;
+    }
+
+    .btn-remove-kpi svg { width: 13px; height: 13px; }
+
+    /* ─── KPI FIELDS ─────────────────────────────────── */
+    .kpi-fields {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 12px;
+    }
+
+    .kpi-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .kpi-field-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--subtle);
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: rgba(10,10,15,0.7);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: var(--subtle);
+    }
+
+    /* ─── ADD KPI BUTTON ─────────────────────────────── */
+    .btn-add-kpi {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      background: transparent;
+      border: 1px dashed var(--border2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-add-kpi:hover {
+      color: var(--accent3);
+      border-color: rgba(99,102,241,0.4);
+      background: rgba(99,102,241,0.04);
+    }
+
+    .btn-add-kpi svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    /* ─── DIVIDER ─────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    /* ─── FORM CARD (context resumido) ──────────────── */
+    .context-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .context-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), transparent);
+    }
+
+    .context-icon {
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .context-body { flex: 1; }
+
+    .context-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 5px;
+    }
+
+    .context-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .context-text strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* ─── KPI SECTION ────────────────────────────────── */
+    .kpi-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.35s ease both;
+      animation-delay: 0.05s;
+    }
+
+    .kpi-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
+    }
+
+    /* ─── CTA ROW ─────────────────────────────────────── */
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.2px;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.3);
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+    }
+
+    .btn-cta:active { transform: translateY(0); }
+    .btn-cta svg { width: 16px; height: 16px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { color: var(--text); border-color: var(--subtle); }
+
+    /* ─── RIGHT SIDEBAR ──────────────────────────────── */
+    .sidebar {
+      padding-top: 76px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 104px;
+    }
+
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.35s ease both;
+      animation-delay: 0.1s;
+    }
+
+    .sidebar-card.accent-card {
+      background: linear-gradient(145deg, rgba(99,102,241,0.08), rgba(139,92,246,0.06));
+      border-color: rgba(99,102,241,0.2);
+    }
+
+    .sidebar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.25), transparent);
+    }
+
+    .sidebar-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-card-title svg { width: 14px; height: 14px; }
+
+    .tip-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tip-item:last-child { margin-bottom: 0; }
+
+    .tip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .tip-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tip-text strong { color: var(--text); }
+
+    /* Kpi count indicator */
+    .kpi-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .kpi-counter-num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    /* Quote */
+    .sidebar-quote {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+      border-left: 2px solid rgba(99,102,241,0.4);
+      padding-left: 14px;
+    }
+
+    /* Footer hint */
+    .footer-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--subtle);
+      padding: 20px 0 0;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 28px 20px 60px;
+      }
+      .form-col { padding-right: 0; }
+      .sidebar { display: none; }
+      header { padding: 0 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .section-title h1 { font-size: 22px; }
+      .kpi-section { padding: 20px 16px; }
+      .kpi-fields { grid-template-columns: 1fr; }
+      .progress-bar { gap: 4px; }
+      .step-label { display: none; }
+      .cta-row { flex-direction: column; gap: 12px; align-items: stretch; }
+      .btn-cta, .btn-secondary { justify-content: center; width: 100%; }
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title { animation: fadeUp 0.35s ease both; }
+    .progress-bar  { animation: fadeUp 0.35s ease both; animation-delay: 0.02s; }
+    .context-card  { animation: fadeUp 0.35s ease both; animation-delay: 0.04s; }
+    .copilot-banner { animation: fadeUp 0.35s ease both; animation-delay: 0.06s; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ─── HEADER ─────────────────────────────────────── -->
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Agent <span>Squad</span></span>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Squads
+      </a>
+      <div class="nav-avatar">GE</div>
+    </nav>
+  </header>
+
+  <!-- ─── MAIN ──────────────────────────────────────── -->
+  <main>
+
+    <!-- LEFT: FORM COLUMN -->
+    <div class="form-col">
+
+      <!-- Progress -->
+      <div class="progress-bar">
+        <div class="step done">
+          <div class="step-circle">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="step-label">Proyecto</span>
+        </div>
+        <div class="step-connector done"></div>
+        <div class="step active">
+          <div class="step-circle">2</div>
+          <span class="step-label">KPIs</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step pending">
+          <div class="step-circle">3</div>
+          <span class="step-label">Squads</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step pending">
+          <div class="step-circle">4</div>
+          <span class="step-label">Activar</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="section-title">
+        <div class="eyebrow">Paso 2 de 4 — Indicadores clave</div>
+        <h1>Tus KPIs <span style="color:var(--muted); font-weight:400">(editables)</span></h1>
+        <p>Basándonos en tu MetaObjetivo, te sugerimos estos indicadores de partida. Edítalos libremente, elimina los que no aplican o agrega los tuyos.</p>
+      </div>
+
+      <!-- Context resumido del paso anterior -->
+      <div class="context-card">
+        <span class="context-icon">🎯</span>
+        <div class="context-body">
+          <div class="context-label">MetaObjetivo del proyecto</div>
+          <p class="context-text">
+            <strong>Grupo Enlace Logística</strong> — Triplicar clientes activos de 12 a 40 en 6 meses, manteniendo NPS &gt;8 y sin contratar personal adicional.
+          </p>
+        </div>
+      </div>
+
+      <!-- Copilot Banner -->
+      <div class="copilot-banner">
+        <div class="copilot-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <div class="copilot-text">
+          <strong>Identificamos estos KPIs como sugerencia de partida</strong>
+          <p>No son definitivos — son un punto de inicio. Edita los nombres y metas, elimina los que no necesitas y agrega los que tu operación realmente usa.</p>
+        </div>
+      </div>
+
+      <!-- KPI Section -->
+      <div class="kpi-section">
+
+        <!-- KPI List -->
+        <div class="kpi-list" id="kpi-list">
+
+          <!-- KPI 1 -->
+          <div class="kpi-card" id="kpi-1">
+            <div class="kpi-card-header">
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+              <button class="btn-remove-kpi" onclick="removeKpi('kpi-1')" title="Eliminar este KPI">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="kpi-fields">
+              <div class="kpi-field">
+                <label class="kpi-field-label">Nombre del KPI</label>
+                <input type="text" value="Tasa de cierre de ventas" placeholder="Ej: Tasa de conversión" />
+              </div>
+              <div class="kpi-field">
+                <label class="kpi-field-label">Meta a 6 meses</label>
+                <input type="text" value="12%" placeholder="Ej: 15%" />
+              </div>
+            </div>
+            <div style="margin-top:10px; font-size:12px; color:var(--muted); line-height:1.55;">
+              Actual: <strong style="color:var(--text)">6.7%</strong> (1 de cada 15 prospectos) &nbsp;·&nbsp; Benchmark LATAM distribución: 10%–15%
+            </div>
+          </div>
+
+          <!-- KPI 2 -->
+          <div class="kpi-card" id="kpi-2">
+            <div class="kpi-card-header">
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+              <button class="btn-remove-kpi" onclick="removeKpi('kpi-2')" title="Eliminar este KPI">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="kpi-fields">
+              <div class="kpi-field">
+                <label class="kpi-field-label">Nombre del KPI</label>
+                <input type="text" value="Entregas al primer intento" placeholder="Ej: Tasa de éxito en entrega" />
+              </div>
+              <div class="kpi-field">
+                <label class="kpi-field-label">Meta a 6 meses</label>
+                <input type="text" value="88%" placeholder="Ej: 90%" />
+              </div>
+            </div>
+            <div style="margin-top:10px; font-size:12px; color:var(--muted); line-height:1.55;">
+              Actual: <strong style="color:var(--text)">78%</strong> (22% falla) &nbsp;·&nbsp; Benchmark LATAM: 75%–85% &nbsp;·&nbsp; Best-in-class: 92%–97%
+            </div>
+          </div>
+
+          <!-- KPI 3 -->
+          <div class="kpi-card" id="kpi-3">
+            <div class="kpi-card-header">
+              <span class="ai-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><circle cx="12" cy="12" r="3"/></svg>
+                Sugerido por IA
+              </span>
+              <button class="btn-remove-kpi" onclick="removeKpi('kpi-3')" title="Eliminar este KPI">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="kpi-fields">
+              <div class="kpi-field">
+                <label class="kpi-field-label">Nombre del KPI</label>
+                <input type="text" value="Tiempo de resolución de reclamos" placeholder="Ej: Tiempo de respuesta" />
+              </div>
+              <div class="kpi-field">
+                <label class="kpi-field-label">Meta a 6 meses</label>
+                <input type="text" value="24–48 horas" placeholder="Ej: &lt; 48 horas" />
+              </div>
+            </div>
+            <div style="margin-top:10px; font-size:12px; color:var(--muted); line-height:1.55;">
+              Actual: <strong style="color:var(--text)">3–7 días</strong> (reclamos estándar) &nbsp;·&nbsp; Benchmark B2B competitivo: 24–72 horas
+            </div>
+          </div>
+
+        </div><!-- /kpi-list -->
+
+        <!-- Add custom KPI -->
+        <button class="btn-add-kpi" onclick="addCustomKpi()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar KPI personalizado
+        </button>
+
+        <!-- CTA -->
+        <div class="cta-row">
+          <button class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Volver
+          </button>
+          <button class="btn-cta">
+            Confirmar KPIs y asignar Squads
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+      </div><!-- /kpi-section -->
+
+      <p class="footer-hint">Podrás ajustar o agregar KPIs en cualquier momento desde la configuración del proyecto.</p>
+
+    </div><!-- /form-col -->
+
+    <!-- RIGHT: SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- KPIs activos -->
+      <div class="sidebar-card accent-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          KPIs confirmados
+        </div>
+        <div class="kpi-counter">
+          <span class="kpi-counter-num" id="kpi-count">3</span>
+          <span>indicadores definidos hasta ahora</span>
+        </div>
+        <p style="font-size:12px; color:var(--muted); line-height:1.6;">Los Squads usarán estos KPIs para alinear sus acciones y reportar avances en el War Room.</p>
+      </div>
+
+      <!-- Tips -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Qué hace un buen KPI
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Medible.</strong> Si no puedes ponerle un número, no es un KPI.</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Accionable.</strong> Tu Squad debe poder influir en él directamente.</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Con meta clara.</strong> "Aumentar ventas" no alcanza. "40 clientes activos en 6 meses" sí.</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Pocos y focalizados.</strong> Entre 2 y 5 KPIs es ideal. Más de 7 diluye el foco.</p>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="sidebar-card">
+        <p class="sidebar-quote">
+          "Lo que no se mide no se puede mejorar — pero lo que se mide mal dirige el esfuerzo en la dirección equivocada."
+        </p>
+      </div>
+
+    </aside>
+
+  </main>
+</div>
+
+<script>
+  let customKpiCount = 0;
+
+  function removeKpi(id) {
+    const card = document.getElementById(id);
+    if (card) {
+      card.style.transition = 'opacity 0.2s, transform 0.2s';
+      card.style.opacity = '0';
+      card.style.transform = 'translateX(-8px)';
+      setTimeout(() => {
+        card.remove();
+        updateKpiCount();
+      }, 200);
+    }
+  }
+
+  function addCustomKpi() {
+    customKpiCount++;
+    const id = 'kpi-custom-' + customKpiCount;
+    const list = document.getElementById('kpi-list');
+
+    const card = document.createElement('div');
+    card.className = 'kpi-card custom';
+    card.id = id;
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    card.innerHTML = `
+      <div class="kpi-card-header">
+        <span class="custom-badge">Personalizado</span>
+        <button class="btn-remove-kpi" onclick="removeKpi('${id}')" title="Eliminar este KPI">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="kpi-fields">
+        <div class="kpi-field">
+          <label class="kpi-field-label">Nombre del KPI</label>
+          <input type="text" placeholder="Ej: Tiempo de respuesta promedio" autofocus />
+        </div>
+        <div class="kpi-field">
+          <label class="kpi-field-label">Meta</label>
+          <input type="text" placeholder="Ej: &lt; 2 horas" />
+        </div>
+      </div>
+    `;
+
+    list.appendChild(card);
+    updateKpiCount();
+
+    // Animate in
+    requestAnimationFrame(() => {
+      card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+
+    // Focus first input
+    setTimeout(() => {
+      const input = card.querySelector('input');
+      if (input) input.focus();
+    }, 50);
+  }
+
+  function updateKpiCount() {
+    const count = document.querySelectorAll('#kpi-list .kpi-card').length;
+    const el = document.getElementById('kpi-count');
+    if (el) el.textContent = count;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Proyecto — Agent Squad AI Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Fallback stack si Inter no carga */
+  </style>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #12121a;
+      --surface2:  #1a1a26;
+      --border:    #1e1e2e;
+      --border2:   #2a2a3e;
+      --text:      #f0f0f8;
+      --muted:     #8888a8;
+      --subtle:    #444466;
+      --accent:    #6366f1;
+      --accent2:   #8b5cf6;
+      --accent3:   #a78bfa;
+      --success:   #22c55e;
+      --radius:    12px;
+      --radius-lg: 20px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NOISE TEXTURE ──────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── AMBIENT GLOW ───────────────────────────────── */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg { width: 18px; height: 18px; }
+
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text span {
+      background: linear-gradient(90deg, var(--accent3), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .nav-btn:hover { color: var(--text); background: var(--surface2); }
+
+    .nav-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    /* ─── MAIN CONTENT ───────────────────────────────── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 40px 32px 80px;
+      align-items: start;
+    }
+
+    /* ─── LEFT COLUMN ────────────────────────────────── */
+    .form-col {
+      padding-right: 48px;
+    }
+
+    /* ─── PROGRESS STEPS ─────────────────────────────── */
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .step.active .step-circle {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      box-shadow: 0 0 16px rgba(99,102,241,0.4);
+    }
+
+    .step.pending .step-circle {
+      background: var(--surface2);
+      color: var(--subtle);
+      border: 1px solid var(--border2);
+    }
+
+    .step.done .step-circle {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .step.active .step-label { color: var(--text); }
+    .step.pending .step-label { color: var(--subtle); }
+    .step.done .step-label { color: var(--success); }
+
+    .step-connector {
+      height: 1px;
+      width: 32px;
+      background: var(--border2);
+      flex-shrink: 0;
+      margin: 0 4px;
+    }
+
+    /* ─── SECTION TITLE ──────────────────────────────── */
+    .section-title {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 8px;
+    }
+
+    .section-title h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .section-title p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* ─── FORM CARD ──────────────────────────────────── */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.3), transparent);
+    }
+
+    /* ─── FIELD GROUP ────────────────────────────────── */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .field-label .badge {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: rgba(99,102,241,0.12);
+      color: var(--accent3);
+      border: 1px solid rgba(99,102,241,0.2);
+    }
+
+    .field-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: -3px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      padding: 12px 16px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+    }
+
+    input[type="text"]::placeholder,
+    textarea::placeholder {
+      color: var(--subtle);
+    }
+
+    textarea.sm { min-height: 80px; }
+    textarea.md { min-height: 100px; }
+
+    /* ─── META-OBJETIVO (destacado) ──────────────────── */
+    .meta-field {
+      background: rgba(99,102,241,0.05);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+
+    .meta-field::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(99,102,241,0.04), rgba(139,92,246,0.04));
+      pointer-events: none;
+    }
+
+    .meta-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .meta-label .icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .meta-sublabel {
+      font-size: 12px;
+      color: var(--accent3);
+      opacity: 0.85;
+    }
+
+    .meta-field textarea {
+      background: rgba(10,10,15,0.6);
+      border-color: rgba(99,102,241,0.25);
+      min-height: 100px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .meta-field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+    }
+
+    /* Star north indicator */
+    .north-star {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: rgba(99,102,241,0.08);
+      border-radius: 8px;
+      border: 1px solid rgba(99,102,241,0.15);
+    }
+
+    .north-star-text {
+      font-size: 11px;
+      color: var(--accent3);
+      font-weight: 500;
+    }
+
+    /* ─── DIVIDER ─────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* ─── CTA BUTTON ─────────────────────────────────── */
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 4px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: -0.2px;
+      box-shadow: 0 4px 24px rgba(99,102,241,0.3);
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+    }
+
+    .btn-cta:active { transform: translateY(0); }
+
+    .btn-cta svg { width: 16px; height: 16px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover { color: var(--text); border-color: var(--subtle); }
+
+    /* ─── RIGHT SIDEBAR ──────────────────────────────── */
+    .sidebar {
+      padding-top: 76px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 104px;
+    }
+
+    .sidebar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar-card.accent-card {
+      background: linear-gradient(145deg, rgba(99,102,241,0.08), rgba(139,92,246,0.06));
+      border-color: rgba(99,102,241,0.2);
+    }
+
+    .sidebar-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.25), transparent);
+    }
+
+    .sidebar-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sidebar-card-title svg { width: 14px; height: 14px; }
+
+    .tip-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .tip-item:last-child { margin-bottom: 0; }
+
+    .tip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .tip-text {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tip-text strong { color: var(--text); }
+
+    /* Squad preview */
+    .squad-preview {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .squad-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      opacity: 0.5;
+    }
+
+    .squad-item.next-step {
+      opacity: 1;
+      border-color: rgba(99,102,241,0.3);
+      background: rgba(99,102,241,0.06);
+    }
+
+    .squad-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .squad-info { flex: 1; }
+
+    .squad-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .squad-desc {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .squad-lock {
+      width: 14px;
+      height: 14px;
+      color: var(--subtle);
+    }
+
+    /* Quote */
+    .sidebar-quote {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-style: italic;
+      border-left: 2px solid rgba(99,102,241,0.4);
+      padding-left: 14px;
+    }
+
+    /* ─── FOOTER HINT ────────────────────────────────── */
+    .footer-hint {
+      text-align: center;
+      font-size: 12px;
+      color: var(--subtle);
+      padding: 24px 0 0;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 28px 20px 60px;
+      }
+      .form-col { padding-right: 0; }
+      .sidebar { display: none; }
+      header { padding: 0 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .section-title h1 { font-size: 22px; }
+      .form-card { padding: 24px 18px; }
+      .progress-bar { gap: 4px; }
+      .step-label { display: none; }
+      .cta-row { flex-direction: column; gap: 12px; align-items: stretch; }
+      .btn-cta, .btn-secondary { justify-content: center; width: 100%; }
+    }
+
+    /* ─── SUBTLE ANIMATIONS ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-card   { animation: fadeUp 0.35s ease both; animation-delay: 0.05s; }
+    .section-title { animation: fadeUp 0.35s ease both; }
+    .progress-bar  { animation: fadeUp 0.35s ease both; animation-delay: 0.02s; }
+    .sidebar-card  { animation: fadeUp 0.35s ease both; animation-delay: 0.1s; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ─── HEADER ─────────────────────────────────────── -->
+  <header>
+    <a href="#" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <span class="logo-text">Agent <span>Squad</span></span>
+    </a>
+
+    <nav class="header-nav">
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Squads
+      </a>
+      <div class="nav-avatar">RO</div>
+    </nav>
+  </header>
+
+  <!-- ─── MAIN ──────────────────────────────────────── -->
+  <main>
+
+    <!-- LEFT: FORM COLUMN -->
+    <div class="form-col">
+
+      <!-- Progress -->
+      <div class="progress-bar">
+        <div class="step active">
+          <div class="step-circle">1</div>
+          <span class="step-label">Proyecto</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step pending">
+          <div class="step-circle">2</div>
+          <span class="step-label">Squads</span>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step pending">
+          <div class="step-circle">3</div>
+          <span class="step-label">Activar</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="section-title">
+        <div class="eyebrow">Nuevo proyecto</div>
+        <h1>Define tu proyecto<br/>y el norte que lo guía</h1>
+        <p>Un MetaObjetivo claro convierte a tus Squads de herramientas en aliados estratégicos que trabajan alineados hacia el mismo resultado.</p>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+
+        <!-- Nombre -->
+        <div class="field-group">
+          <label class="field-label" for="proj-name">
+            Nombre del proyecto
+            <span class="badge">Requerido</span>
+          </label>
+          <input
+            type="text"
+            id="proj-name"
+            value="Escalar Agent Squad — Q2 2026"
+            placeholder="ej: Lanzamiento producto LATAM"
+          />
+        </div>
+
+        <!-- Descripción -->
+        <div class="field-group">
+          <label class="field-label" for="proj-desc">Descripción</label>
+          <span class="field-hint">¿Qué hace tu empresa? ¿Cuál es el contexto de este proyecto?</span>
+          <textarea
+            id="proj-desc"
+            class="md"
+            placeholder="Describe tu empresa, el momento actual y lo que necesitas lograr..."
+          >Somos una agencia de implementación de IA para PYMES latinoamericanas. Necesitamos escalar de 12 a 40 clientes activos sin incrementar headcount.</textarea>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- MetaObjetivo (destacado) -->
+        <div class="meta-field">
+          <div class="field-group" style="gap: 6px;">
+            <div class="meta-label">
+              <span class="icon">🎯</span>
+              MetaObjetivo del Proyecto
+            </div>
+            <div class="meta-sublabel">Este objetivo guiará a todos los Squads asignados — es la estrella del norte compartida.</div>
+          </div>
+
+          <textarea
+            id="proj-meta"
+            placeholder="Define el resultado que quieres alcanzar: qué, cuánto, en cuánto tiempo..."
+          >Triplicar clientes activos de 12 a 40 en 6 meses, manteniendo NPS &gt;8 y sin contratar personal adicional.</textarea>
+
+          <div class="north-star">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span class="north-star-text">Cada Squad recibirá este MetaObjetivo en su contexto. Sus decisiones estarán alineadas a él.</span>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-row">
+          <button class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            Cancelar
+          </button>
+          <button class="btn-cta">
+            Crear Proyecto y asignar Squads
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <p class="footer-hint">Podrás editar el MetaObjetivo en cualquier momento desde la configuración del proyecto.</p>
+
+    </div><!-- /form-col -->
+
+    <!-- RIGHT: SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Siguiente paso -->
+      <div class="sidebar-card accent-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Siguiente: Asignar Squads
+        </div>
+        <div class="squad-preview">
+          <div class="squad-item next-step">
+            <div class="squad-icon" style="background:rgba(99,102,241,0.15);">🚀</div>
+            <div class="squad-info">
+              <div class="squad-name">Growth Squad</div>
+              <div class="squad-desc">Contenido, leads, posicionamiento</div>
+            </div>
+          </div>
+          <div class="squad-item">
+            <div class="squad-icon" style="background:rgba(34,197,94,0.1);">📋</div>
+            <div class="squad-info">
+              <div class="squad-name">PMO Squad</div>
+              <div class="squad-desc">Gestión de proyectos y entregables</div>
+            </div>
+            <svg class="squad-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="squad-item">
+            <div class="squad-icon" style="background:rgba(245,158,11,0.1);">⚙️</div>
+            <div class="squad-info">
+              <div class="squad-name">Dev Squad</div>
+              <div class="squad-desc">Desarrollo e integraciones</div>
+            </div>
+            <svg class="squad-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips MetaObjetivo -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Qué hace un buen MetaObjetivo
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Cuantificable.</strong> Incluye un número concreto: clientes, ingresos, tiempo.</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Con restricciones.</strong> Define qué no puedes hacer (sin contratar, sin reducir calidad).</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Con horizonte.</strong> Pon fecha límite. "En 6 meses" es mejor que "pronto".</p>
+        </div>
+        <div class="tip-item">
+          <div class="tip-dot"></div>
+          <p class="tip-text"><strong>Inspirador.</strong> Si lo leen, deben saber exactamente por qué trabajan.</p>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="sidebar-card">
+        <p class="sidebar-quote">
+          "Un squad sin norte claro optimiza eficientemente hacia el lugar equivocado. El MetaObjetivo es el contrato entre tu visión y la ejecución de la IA."
+        </p>
+      </div>
+
+    </aside>
+
+  </main>
+</div>
+</body>
+</html>

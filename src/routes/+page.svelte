@@ -204,12 +204,12 @@
 	<!-- Hero — split banner -->
 	<section class="hero">
 		<div class="hero-content">
-			<div class="hero-badge cascade cascade--1">Diseño de Squad Gratis · 48h</div>
+			<div class="hero-badge cascade cascade--1">Diseño de Squad Gratis · 24h</div>
 			<h1 class="hero-title cascade cascade--2">
 				Contratar es lento. Entrenar es caro. <em>Tu Squad IA empieza hoy.</em>
 			</h1>
 			<p class="hero-sub cascade cascade--3">
-				Cuéntanos tu operación y en 48 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
+				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
 				<a href="#squad-form" class="btn-primary">Diseña tu Squad Gratis</a>
@@ -229,7 +229,7 @@
 	<!-- Stats bar -->
 	<div class="stats-bar">
 		<div class="stat">
-			<span class="stat-num">48h</span>
+			<span class="stat-num">24h</span>
 			<span class="stat-label">Tu squad diseñado</span>
 		</div>
 		<div class="stat-divider"></div>
@@ -291,7 +291,7 @@
 		<div class="squad-form-header">
 			<span class="squad-form-badge">DISEÑO GRATUITO · 48H</span>
 			<h2 class="squad-form-title">Diseña tu Squad IA</h2>
-			<p class="squad-form-sub">Llena el formulario en 2 minutos. Recibe el diseño personalizado de tu equipo de agentes IA en 48 horas.</p>
+			<p class="squad-form-sub">Llena el formulario en 2 minutos. Recibe el diseño personalizado de tu equipo de agentes IA en 24 horas.</p>
 		</div>
 
 		<form class="squad-form" id="squad-form-el" on:submit|preventDefault={handleFormSubmit}>
@@ -338,7 +338,7 @@
 			</div>
 
 			<button type="submit" class="btn-primary btn-primary--large squad-submit">
-				{formStatus === 'sending' ? 'Enviando...' : 'Enviar — Recibo el diseño de mi Squad en 48h'}
+				{formStatus === 'sending' ? 'Enviando...' : 'Enviar — Recibo el diseño de mi Squad en 24h'}
 			</button>
 
 			<p class="form-trust">Sin spam. Sin llamadas. Solo el diseño de tu squad.</p>
@@ -348,7 +348,7 @@
 		<div class="squad-success">
 			<div class="squad-success-icon">✓</div>
 			<h3>¡Recibido!</h3>
-			<p>El diseño personalizado de tu Squad IA llegará a tu email en las próximas 48 horas.</p>
+			<p>El diseño personalizado de tu Squad IA llegará a tu email en las próximas 24 horas.</p>
 		</div>
 		{/if}
 	</section>
@@ -356,7 +356,7 @@
 	<!-- Final CTA -->
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 20px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
 		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
 	</section>
 
@@ -522,7 +522,7 @@
 	.logo-pixel {
 		font-family: var(--mono);
 		font-weight: 500;
-		font-size: 16px;
+		font-size: 18px;
 		background: var(--accent);
 		color: #fff;
 		padding: 3px 7px;
@@ -532,14 +532,14 @@
 
 	.logo-name {
 		font-weight: 700;
-		font-size: 20px;
+		font-size: 24px;
 		letter-spacing: -0.01em;
 		color: var(--text);
 	}
 
 	.nav-cta {
 		font-family: var(--mono);
-		font-size: 16px;
+		font-size: 18px;
 		color: var(--gold);
 		text-decoration: none;
 		border: 1px solid var(--gold-border);
@@ -564,8 +564,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
+		width: 40px;
+		height: 40px;
 		border-radius: 8px;
 		border: 1px solid var(--border);
 		background: transparent;
@@ -720,7 +720,7 @@
 		align-items: center;
 		gap: 8px;
 		font-family: var(--mono);
-		font-size: 15px;
+		font-size: 17px;
 		color: var(--gold);
 		border: 1px solid var(--gold-border);
 		background: var(--gold-dim);
@@ -743,7 +743,7 @@
 
 	.hero-title {
 		font-family: var(--display);
-		font-size: clamp(42px, 5vw, 62px);
+		font-size: clamp(48px, 6vw, 72px);
 		font-weight: 800;
 		line-height: 1.15;
 		letter-spacing: -0.02em;
@@ -773,7 +773,7 @@
 	}
 
 	.hero-sub {
-		font-size: 22px;
+		font-size: 26px;
 		line-height: 1.8;
 		color: var(--text-muted);
 		margin: 0 0 40px;
@@ -789,7 +789,7 @@
 
 	.hero-hint {
 		font-family: var(--mono);
-		font-size: 15px;
+		font-size: 17px;
 		color: var(--text-muted);
 	}
 
@@ -850,7 +850,7 @@
 
 	.hero-image-cta {
 		font-family: var(--mono);
-		font-size: 16px;
+		font-size: 18px;
 		color: var(--gold);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
@@ -882,7 +882,7 @@
 
 	.stat-num {
 		font-family: var(--display);
-		font-size: 48px;
+		font-size: 56px;
 		font-weight: 800;
 		color: var(--text);
 		letter-spacing: -0.02em;
@@ -891,7 +891,7 @@
 
 	.stat-label {
 		font-family: var(--mono);
-		font-size: 14px;
+		font-size: 16px;
 		color: var(--text-muted);
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
@@ -968,7 +968,7 @@
 	}
 
 	.feature-icon {
-		font-size: 28px;
+		font-size: 34px;
 		margin-bottom: 16px;
 		color: var(--gold);
 		line-height: 1;
@@ -977,7 +977,7 @@
 	}
 
 	.feature-card h3 {
-		font-size: 21px;
+		font-size: 25px;
 		font-weight: 700;
 		color: var(--text);
 		margin: 0 0 10px;
@@ -987,7 +987,7 @@
 	}
 
 	.feature-card p {
-		font-size: 17px;
+		font-size: 20px;
 		line-height: 1.75;
 		color: var(--text-muted);
 		margin: 0;
@@ -1032,7 +1032,7 @@
 
 	.quote p {
 		font-family: var(--display);
-		font-size: 28px;
+		font-size: 34px;
 		font-weight: 700;
 		font-style: italic;
 		line-height: 1.55;
@@ -1043,7 +1043,7 @@
 
 	.quote cite {
 		font-family: var(--mono);
-		font-size: 15px;
+		font-size: 17px;
 		color: var(--gold);
 		font-style: normal;
 		letter-spacing: 0.06em;
@@ -1060,7 +1060,7 @@
 
 	.cta-title {
 		font-family: var(--display);
-		font-size: clamp(34px, 5vw, 56px);
+		font-size: clamp(40px, 6vw, 64px);
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 36px;
@@ -1076,7 +1076,7 @@
 		color: #fff;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: 18px;
+		font-size: 21px;
 		padding: 14px 28px;
 		border-radius: 8px;
 		letter-spacing: -0.01em;
@@ -1110,7 +1110,7 @@
 	}
 
 	.btn-primary--large {
-		font-size: 21px;
+		font-size: 24px;
 		padding: 16px 36px;
 	}
 
@@ -1126,7 +1126,7 @@
 
 	.footer-logo {
 		font-family: var(--mono);
-		font-size: 15px;
+		font-size: 17px;
 		background: var(--accent);
 		color: #fff;
 		padding: 3px 7px;
@@ -1135,7 +1135,7 @@
 
 	.footer-copy {
 		font-family: var(--mono);
-		font-size: 15px;
+		font-size: 17px;
 		color: var(--text-muted);
 	}
 
@@ -1165,7 +1165,7 @@
 	.squad-form-badge {
 		display: inline-block;
 		font-family: var(--mono);
-		font-size: 14px;
+		font-size: 16px;
 		color: var(--gold);
 		border: 1px solid var(--gold-border);
 		background: var(--gold-dim);
@@ -1178,7 +1178,7 @@
 
 	.squad-form-title {
 		font-family: var(--display);
-		font-size: clamp(34px, 5vw, 52px);
+		font-size: clamp(40px, 6vw, 60px);
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 12px;
@@ -1186,7 +1186,7 @@
 	}
 
 	.squad-form-sub {
-		font-size: 20px;
+		font-size: 24px;
 		color: var(--text-muted);
 		line-height: 1.75;
 		font-weight: 500;
@@ -1218,7 +1218,7 @@
 
 	.form-label {
 		font-family: var(--mono);
-		font-size: 13px;
+		font-size: 15px;
 		color: var(--gold);
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
@@ -1233,7 +1233,7 @@
 		background: rgba(255, 255, 255, 0.03);
 		color: var(--text);
 		font-family: 'Syne', sans-serif;
-		font-size: 17px;
+		font-size: 20px;
 		outline: none;
 		transition: border-color 0.2s, background 0.2s;
 	}
@@ -1268,7 +1268,7 @@
 
 	.form-trust {
 		font-family: var(--mono);
-		font-size: 14px;
+		font-size: 16px;
 		color: rgba(226, 224, 255, 0.2);
 		text-align: center;
 		letter-spacing: 0.06em;
@@ -1300,14 +1300,14 @@
 
 	.squad-success h3 {
 		font-family: var(--display);
-		font-size: 30px;
+		font-size: 36px;
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 8px;
 	}
 
 	.squad-success p {
-		font-size: 19px;
+		font-size: 23px;
 		color: var(--text-muted);
 		margin: 0;
 		font-weight: 500;
@@ -1321,8 +1321,8 @@
 		.stat-divider { display: none; }
 		.hero-actions { flex-direction: column; align-items: flex-start; }
 		.quote { padding: 40px 24px; }
-		.quote p { font-size: 22px; }
-		.quote-mark { font-size: 100px; }
+		.quote p { font-size: 26px; }
+		.quote-mark { font-size: 120px; }
 		.hero-image-link { max-width: 100%; }
 		.form-row { grid-template-columns: 1fr; }
 		.squad-form { padding: 24px; }

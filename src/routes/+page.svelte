@@ -586,10 +586,10 @@
 		--accent: #6366f1;
 		--accent2: #7c3aed;
 		--accent-dim: rgba(99, 102, 241, 0.1);
-		--gold: #9a7d2e;
-		--gold-dim: rgba(154, 125, 46, 0.08);
-		--gold-glow: rgba(154, 125, 46, 0.15);
-		--gold-border: rgba(154, 125, 46, 0.25);
+		--gold: #7a6220;
+		--gold-dim: rgba(122, 98, 32, 0.1);
+		--gold-glow: rgba(122, 98, 32, 0.18);
+		--gold-border: rgba(122, 98, 32, 0.3);
 		--text: #1a1a2e;
 		--text-muted: #55556e;
 		--border: rgba(99, 102, 241, 0.15);
@@ -601,7 +601,7 @@
 	}
 
 	:global([data-theme="light"]) .top-stripe {
-		background: linear-gradient(90deg, transparent, #9a7d2e 20%, #c4a94d 50%, #9a7d2e 80%, transparent);
+		background: linear-gradient(90deg, transparent, #7a6220 20%, #a8892e 50%, #7a6220 80%, transparent);
 	}
 
 	:global([data-theme="light"]) .bg-grid {

@@ -356,7 +356,7 @@
 	<!-- Final CTA -->
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<p style="font-size: 20px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
 		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
 	</section>
 
@@ -522,7 +522,7 @@
 	.logo-pixel {
 		font-family: var(--mono);
 		font-weight: 500;
-		font-size: 13px;
+		font-size: 16px;
 		background: var(--accent);
 		color: #fff;
 		padding: 3px 7px;
@@ -532,14 +532,14 @@
 
 	.logo-name {
 		font-weight: 700;
-		font-size: 16px;
+		font-size: 20px;
 		letter-spacing: -0.01em;
 		color: var(--text);
 	}
 
 	.nav-cta {
 		font-family: var(--mono);
-		font-size: 13px;
+		font-size: 16px;
 		color: var(--gold);
 		text-decoration: none;
 		border: 1px solid var(--gold-border);
@@ -720,7 +720,7 @@
 		align-items: center;
 		gap: 8px;
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 15px;
 		color: var(--gold);
 		border: 1px solid var(--gold-border);
 		background: var(--gold-dim);
@@ -743,7 +743,7 @@
 
 	.hero-title {
 		font-family: var(--display);
-		font-size: clamp(36px, 4vw, 52px);
+		font-size: clamp(42px, 5vw, 62px);
 		font-weight: 800;
 		line-height: 1.15;
 		letter-spacing: -0.02em;
@@ -773,7 +773,7 @@
 	}
 
 	.hero-sub {
-		font-size: 18px;
+		font-size: 22px;
 		line-height: 1.7;
 		color: var(--text-muted);
 		margin: 0 0 40px;
@@ -789,7 +789,7 @@
 
 	.hero-hint {
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 15px;
 		color: var(--text-muted);
 	}
 
@@ -850,7 +850,7 @@
 
 	.hero-image-cta {
 		font-family: var(--mono);
-		font-size: 13px;
+		font-size: 16px;
 		color: var(--gold);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
@@ -882,7 +882,7 @@
 
 	.stat-num {
 		font-family: var(--display);
-		font-size: 38px;
+		font-size: 48px;
 		font-weight: 800;
 		color: var(--text);
 		letter-spacing: -0.02em;
@@ -891,7 +891,7 @@
 
 	.stat-label {
 		font-family: var(--mono);
-		font-size: 11px;
+		font-size: 14px;
 		color: var(--text-muted);
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
@@ -968,7 +968,7 @@
 	}
 
 	.feature-icon {
-		font-size: 22px;
+		font-size: 28px;
 		margin-bottom: 16px;
 		color: var(--gold);
 		line-height: 1;
@@ -977,7 +977,7 @@
 	}
 
 	.feature-card h3 {
-		font-size: 17px;
+		font-size: 21px;
 		font-weight: 700;
 		color: var(--text);
 		margin: 0 0 10px;
@@ -987,7 +987,7 @@
 	}
 
 	.feature-card p {
-		font-size: 14px;
+		font-size: 17px;
 		line-height: 1.65;
 		color: var(--text-muted);
 		margin: 0;
@@ -1031,7 +1031,7 @@
 
 	.quote p {
 		font-family: var(--display);
-		font-size: 23px;
+		font-size: 28px;
 		font-weight: 700;
 		font-style: italic;
 		line-height: 1.55;
@@ -1042,7 +1042,7 @@
 
 	.quote cite {
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 15px;
 		color: var(--gold);
 		font-style: normal;
 		letter-spacing: 0.06em;
@@ -1059,7 +1059,7 @@
 
 	.cta-title {
 		font-family: var(--display);
-		font-size: clamp(28px, 4vw, 46px);
+		font-size: clamp(34px, 5vw, 56px);
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 36px;
@@ -1075,7 +1075,7 @@
 		color: #fff;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: 15px;
+		font-size: 18px;
 		padding: 14px 28px;
 		border-radius: 8px;
 		letter-spacing: -0.01em;
@@ -1109,7 +1109,7 @@
 	}
 
 	.btn-primary--large {
-		font-size: 17px;
+		font-size: 21px;
 		padding: 16px 36px;
 	}
 
@@ -1125,7 +1125,7 @@
 
 	.footer-logo {
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 15px;
 		background: var(--accent);
 		color: #fff;
 		padding: 3px 7px;
@@ -1134,7 +1134,7 @@
 
 	.footer-copy {
 		font-family: var(--mono);
-		font-size: 12px;
+		font-size: 15px;
 		color: var(--text-muted);
 	}
 
@@ -1164,7 +1164,7 @@
 	.squad-form-badge {
 		display: inline-block;
 		font-family: var(--mono);
-		font-size: 11px;
+		font-size: 14px;
 		color: var(--gold);
 		border: 1px solid var(--gold-border);
 		background: var(--gold-dim);
@@ -1177,7 +1177,7 @@
 
 	.squad-form-title {
 		font-family: var(--display);
-		font-size: clamp(28px, 4vw, 42px);
+		font-size: clamp(34px, 5vw, 52px);
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 12px;
@@ -1185,7 +1185,7 @@
 	}
 
 	.squad-form-sub {
-		font-size: 16px;
+		font-size: 20px;
 		color: var(--text-muted);
 		line-height: 1.6;
 		max-width: 480px;
@@ -1216,7 +1216,7 @@
 
 	.form-label {
 		font-family: var(--mono);
-		font-size: 10px;
+		font-size: 13px;
 		color: var(--gold);
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
@@ -1231,7 +1231,7 @@
 		background: rgba(255, 255, 255, 0.03);
 		color: var(--text);
 		font-family: 'Syne', sans-serif;
-		font-size: 14px;
+		font-size: 17px;
 		outline: none;
 		transition: border-color 0.2s, background 0.2s;
 	}
@@ -1266,7 +1266,7 @@
 
 	.form-trust {
 		font-family: var(--mono);
-		font-size: 11px;
+		font-size: 14px;
 		color: rgba(226, 224, 255, 0.2);
 		text-align: center;
 		letter-spacing: 0.06em;
@@ -1298,14 +1298,14 @@
 
 	.squad-success h3 {
 		font-family: var(--display);
-		font-size: 24px;
+		font-size: 30px;
 		font-weight: 800;
 		color: var(--text);
 		margin: 0 0 8px;
 	}
 
 	.squad-success p {
-		font-size: 15px;
+		font-size: 19px;
 		color: var(--text-muted);
 		margin: 0;
 	}
@@ -1318,8 +1318,8 @@
 		.stat-divider { display: none; }
 		.hero-actions { flex-direction: column; align-items: flex-start; }
 		.quote { padding: 40px 24px; }
-		.quote p { font-size: 18px; }
-		.quote-mark { font-size: 80px; }
+		.quote p { font-size: 22px; }
+		.quote-mark { font-size: 100px; }
 		.hero-image-link { max-width: 100%; }
 		.form-row { grid-template-columns: 1fr; }
 		.squad-form { padding: 24px; }

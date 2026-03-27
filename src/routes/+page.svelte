@@ -6,6 +6,12 @@
 	let mounted = false;
 
 	let formStatus = 'idle'; // idle | sending | sent
+	let theme = 'dark'; // dark | light
+
+	function toggleTheme() {
+		theme = theme === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', theme);
+	}
 
 	async function handleFormSubmit(e) {
 		formStatus = 'sending';
@@ -183,7 +189,16 @@
 			<span class="logo-pixel">AS</span>
 			<span class="logo-name">Agent Squad</span>
 		</span>
-		<a href="#squad-form" class="nav-cta">Diseña tu Squad →</a>
+		<div class="nav-right">
+			<button class="theme-toggle" on:click={toggleTheme} aria-label="Toggle theme">
+				{#if theme === 'dark'}
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.17 3.17l1.06 1.06M11.77 11.77l1.06 1.06M3.17 12.83l1.06-1.06M11.77 4.23l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+				{:else}
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 9.5A6.5 6.5 0 016.5 2 5.5 5.5 0 1014 9.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+				{/if}
+			</button>
+			<a href="#squad-form" class="nav-cta">Diseña tu Squad →</a>
+		</div>
 	</nav>
 
 	<!-- Hero — split banner -->
@@ -341,7 +356,7 @@
 	<!-- Final CTA -->
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en 2 minutos. En 48 horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
 		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
 	</section>
 
@@ -537,6 +552,120 @@
 		background: var(--gold-dim);
 		border-color: var(--gold);
 		box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+	}
+
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.theme-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 8px;
+		border: 1px solid var(--border);
+		background: transparent;
+		color: var(--gold);
+		cursor: pointer;
+		transition: background 0.2s, border-color 0.2s;
+	}
+
+	.theme-toggle:hover {
+		background: var(--gold-dim);
+		border-color: var(--gold-border);
+	}
+
+	/* ── Light Theme ── */
+	:global([data-theme="light"]) {
+		--bg: #f8f7f4;
+		--bg2: #ffffff;
+		--accent: #6366f1;
+		--accent2: #7c3aed;
+		--accent-dim: rgba(99, 102, 241, 0.1);
+		--gold: #9a7d2e;
+		--gold-dim: rgba(154, 125, 46, 0.08);
+		--gold-glow: rgba(154, 125, 46, 0.15);
+		--gold-border: rgba(154, 125, 46, 0.25);
+		--text: #1a1a2e;
+		--text-muted: #6b6b8a;
+		--border: rgba(99, 102, 241, 0.15);
+	}
+
+	:global([data-theme="light"]) :global(body) {
+		background: #f8f7f4;
+		color: #1a1a2e;
+	}
+
+	:global([data-theme="light"]) .top-stripe {
+		background: linear-gradient(90deg, transparent, #9a7d2e 20%, #c4a94d 50%, #9a7d2e 80%, transparent);
+	}
+
+	:global([data-theme="light"]) .bg-grid {
+		background-image:
+			linear-gradient(rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+			linear-gradient(90deg, rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+	}
+
+	:global([data-theme="light"]) .bg-watermark {
+		color: rgba(99, 102, 241, 0.04);
+	}
+
+	:global([data-theme="light"]) .bg-radial--1 {
+		background: radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%);
+	}
+
+	:global([data-theme="light"]) .bg-radial--2 {
+		background: radial-gradient(circle, rgba(154, 125, 46, 0.05) 0%, transparent 70%);
+	}
+
+	:global([data-theme="light"]) .noise {
+		opacity: 0.015;
+	}
+
+	:global([data-theme="light"]) .nav--scrolled {
+		background: rgba(248, 247, 244, 0.85);
+		border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+	}
+
+	:global([data-theme="light"]) .feature-card {
+		background: #ffffff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	}
+
+	:global([data-theme="light"]) .feature-card--accent {
+		background: linear-gradient(135deg, #ffffff 0%, rgba(154, 125, 46, 0.04) 100%);
+	}
+
+	:global([data-theme="light"]) .quote {
+		background: linear-gradient(145deg, #ffffff 0%, rgba(154, 125, 46, 0.03) 50%, rgba(99, 102, 241, 0.03) 100%);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 0 60px rgba(255, 255, 255, 0.5);
+	}
+
+	:global([data-theme="light"]) .squad-form {
+		background: #ffffff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	}
+
+	:global([data-theme="light"]) .form-input {
+		background: rgba(0, 0, 0, 0.02);
+		border-color: rgba(99, 102, 241, 0.15);
+		color: #1a1a2e;
+	}
+
+	:global([data-theme="light"]) .form-input::placeholder {
+		color: rgba(26, 26, 46, 0.3);
+	}
+
+	:global([data-theme="light"]) .squad-success {
+		background: #ffffff;
+	}
+
+	:global([data-theme="light"]) .hero-image-link {
+		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(154, 125, 46, 0.06);
 	}
 
 	/* ── Hero (split banner) ── */

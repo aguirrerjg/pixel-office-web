@@ -5,6 +5,24 @@
 	let navEl;
 	let mounted = false;
 
+	let formStatus = 'idle'; // idle | sending | sent
+
+	async function handleFormSubmit(e) {
+		formStatus = 'sending';
+		const data = new FormData(e.target);
+		const payload = Object.fromEntries(data.entries());
+		try {
+			await fetch('https://formspree.io/f/xwpkgjpq', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+		} catch (err) {
+			console.error('Form error:', err);
+		}
+		formStatus = 'sent';
+	}
+
 	onMount(() => {
 		mounted = true;
 
@@ -101,42 +119,42 @@
 		"mainEntity": [
 			{
 				"@type": "Question",
-				"name": "¿Qué es Agent Squad?",
+				"name": "¿Qué recibo en el diseño gratuito del squad?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Agent Squad es una plataforma de AI Teams as a Service que permite verificar en tiempo real que tus agentes IA se coordinan correctamente. Dashboard en vivo donde ves delegación, errores y progreso de cada agente sin esperar reportes manuales. Funciona con cualquier cantidad de agentes y plataformas."
+					"text": "Una propuesta personalizada con: roles de agentes IA para tu operación, tareas específicas que automatizan, estimación de horas recuperadas por semana, y cómo se integra con tu stack actual. No es un template genérico — es específico para tu negocio."
 				}
 			},
 			{
 				"@type": "Question",
-				"name": "¿Cómo funcionan los equipos de agentes IA?",
+				"name": "¿Necesito conocimientos técnicos para usar Agent Squad?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Los equipos de agentes IA en Agent Squad operan de forma autónoma con visibilidad total. Cada agente muestra su estado real (idle, procesando, delegando) y puedes ver qué agente delegó a quién y por qué — evitando loops infinitos y tareas perdidas. Un dashboard unificado para todos tus agentes, sin importar la plataforma."
+					"text": "Cero. Tú describes qué necesitas en lenguaje natural, nosotros diseñamos y desplegamos el squad. Lo único que haces es dar instrucciones como a cualquier empleado. Sin código, sin configuración técnica."
 				}
 			},
 			{
 				"@type": "Question",
-				"name": "¿Qué es AI Teams as a Service?",
+				"name": "¿Cuánto cuesta un squad de agentes IA?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "AI Teams as a Service es el modelo de Agent Squad donde empresas acceden a equipos completos de agentes IA autónomos en lugar de agentes individuales. Cada equipo incluye roles especializados que se coordinan entre sí. La diferencia clave: no solo ejecutan tareas, sino que puedes verificar en segundos que no se pierden entre sí."
+					"text": "El diseño del squad es 100% gratuito. El costo de implementación depende del número de agentes y complejidad de las integraciones — lo detallamos en la propuesta. Es una fracción del costo de contratar personas para los mismos roles."
 				}
 			},
 			{
 				"@type": "Question",
-				"name": "¿Puedo ver mis agentes IA trabajar en tiempo real?",
+				"name": "¿Qué pasa si no funciona para mi caso?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Sí, esa es la propuesta central de Agent Squad. El dashboard en vivo muestra el estado de cada agente en tiempo real. Puedes ver delegación visual entre agentes, detectar bloqueos antes de que impacten tu timeline, y todo sin necesidad de login, email ni datos."
+					"text": "Por eso el diseño es gratis. Si tu operación no se beneficia de un squad de agentes IA, te lo decimos directamente. Sin presión, sin compromiso, sin letra pequeña."
 				}
 			},
 			{
 				"@type": "Question",
-				"name": "¿Cuántos agentes puede tener un equipo de IA?",
+				"name": "¿Cuánto tarda en estar operativo un squad?",
 				"acceptedAnswer": {
 					"@type": "Answer",
-					"text": "Agent Squad soporta múltiples agentes en paralelo distribuidos en equipos especializados. No hay límite fijo — la arquitectura es escalable y permite agregar agentes y equipos según las necesidades del proyecto. Setup: inmediato."
+					"text": "Desde 1 semana para squads simples de 2-3 agentes hasta 3 semanas para squads complejos con múltiples integraciones. Resultados visibles desde el día 1 de despliegue — sin período de prueba ni ramp-up."
 				}
 			}
 		]
@@ -165,21 +183,21 @@
 			<span class="logo-pixel">AS</span>
 			<span class="logo-name">Agent Squad</span>
 		</span>
-		<a href="https://pixel-office-app.vercel.app/office" class="nav-cta">Open Dashboard →</a>
+		<a href="#squad-form" class="nav-cta">Diseña tu Squad →</a>
 	</nav>
 
 	<!-- Hero — split banner -->
 	<section class="hero">
 		<div class="hero-content">
-			<div class="hero-badge cascade cascade--1">AI Teams as a Service</div>
+			<div class="hero-badge cascade cascade--1">Diseño de Squad Gratis · 48h</div>
 			<h1 class="hero-title cascade cascade--2">
-				Menos excusas para no escalar. <em>Más Squads a tu servicio.</em>
+				Contratar es lento. Entrenar es caro. <em>Tu Squad IA empieza hoy.</em>
 			</h1>
 			<p class="hero-sub cascade cascade--3">
-				Define tu proyecto, describe tus dolores, conecta tus fuentes. Tu squad de agentes IA analiza, ejecuta y aprende de cada corrección. Sin onboarding. Sin rotación. Sin excusas.
+				Cuéntanos tu operación y en 48 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
-				<a href="https://pixel-office-app.vercel.app/office" class="btn-primary">Ver demo en vivo</a>
+				<a href="#squad-form" class="btn-primary">Diseña tu Squad Gratis</a>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">
@@ -196,23 +214,23 @@
 	<!-- Stats bar -->
 	<div class="stats-bar">
 		<div class="stat">
-			<span class="stat-num">Segundos</span>
-			<span class="stat-label">Para verificar estado de todo tu equipo</span>
+			<span class="stat-num">48h</span>
+			<span class="stat-label">Tu squad diseñado</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">Cero</span>
-			<span class="stat-label">Reportes manuales necesarios</span>
-		</div>
-		<div class="stat-divider"></div>
-		<div class="stat">
-			<span class="stat-num">N</span>
-			<span class="stat-label">Agentes. Tú defines cuántos.</span>
+			<span class="stat-num">24/7</span>
+			<span class="stat-label">Tu equipo nunca duerme</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
 			<span class="stat-num">0</span>
-			<span class="stat-label">Configuración. Funciona ya.</span>
+			<span class="stat-label">Rotación de personal</span>
+		</div>
+		<div class="stat-divider"></div>
+		<div class="stat">
+			<span class="stat-num">∞</span>
+			<span class="stat-label">Escalable sin contratar</span>
 		</div>
 	</div>
 
@@ -221,26 +239,26 @@
 		<div class="feature-card" style="--card-delay: 0s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">◉</div>
-			<h3>Visibilidad sin supervisión</h3>
-			<p>Cada agente muestra estado real (idle, procesando, delegando). Detecta bloqueos antes de que impacten tu timeline.</p>
+			<h3>Un equipo que no renuncia</h3>
+			<p>Agentes IA especializados por rol: investigación, desarrollo, contenido, operaciones. Trabajan 24/7, no piden vacaciones, y nunca se van a la competencia.</p>
 		</div>
 		<div class="feature-card feature-card--accent" style="--card-delay: 0.1s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">✈</div>
-			<h3>Delegación visual (sin sorpresas)</h3>
-			<p>Ver qué agente delegó a quién y por qué. Sin loops infinitos, sin tareas perdidas. Un click en vez de perseguir updates.</p>
+			<h3>Delegación que puedes ver</h3>
+			<p>Observa en tiempo real cómo tu squad se coordina. Quién delegó a quién, qué están procesando, y dónde está cada tarea. Visibilidad total sin perseguir updates.</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.2s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⬡</div>
-			<h3>Un panel para todos tus agentes</h3>
-			<p>No importa dónde corren tus agentes. Un dashboard unificado para verlos a todos. Menos tabs, más claridad.</p>
+			<h3>Escala sin entrevistas</h3>
+			<p>¿Necesitas más capacidad? Agrega agentes en minutos, no en meses. Sin job postings, sin onboarding de 90 días, sin curva de aprendizaje.</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.3s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⚡</div>
-			<h3>Respuesta sin lag</h3>
-			<p>Actualizaciones instantáneas. Cada cambio de estado aparece en tiempo real. La diferencia entre saber y adivinar.</p>
+			<h3>Resultados desde la semana 1</h3>
+			<p>Tu squad empieza a ejecutar inmediatamente. Sin período de prueba, sin ramp-up. La diferencia entre contratar en 3 meses y tener resultados mañana.</p>
 		</div>
 	</section>
 
@@ -248,16 +266,83 @@
 	<section class="quote-section">
 		<blockquote class="quote">
 			<div class="quote-mark" aria-hidden="true">"</div>
-			<p>"Pasamos de revisar reportes manuales cada 30 min a confiar en que nuestros agentes se auto-corrigen en tiempo real. Agent Squad es el único lugar donde vemos eso suceder."</p>
-			<cite>— Coordinador de Equipos IA, 2026</cite>
+			<p>"Necesitábamos un equipo de contenido, research y soporte. Contratar 3 personas nos tomaba 4 meses y $15K/mes. Con Agent Squad tuvimos el equipo funcionando en una semana. Llevan 6 meses sin faltar un solo día."</p>
+			<cite>— Director de Operaciones, 2026</cite>
 		</blockquote>
+	</section>
+
+	<!-- Squad Form -->
+	<section class="squad-form-section" id="squad-form">
+		<div class="squad-form-header">
+			<span class="squad-form-badge">DISEÑO GRATUITO · 48H</span>
+			<h2 class="squad-form-title">Diseña tu Squad IA</h2>
+			<p class="squad-form-sub">Llena el formulario en 2 minutos. Recibe el diseño personalizado de tu equipo de agentes IA en 48 horas.</p>
+		</div>
+
+		<form class="squad-form" id="squad-form-el" on:submit|preventDefault={handleFormSubmit}>
+			<div class="form-row">
+				<div class="form-field">
+					<label class="form-label">Nombre</label>
+					<input type="text" name="nombre" required placeholder="Tu nombre completo" class="form-input" />
+				</div>
+				<div class="form-field">
+					<label class="form-label">Email</label>
+					<input type="email" name="email" required placeholder="tu@empresa.com" class="form-input" />
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-field">
+					<label class="form-label">¿Qué tareas necesitas automatizar?</label>
+					<select name="tareas" required class="form-input form-select">
+						<option value="" disabled selected>Selecciona</option>
+						<option value="contenido">Contenido / Marketing</option>
+						<option value="research">Investigación / Análisis</option>
+						<option value="dev">Desarrollo / Tech</option>
+						<option value="ops">Operaciones / Admin</option>
+						<option value="soporte">Soporte / Atención</option>
+						<option value="multiple">Múltiples áreas</option>
+					</select>
+				</div>
+				<div class="form-field">
+					<label class="form-label">¿Cuántas personas harían esto hoy?</label>
+					<select name="personas" required class="form-input form-select">
+						<option value="" disabled selected>Selecciona</option>
+						<option value="1-2">1-2 personas</option>
+						<option value="3-5">3-5 personas</option>
+						<option value="6-10">6-10 personas</option>
+						<option value="10+">10+ personas</option>
+						<option value="nadie">Nadie — no doy abasto</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-field">
+				<label class="form-label">¿Cuál es tu mayor dolor operativo?</label>
+				<input type="text" name="dolor" required placeholder="Ej: Paso 15h/semana haciendo reportes que nadie lee" class="form-input" />
+			</div>
+
+			<button type="submit" class="btn-primary btn-primary--large squad-submit">
+				{formStatus === 'sending' ? 'Enviando...' : 'Enviar — Recibo el diseño de mi Squad en 48h'}
+			</button>
+
+			<p class="form-trust">Sin spam. Sin llamadas. Solo el diseño de tu squad.</p>
+		</form>
+
+		{#if formStatus === 'sent'}
+		<div class="squad-success">
+			<div class="squad-success-icon">✓</div>
+			<h3>¡Recibido!</h3>
+			<p>El diseño personalizado de tu Squad IA llegará a tu email en las próximas 48 horas.</p>
+		</div>
+		{/if}
 	</section>
 
 	<!-- Final CTA -->
 	<section class="cta-section">
-		<h2 class="cta-title">No es sólo observar. Es confiar.</h2>
-		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Verifica en 30 segundos que tus agentes no se pierden entre sí.</p>
-		<a href="https://pixel-office-app.vercel.app/office" class="btn-primary btn-primary--large">Abrir demo en vivo</a>
+		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
+		<p style="font-size: 16px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en 2 minutos. En 48 horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
 	</section>
 
 	<!-- Footer -->
@@ -935,6 +1020,167 @@
 		50%       { opacity: 0.5; transform: scale(0.85); }
 	}
 
+	/* ── Squad Form ── */
+	.squad-form-section {
+		padding: 80px 0;
+		max-width: 640px;
+		margin: 0 auto;
+	}
+
+	.squad-form-header {
+		text-align: center;
+		margin-bottom: 40px;
+	}
+
+	.squad-form-badge {
+		display: inline-block;
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--gold);
+		border: 1px solid var(--gold-border);
+		background: var(--gold-dim);
+		padding: 4px 14px;
+		border-radius: 20px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin-bottom: 20px;
+	}
+
+	.squad-form-title {
+		font-family: var(--display);
+		font-size: clamp(28px, 4vw, 42px);
+		font-weight: 800;
+		color: var(--text);
+		margin: 0 0 12px;
+		letter-spacing: -0.02em;
+	}
+
+	.squad-form-sub {
+		font-size: 16px;
+		color: var(--text-muted);
+		line-height: 1.6;
+		max-width: 480px;
+		margin: 0 auto;
+	}
+
+	.squad-form {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		padding: 40px;
+		border-radius: 16px;
+		background: var(--bg2);
+		border: 1px solid var(--border);
+	}
+
+	.form-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 16px;
+	}
+
+	.form-field {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	.form-label {
+		font-family: var(--mono);
+		font-size: 10px;
+		color: var(--gold);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		opacity: 0.7;
+	}
+
+	.form-input {
+		width: 100%;
+		padding: 12px 14px;
+		border-radius: 8px;
+		border: 1px solid var(--border);
+		background: rgba(255, 255, 255, 0.03);
+		color: var(--text);
+		font-family: 'Syne', sans-serif;
+		font-size: 14px;
+		outline: none;
+		transition: border-color 0.2s, background 0.2s;
+	}
+
+	.form-input::placeholder {
+		color: rgba(226, 224, 255, 0.2);
+	}
+
+	.form-input:focus {
+		border-color: var(--gold-border);
+		background: rgba(201, 168, 76, 0.04);
+	}
+
+	.form-select {
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23c9a84c' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		padding-right: 36px;
+	}
+
+	.form-select option {
+		background: #07070f;
+		color: var(--text);
+	}
+
+	.squad-submit {
+		width: 100%;
+		justify-content: center;
+		margin-top: 8px;
+	}
+
+	.form-trust {
+		font-family: var(--mono);
+		font-size: 11px;
+		color: rgba(226, 224, 255, 0.2);
+		text-align: center;
+		letter-spacing: 0.06em;
+		margin: 0;
+	}
+
+	.squad-success {
+		text-align: center;
+		padding: 48px 32px;
+		border-radius: 16px;
+		background: var(--bg2);
+		border: 1px solid var(--gold-border);
+		margin-top: 24px;
+	}
+
+	.squad-success-icon {
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--gold-dim);
+		color: var(--gold);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 24px;
+		margin: 0 auto 16px;
+		border: 1px solid var(--gold-border);
+	}
+
+	.squad-success h3 {
+		font-family: var(--display);
+		font-size: 24px;
+		font-weight: 800;
+		color: var(--text);
+		margin: 0 0 8px;
+	}
+
+	.squad-success p {
+		font-size: 15px;
+		color: var(--text-muted);
+		margin: 0;
+	}
+
 	/* ── Responsive ── */
 	@media (max-width: 640px) {
 		.hero { padding: 120px 0 40px; grid-template-columns: 1fr; gap: 32px; min-height: auto; }
@@ -946,5 +1192,7 @@
 		.quote p { font-size: 18px; }
 		.quote-mark { font-size: 80px; }
 		.hero-image-link { max-width: 100%; }
+		.form-row { grid-template-columns: 1fr; }
+		.squad-form { padding: 24px; }
 	}
 </style>

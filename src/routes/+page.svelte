@@ -356,7 +356,7 @@
 	<!-- Final CTA -->
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 20px; color: var(--text-muted); margin: 0 0 32px;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<p style="font-size: 20px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
 		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
 	</section>
 
@@ -389,7 +389,7 @@
 		--gold-glow: rgba(201, 168, 76, 0.25);
 		--gold-border: rgba(201, 168, 76, 0.3);
 		--text: #e2e0ff;
-		--text-muted: #7c7a9e;
+		--text-muted: #9492b8;
 		--border: rgba(99, 102, 241, 0.2);
 		--mono: 'DM Mono', monospace;
 		--display: 'Playfair Display', serif;
@@ -591,7 +591,7 @@
 		--gold-glow: rgba(154, 125, 46, 0.15);
 		--gold-border: rgba(154, 125, 46, 0.25);
 		--text: #1a1a2e;
-		--text-muted: #6b6b8a;
+		--text-muted: #55556e;
 		--border: rgba(99, 102, 241, 0.15);
 	}
 
@@ -657,7 +657,7 @@
 	}
 
 	:global([data-theme="light"]) .form-input::placeholder {
-		color: rgba(26, 26, 46, 0.3);
+		color: rgba(26, 26, 46, 0.5);
 	}
 
 	:global([data-theme="light"]) .squad-success {
@@ -774,10 +774,10 @@
 
 	.hero-sub {
 		font-size: 22px;
-		line-height: 1.7;
+		line-height: 1.8;
 		color: var(--text-muted);
 		margin: 0 0 40px;
-		font-weight: 400;
+		font-weight: 500;
 		max-width: 560px;
 	}
 
@@ -894,7 +894,7 @@
 		font-size: 14px;
 		color: var(--text-muted);
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.06em;
 	}
 
 	.stat-divider {
@@ -988,9 +988,10 @@
 
 	.feature-card p {
 		font-size: 17px;
-		line-height: 1.65;
+		line-height: 1.75;
 		color: var(--text-muted);
 		margin: 0;
+		font-weight: 500;
 		position: relative;
 		z-index: 1;
 	}
@@ -1187,7 +1188,8 @@
 	.squad-form-sub {
 		font-size: 20px;
 		color: var(--text-muted);
-		line-height: 1.6;
+		line-height: 1.75;
+		font-weight: 500;
 		max-width: 480px;
 		margin: 0 auto;
 	}
@@ -1218,14 +1220,14 @@
 		font-family: var(--mono);
 		font-size: 13px;
 		color: var(--gold);
-		letter-spacing: 0.1em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		opacity: 0.7;
+		opacity: 0.85;
 	}
 
 	.form-input {
 		width: 100%;
-		padding: 12px 14px;
+		padding: 14px 16px;
 		border-radius: 8px;
 		border: 1px solid var(--border);
 		background: rgba(255, 255, 255, 0.03);
@@ -1237,7 +1239,7 @@
 	}
 
 	.form-input::placeholder {
-		color: rgba(226, 224, 255, 0.2);
+		color: rgba(226, 224, 255, 0.4);
 	}
 
 	.form-input:focus {
@@ -1308,6 +1310,7 @@
 		font-size: 19px;
 		color: var(--text-muted);
 		margin: 0;
+		font-weight: 500;
 	}
 
 	/* ── Responsive ── */

@@ -1312,17 +1312,41 @@
 	}
 
 	/* ── Responsive ── */
+	@media (max-width: 1024px) {
+		.hero { grid-template-columns: 1fr; gap: 40px; }
+		.hero-visual { order: -1; }
+		.hero-image-link { max-width: 480px; margin: 0 auto; }
+		.features { grid-template-columns: repeat(2, 1fr); }
+	}
+
 	@media (max-width: 640px) {
-		.hero { padding: 120px 0 40px; grid-template-columns: 1fr; gap: 32px; min-height: auto; }
-		.nav { padding: 16px 20px; }
-		.stats-bar { gap: 24px; flex-wrap: wrap; }
-		.stat-divider { display: none; }
-		.hero-actions { flex-direction: column; align-items: flex-start; }
-		.quote { padding: 40px 24px; }
-		.quote p { font-size: 26px; }
-		.quote-mark { font-size: 120px; }
+		.hero { padding: 100px 0 40px; grid-template-columns: 1fr; gap: 24px; min-height: auto; }
+		.hero-title { font-size: clamp(32px, 8vw, 48px) !important; }
+		.hero-sub { font-size: 18px; }
+		.hero-visual { order: -1; }
 		.hero-image-link { max-width: 100%; }
+		.nav { padding: 14px 16px; }
+		.logo-name { font-size: 18px; }
+		.stats-bar { gap: 20px; flex-wrap: wrap; justify-content: center; }
+		.stat-num { font-size: 36px; }
+		.stat-label { font-size: 12px; }
+		.stat-divider { display: none; }
+		.features { grid-template-columns: 1fr; }
+		.feature-card h3 { font-size: 20px; }
+		.feature-card p { font-size: 17px; }
+		.hero-actions { flex-direction: column; align-items: stretch; }
+		.hero-actions .btn-primary { text-align: center; justify-content: center; }
+		.quote { padding: 32px 20px; }
+		.quote p { font-size: 22px; }
+		.quote-mark { font-size: 80px; }
+		.cta-title { font-size: clamp(28px, 7vw, 40px) !important; }
+		.squad-form-section { padding: 60px 0; }
+		.squad-form-title { font-size: clamp(28px, 7vw, 40px) !important; }
+		.squad-form-sub { font-size: 18px; }
+		.squad-form { padding: 20px; }
 		.form-row { grid-template-columns: 1fr; }
-		.squad-form { padding: 24px; }
+		.form-input { font-size: 16px; }
+		.squad-submit { font-size: 17px !important; padding: 14px 20px !important; }
+		.btn-primary--large { font-size: 18px; padding: 14px 24px; }
 	}
 </style>

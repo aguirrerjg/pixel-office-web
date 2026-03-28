@@ -213,7 +213,7 @@
 				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
-				<button class="btn-primary" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Diseña tu Squad Gratis</button>
+				<button class="btn-primary" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Quiero mi Squad → Hablemos</button>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">

@@ -213,7 +213,7 @@
 				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
-				<button class="btn-primary" onclick="$crisp.push(['do', 'chat:open'])">Diseña tu Squad Gratis</button>
+				<button class="btn-primary" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Diseña tu Squad Gratis</button>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">
@@ -291,7 +291,7 @@
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
 		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Cuéntanos tu operación por chat. Te diseñamos tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
-		<button class="btn-primary btn-primary--large" onclick="$crisp.push(['do', 'chat:open'])">Hablar con el equipo</button>
+		<button class="btn-primary btn-primary--large" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Hablar con el equipo</button>
 	</section>
 
 	<!-- Footer -->

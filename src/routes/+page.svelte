@@ -236,7 +236,7 @@
 			</div>
 		</div>
 
-		<!-- Video Showcase -->
+		<!-- Video Showcase — Split Before/After -->
 		<div class="showcase cascade cascade--4">
 			<div class="showcase-glow" aria-hidden="true"></div>
 			<div class="showcase-window">
@@ -245,26 +245,61 @@
 					<div class="showcase-dots">
 						<span></span><span></span><span></span>
 					</div>
-					<span class="showcase-title">Agent Squad — Control Center</span>
+					<span class="showcase-title">Agent Squad — Caso de Uso</span>
 					<div class="showcase-live">
 						<span class="showcase-live-dot"></span>
 						LIVE
 					</div>
 				</div>
-				<!-- Image + play overlay -->
-				<button class="showcase-media" onclick={openVideoModal}>
-					<img src="/hero-office.webp" alt="Agent Squad — tu equipo de agentes IA trabajando en tiempo real" class="showcase-img" width="1024" height="1049" loading="eager" />
-					<div class="showcase-overlay">
-						<div class="play-ring">
-							<div class="play-ring-pulse" aria-hidden="true"></div>
-							<div class="play-ring-inner">
-								<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-									<path d="M10 6.5l14 7.5-14 7.5V6.5z" fill="#fff"/>
-								</svg>
-							</div>
+				<!-- Split panels + play -->
+				<button class="showcase-media showcase-split" onclick={openVideoModal}>
+					<!-- BEFORE panel -->
+					<div class="split-before">
+						<span class="split-tag split-tag--red">Cuello de botella</span>
+						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--red">30 empleados</span></p>
+						<p class="split-subtitle">Todo pasa por el gerente</p>
+						<div class="split-icon-box split-icon-box--red">
+							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+								<circle cx="18" cy="13" r="5.5" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>
+								<path d="M9 29c0-5 4-9 9-9s9 4 9 9" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>
+								<path d="M12 18l12 12M24 18L12 30" stroke="#ff6b6b" stroke-width="1" opacity="0.3"/>
+							</svg>
 						</div>
-						<span class="showcase-play-label">Ver caso de uso</span>
 					</div>
+
+					<!-- Divider + arrow -->
+					<div class="split-divider" aria-hidden="true"></div>
+					<div class="split-arrow" aria-hidden="true">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+							<path d="M4 9h10M10 5l4 4-4 4" stroke="#0d0b1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</div>
+
+					<!-- AFTER panel -->
+					<div class="split-after">
+						<span class="split-tag split-tag--green">Alta rentabilidad</span>
+						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--green">1 Squad AI</span></p>
+						<p class="split-subtitle">El gerente ya no coordina</p>
+						<div class="split-icon-box split-icon-box--green">
+							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+								<rect x="5" y="7" width="26" height="18" rx="3" stroke="#22c55e" stroke-width="1.5" opacity="0.6"/>
+								<path d="M12 16h6M12 20h10" stroke="#22c55e" stroke-width="1" opacity="0.4"/>
+								<circle cx="28" cy="27" r="5" fill="#22c55e" opacity="0.25"/>
+								<path d="M26 27l1.5 1.5 3-3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+							</svg>
+						</div>
+					</div>
+
+					<!-- Play button centered -->
+					<div class="play-ring">
+						<div class="play-ring-pulse" aria-hidden="true"></div>
+						<div class="play-ring-inner">
+							<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+								<path d="M10 6.5l14 7.5-14 7.5V6.5z" fill="#fff"/>
+							</svg>
+						</div>
+					</div>
+					<span class="showcase-play-label">Ver caso de uso</span>
 				</button>
 			</div>
 		</div>
@@ -986,6 +1021,137 @@
 		color: var(--gold);
 	}
 
+	/* ── Split Showcase (Before/After) ── */
+	.showcase-split {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		min-height: 420px;
+		position: relative;
+	}
+
+	.split-before {
+		background: linear-gradient(145deg, #1a1018 0%, #0d0b1a 100%);
+		padding: 48px 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+	}
+
+	.split-after {
+		background: linear-gradient(145deg, #0d0b1a 0%, #0f1a14 100%);
+		padding: 48px 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+	}
+
+	.split-tag {
+		font-family: var(--mono);
+		font-size: 11px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		padding: 5px 14px;
+		border-radius: 20px;
+	}
+
+	.split-tag--red {
+		color: #ff6b6b;
+		border: 1px solid rgba(255, 107, 107, 0.3);
+		background: rgba(255, 107, 107, 0.08);
+	}
+
+	.split-tag--green {
+		color: #22c55e;
+		border: 1px solid rgba(34, 197, 94, 0.3);
+		background: rgba(34, 197, 94, 0.08);
+	}
+
+	.split-title {
+		font-family: var(--display);
+		font-size: 32px;
+		font-weight: 800;
+		color: rgba(255, 255, 255, 0.8);
+		text-align: center;
+		line-height: 1.2;
+	}
+
+	.split-highlight--red { color: #ff6b6b; }
+	.split-highlight--green { color: #22c55e; }
+
+	.split-subtitle {
+		font-size: 15px;
+		color: var(--text-muted);
+		text-align: center;
+	}
+
+	.split-icon-box {
+		width: 140px;
+		height: 80px;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 8px;
+	}
+
+	.split-icon-box--red {
+		background: rgba(255, 107, 107, 0.06);
+		border: 1px solid rgba(255, 107, 107, 0.15);
+	}
+
+	.split-icon-box--green {
+		background: rgba(34, 197, 94, 0.06);
+		border: 1px solid rgba(34, 197, 94, 0.15);
+	}
+
+	.split-divider {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 2px;
+		background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+		z-index: 5;
+		pointer-events: none;
+	}
+
+	.split-arrow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background: var(--gold);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 6;
+		box-shadow: 0 0 24px rgba(201, 168, 76, 0.4);
+		pointer-events: none;
+	}
+
+	.showcase-split .play-ring {
+		position: absolute;
+		bottom: 24px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+	}
+
+	.showcase-split .showcase-play-label {
+		position: absolute;
+		bottom: -2px;
+		left: 50%;
+		transform: translateX(-50%);
+		z-index: 10;
+	}
+
 	/* ── Video Modal ── */
 	.video-modal {
 		position: fixed;
@@ -1603,6 +1769,14 @@
 		.play-ring { width: 64px; height: 64px; }
 		.play-ring-inner svg { width: 20px; height: 20px; }
 		.showcase-play-label { font-size: 11px; }
+		.showcase-split { min-height: 320px; }
+		.split-before, .split-after { padding: 32px 20px; }
+		.split-title { font-size: 22px; }
+		.split-subtitle { font-size: 13px; }
+		.split-icon-box { width: 100px; height: 60px; }
+		.split-icon-box svg { width: 28px; height: 28px; }
+		.split-arrow { width: 36px; height: 36px; }
+		.split-arrow svg { width: 14px; height: 14px; }
 		.video-modal-content { margin: 0 16px; }
 		.nav { padding: 14px 16px; }
 		.logo-name { font-size: 18px; }

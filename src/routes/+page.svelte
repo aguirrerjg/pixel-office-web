@@ -213,7 +213,14 @@
 				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
-				<button class="btn-primary" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Quiero mi Squad → Hablemos</button>
+				<button class="btn-hero-cta" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>
+					<span class="btn-hero-pulse" aria-hidden="true"></span>
+					<span class="btn-hero-text">Quiero mi Squad → Hablemos</span>
+					<svg class="btn-hero-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+						<path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</button>
+				<p class="hero-trust">Sin costo · Sin compromiso · Respuesta inmediata</p>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">
@@ -1001,6 +1008,87 @@
 		letter-spacing: -0.02em;
 	}
 
+	/* ── Hero CTA (high presence) ── */
+	.btn-hero-cta {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 50%, var(--gold) 100%);
+		background-size: 200% 200%;
+		animation: gradientShift 4s ease infinite;
+		color: #fff;
+		font-family: 'Syne', sans-serif;
+		font-weight: 700;
+		font-size: 22px;
+		padding: 20px 40px;
+		border: none;
+		border-radius: 12px;
+		cursor: pointer;
+		letter-spacing: -0.01em;
+		transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+		box-shadow:
+			0 0 0 0 rgba(99, 102, 241, 0),
+			0 8px 32px rgba(99, 102, 241, 0.3),
+			0 0 60px rgba(201, 168, 76, 0.1);
+		overflow: hidden;
+	}
+
+	.btn-hero-cta:hover {
+		transform: translateY(-3px) scale(1.03);
+		box-shadow:
+			0 0 0 4px rgba(99, 102, 241, 0.15),
+			0 12px 48px rgba(99, 102, 241, 0.4),
+			0 0 80px rgba(201, 168, 76, 0.15);
+	}
+
+	.btn-hero-cta:active {
+		transform: translateY(0) scale(0.98);
+	}
+
+	@keyframes gradientShift {
+		0%, 100% { background-position: 0% 50%; }
+		50% { background-position: 100% 50%; }
+	}
+
+	.btn-hero-pulse {
+		position: absolute;
+		inset: -2px;
+		border-radius: 14px;
+		background: linear-gradient(135deg, var(--accent), var(--gold));
+		opacity: 0;
+		z-index: -1;
+		animation: heroPulse 2.5s ease-in-out infinite;
+	}
+
+	@keyframes heroPulse {
+		0%, 100% { opacity: 0; transform: scale(1); }
+		50% { opacity: 0.25; transform: scale(1.06); }
+	}
+
+	.btn-hero-text {
+		position: relative;
+		z-index: 1;
+	}
+
+	.btn-hero-arrow {
+		position: relative;
+		z-index: 1;
+		transition: transform 0.3s ease;
+	}
+
+	.btn-hero-cta:hover .btn-hero-arrow {
+		transform: translateX(4px);
+	}
+
+	.hero-trust {
+		font-family: var(--mono);
+		font-size: 14px;
+		color: var(--text-muted);
+		letter-spacing: 0.04em;
+		margin-top: 12px;
+	}
+
 	/* ── Buttons ── */
 	.btn-primary {
 		display: inline-flex;
@@ -1272,6 +1360,8 @@
 		.feature-card p { font-size: 17px; }
 		.hero-actions { flex-direction: column; align-items: stretch; }
 		.hero-actions .btn-primary { text-align: center; justify-content: center; }
+		.btn-hero-cta { font-size: 18px; padding: 18px 28px; width: 100%; justify-content: center; }
+		.hero-trust { text-align: center; font-size: 12px; }
 		.quote { padding: 32px 20px; }
 		.quote p { font-size: 22px; }
 		.quote-mark { font-size: 80px; }

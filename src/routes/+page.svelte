@@ -279,7 +279,7 @@
 					<div class="split-after">
 						<span class="split-tag split-tag--green">Alta rentabilidad</span>
 						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--green">1 Squad AI</span></p>
-						<p class="split-subtitle">El gerente ya no coordina</p>
+						<p class="split-subtitle">El gerente se enfoca en crecer el negocio</p>
 						<div class="split-icon-box split-icon-box--green">
 							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
 								<rect x="5" y="7" width="26" height="18" rx="3" stroke="#22c55e" stroke-width="1.5" opacity="0.6"/>

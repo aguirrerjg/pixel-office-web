@@ -603,15 +603,16 @@
 		width: 42px;
 		height: 42px;
 		border-radius: 10px;
-		border: 1px solid var(--gold-border);
+		border: 2px solid var(--gold);
 		background: var(--gold-dim);
 		color: var(--gold);
 		cursor: pointer;
 		transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
 	}
 
 	.theme-toggle:hover {
-		background: rgba(201, 168, 76, 0.18);
+		background: rgba(201, 168, 76, 0.22);
 		border-color: var(--gold);
 		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
 		transform: scale(1.05);

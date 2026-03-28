@@ -7,10 +7,23 @@
 
 	let formStatus = 'idle'; // idle | sending | sent
 	let theme = 'dark'; // dark | light
+	let videoModalOpen = false;
+	// Placeholder — replace with Cloudflare Stream URL when ready
+	let videoSrc = '';
 
 	function toggleTheme() {
 		theme = theme === 'dark' ? 'light' : 'dark';
 		document.documentElement.setAttribute('data-theme', theme);
+	}
+
+	function openVideoModal() {
+		videoModalOpen = true;
+		document.body.style.overflow = 'hidden';
+	}
+
+	function closeVideoModal() {
+		videoModalOpen = false;
+		document.body.style.overflow = '';
 	}
 
 	async function handleFormSubmit(e) {
@@ -203,16 +216,16 @@
 		</div>
 	</nav>
 
-	<!-- Hero — split banner -->
+	<!-- Hero — centered (Crisp-style) -->
 	<section class="hero">
-		<div class="hero-content">
+		<div class="hero-centered">
 			<h1 class="hero-title cascade cascade--1">
 				Contratar es lento. Entrenar es caro. <em>Tu Squad IA empieza hoy.</em>
 			</h1>
-			<p class="hero-sub cascade cascade--3">
+			<p class="hero-sub cascade cascade--2">
 				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
-			<div class="hero-actions cascade cascade--4">
+			<div class="hero-actions cascade cascade--3">
 				<button class="btn-hero-cta" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>
 					<span class="btn-hero-pulse" aria-hidden="true"></span>
 					<span class="btn-hero-text">Quiero mi Squad → Hablemos</span>
@@ -222,16 +235,65 @@
 				</button>
 			</div>
 		</div>
-		<div class="hero-visual cascade cascade--5">
-			<div class="hero-image-glow" aria-hidden="true"></div>
-			<a href="https://pixel-office-app.vercel.app/office" class="hero-image-link">
-				<img src="/hero-office.webp" alt="Agent Squad — equipos de agentes IA trabajando en tiempo real" class="hero-image" width="1024" height="1049" loading="eager" />
-				<div class="hero-image-overlay">
-					<span class="hero-image-cta">Ver en vivo →</span>
+
+		<!-- Video Showcase -->
+		<div class="showcase cascade cascade--4">
+			<div class="showcase-glow" aria-hidden="true"></div>
+			<div class="showcase-window">
+				<!-- Window chrome -->
+				<div class="showcase-chrome">
+					<div class="showcase-dots">
+						<span></span><span></span><span></span>
+					</div>
+					<span class="showcase-title">Agent Squad — Control Center</span>
+					<div class="showcase-live">
+						<span class="showcase-live-dot"></span>
+						LIVE
+					</div>
 				</div>
-			</a>
+				<!-- Image + play overlay -->
+				<button class="showcase-media" onclick={openVideoModal}>
+					<img src="/hero-office.webp" alt="Agent Squad — tu equipo de agentes IA trabajando en tiempo real" class="showcase-img" width="1024" height="1049" loading="eager" />
+					<div class="showcase-overlay">
+						<div class="play-ring">
+							<div class="play-ring-pulse" aria-hidden="true"></div>
+							<div class="play-ring-inner">
+								<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+									<path d="M10 6.5l14 7.5-14 7.5V6.5z" fill="#fff"/>
+								</svg>
+							</div>
+						</div>
+						<span class="showcase-play-label">Ver caso de uso</span>
+					</div>
+				</button>
+			</div>
 		</div>
 	</section>
+
+	<!-- Video Modal -->
+	{#if videoModalOpen}
+	<div class="video-modal" role="dialog" aria-modal="true">
+		<button class="video-modal-close" onclick={closeVideoModal} aria-label="Cerrar">
+			<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			</svg>
+			<span>ESC</span>
+		</button>
+		<div class="video-modal-content">
+			{#if videoSrc}
+				<iframe src={videoSrc} allow="autoplay; fullscreen" allowfullscreen style="width:100%;height:100%;border:none;border-radius:12px;"></iframe>
+			{:else}
+				<div class="video-placeholder">
+					<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+						<circle cx="32" cy="32" r="30" stroke="var(--gold)" stroke-width="2" opacity="0.3"/>
+						<path d="M24 18l20 14-20 14V18z" fill="var(--gold)" opacity="0.5"/>
+					</svg>
+					<p>Video próximamente</p>
+				</div>
+			{/if}
+		</div>
+	</div>
+	{/if}
 
 	<!-- Stats bar -->
 	<div class="stats-bar">
@@ -607,27 +669,30 @@
 		box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12), 0 0 20px rgba(154, 125, 46, 0.06);
 	}
 
-	/* ── Hero (split banner) ── */
+	/* ── Hero (centered, Crisp-style) ── */
 	.hero {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 48px;
-		align-items: center;
-		padding: 140px 0 64px;
-		min-height: calc(100vh - 140px);
-	}
-
-	.hero-content {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
+		align-items: center;
+		padding: 140px 0 64px;
 	}
 
-	.hero-visual {
-		position: relative;
+	.hero-centered {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		text-align: center;
+		max-width: 820px;
+		margin-bottom: 56px;
+	}
+
+	.hero-centered .hero-title {
+		text-align: center;
+	}
+
+	.hero-centered .hero-sub {
+		text-align: center;
+		max-width: 640px;
 	}
 
 	/* ── Cascade entrance animations ── */
@@ -732,72 +797,260 @@
 		color: var(--text-muted);
 	}
 
-	/* ── Hero image ── */
-	.hero-image-glow {
+	/* ── Showcase (Crisp-style product window) ── */
+	.showcase {
+		position: relative;
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
+	.showcase-glow {
 		position: absolute;
-		inset: -30px;
+		inset: -40px;
 		border-radius: 32px;
-		background: radial-gradient(ellipse at center, var(--gold-glow) 0%, rgba(99, 102, 241, 0.1) 40%, transparent 70%);
-		filter: blur(40px);
+		background: radial-gradient(ellipse at center, var(--gold-glow) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 70%);
+		filter: blur(60px);
 		z-index: 0;
-		animation: pulseGlow 4s ease-in-out infinite;
+		animation: showcaseGlow 4s ease-in-out infinite;
 	}
 
-	@keyframes pulseGlow {
-		0%, 100% { opacity: 0.5; }
-		50% { opacity: 0.9; }
+	@keyframes showcaseGlow {
+		0%, 100% { opacity: 0.4; transform: scale(1); }
+		50% { opacity: 0.8; transform: scale(1.03); }
 	}
 
-	.hero-image-link {
-		display: block;
+	.showcase-window {
 		position: relative;
 		z-index: 1;
 		border-radius: 16px;
 		overflow: hidden;
-		border: 1px solid var(--gold-border);
-		box-shadow: 0 8px 60px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 168, 76, 0.06);
-		transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-		max-width: 480px;
+		border: 1px solid rgba(99, 102, 241, 0.25);
+		box-shadow:
+			0 24px 80px rgba(0, 0, 0, 0.6),
+			0 0 40px rgba(201, 168, 76, 0.06),
+			0 0 0 1px rgba(99, 102, 241, 0.1);
+		transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
 	}
 
-	.hero-image-link:hover {
-		transform: translateY(-6px) scale(1.02);
-		box-shadow: 0 16px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(201, 168, 76, 0.12);
+	.showcase-window:hover {
+		transform: translateY(-6px);
+		box-shadow:
+			0 32px 100px rgba(0, 0, 0, 0.7),
+			0 0 60px rgba(201, 168, 76, 0.1),
+			0 0 0 1px rgba(99, 102, 241, 0.2);
 	}
 
-	.hero-image {
+	.showcase-chrome {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px 18px;
+		background: rgba(13, 11, 26, 0.95);
+		border-bottom: 1px solid rgba(99, 102, 241, 0.12);
+	}
+
+	.showcase-dots {
+		display: flex;
+		gap: 6px;
+	}
+
+	.showcase-dots span {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	.showcase-dots span:nth-child(1) { background: #ff5f57; }
+	.showcase-dots span:nth-child(2) { background: #ffbd2e; }
+	.showcase-dots span:nth-child(3) { background: #28c840; }
+
+	.showcase-title {
+		flex: 1;
+		text-align: center;
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--text-muted);
+		letter-spacing: 0.04em;
+	}
+
+	.showcase-live {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-family: var(--mono);
+		font-size: 10px;
+		color: #22c55e;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.showcase-live-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #22c55e;
+		box-shadow: 0 0 8px #22c55e;
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	.showcase-media {
+		position: relative;
+		display: block;
+		width: 100%;
+		border: none;
+		padding: 0;
+		cursor: pointer;
+		background: none;
+	}
+
+	.showcase-img {
 		display: block;
 		width: 100%;
 		height: auto;
 	}
 
-	.hero-image-overlay {
+	.showcase-overlay {
 		position: absolute;
 		inset: 0;
-		background: linear-gradient(180deg, transparent 50%, rgba(7, 7, 15, 0.85) 100%);
+		background: rgba(7, 7, 15, 0.45);
 		display: flex;
-		align-items: flex-end;
+		flex-direction: column;
+		align-items: center;
 		justify-content: center;
-		padding-bottom: 20px;
+		gap: 16px;
+		transition: background 0.4s ease;
+	}
+
+	.showcase-media:hover .showcase-overlay {
+		background: rgba(7, 7, 15, 0.6);
+	}
+
+	.play-ring {
+		position: relative;
+		width: 88px;
+		height: 88px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.play-ring-pulse {
+		position: absolute;
+		inset: 0;
+		border-radius: 50%;
+		border: 2px solid var(--gold);
 		opacity: 0;
-		transition: opacity 0.35s ease;
+		animation: playPulse 2.5s ease-out infinite;
 	}
 
-	.hero-image-link:hover .hero-image-overlay {
-		opacity: 1;
+	@keyframes playPulse {
+		0% { opacity: 0.6; transform: scale(1); }
+		100% { opacity: 0; transform: scale(1.6); }
 	}
 
-	.hero-image-cta {
+	.play-ring-inner {
+		width: 72px;
+		height: 72px;
+		border-radius: 50%;
+		background: rgba(201, 168, 76, 0.15);
+		backdrop-filter: blur(12px);
+		border: 2px solid var(--gold);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+		box-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+	}
+
+	.showcase-media:hover .play-ring-inner {
+		background: rgba(201, 168, 76, 0.3);
+		transform: scale(1.08);
+		box-shadow: 0 0 50px rgba(201, 168, 76, 0.35);
+	}
+
+	.play-ring-inner svg {
+		margin-left: 4px;
+	}
+
+	.showcase-play-label {
 		font-family: var(--mono);
-		font-size: 18px;
-		color: var(--gold);
-		letter-spacing: 0.06em;
+		font-size: 14px;
+		color: rgba(255, 255, 255, 0.8);
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		border: 1px solid var(--gold-border);
-		padding: 7px 18px;
-		border-radius: 6px;
-		background: rgba(201, 168, 76, 0.1);
-		backdrop-filter: blur(8px);
+		transition: color 0.3s;
+	}
+
+	.showcase-media:hover .showcase-play-label {
+		color: var(--gold);
+	}
+
+	/* ── Video Modal ── */
+	.video-modal {
+		position: fixed;
+		inset: 0;
+		z-index: 9999;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(7, 7, 15, 0.95);
+		backdrop-filter: blur(24px);
+		animation: fadeIn 0.3s ease;
+	}
+
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	.video-modal-close {
+		position: absolute;
+		top: 24px;
+		right: 32px;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		background: none;
+		border: none;
+		color: rgba(255, 255, 255, 0.5);
+		cursor: pointer;
+		font-family: var(--mono);
+		font-size: 13px;
+		transition: color 0.2s;
+	}
+
+	.video-modal-close:hover {
+		color: #fff;
+	}
+
+	.video-modal-content {
+		width: 100%;
+		max-width: 960px;
+		aspect-ratio: 16/9;
+		margin: 0 32px;
+		border-radius: 16px;
+		overflow: hidden;
+		border: 1px solid rgba(201, 168, 76, 0.2);
+		box-shadow: 0 32px 100px rgba(0, 0, 0, 0.8);
+	}
+
+	.video-placeholder {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		background: var(--bg2);
+	}
+
+	.video-placeholder p {
+		font-family: var(--mono);
+		font-size: 16px;
+		color: var(--text-muted);
+		letter-spacing: 0.06em;
 	}
 
 	/* ── Stats bar ── */
@@ -1335,18 +1588,22 @@
 
 	/* ── Responsive ── */
 	@media (max-width: 1024px) {
-		.hero { grid-template-columns: 1fr; gap: 40px; }
-		.hero-visual { order: -1; }
-		.hero-image-link { max-width: 480px; margin: 0 auto; }
 		.features { grid-template-columns: repeat(2, 1fr); }
+		.play-ring-inner { width: 60px; height: 60px; }
+		.play-ring { width: 72px; height: 72px; }
 	}
 
 	@media (max-width: 640px) {
-		.hero { padding: 100px 0 40px; grid-template-columns: 1fr; gap: 24px; min-height: auto; }
-		.hero-title { font-size: clamp(32px, 8vw, 48px) !important; }
-		.hero-sub { font-size: 18px; }
-		.hero-visual { order: -1; }
-		.hero-image-link { max-width: 100%; }
+		.hero { padding: 100px 0 40px; }
+		.hero-title { font-size: clamp(28px, 7vw, 42px) !important; }
+		.hero-sub { font-size: 16px; }
+		.showcase-chrome { padding: 8px 12px; }
+		.showcase-title { font-size: 10px; }
+		.play-ring-inner { width: 52px; height: 52px; }
+		.play-ring { width: 64px; height: 64px; }
+		.play-ring-inner svg { width: 20px; height: 20px; }
+		.showcase-play-label { font-size: 11px; }
+		.video-modal-content { margin: 0 16px; }
 		.nav { padding: 14px 16px; }
 		.logo-name { font-size: 18px; }
 		.stats-bar { gap: 20px; flex-wrap: wrap; justify-content: center; }

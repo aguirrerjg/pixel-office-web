@@ -7,9 +7,83 @@
 
 	let formStatus = 'idle'; // idle | sending | sent
 	let theme = 'dark'; // dark | light
+	let lang = 'es'; // es | en
 	let videoModalOpen = false;
 	// Placeholder — replace with Cloudflare Stream URL when ready
 	let videoSrc = '';
+
+	const t = {
+		es: {
+			heroTitle1: 'Contratar es lento. Entrenar es caro.',
+			heroTitle2: 'Tu Squad IA empieza hoy.',
+			heroSub: 'Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.',
+			heroCta: 'Quiero mi Squad → Hablemos',
+			showcaseTitle: 'Agent Squad — Caso de Uso',
+			splitTagBefore: 'Cuello de botella',
+			splitTitleBefore: ['Un', 'Gerente con', '30 empleados'],
+			splitSubBefore: 'El gerente es el cuello de botella',
+			splitTagAfter: 'Alta rentabilidad',
+			splitTitleAfter: ['Un', 'Gerente con', '1 Squad AI'],
+			splitSubAfter: 'El gerente se enfoca en crecer el negocio',
+			playLabel: 'Ver caso de uso',
+			stat1: '24h', stat1l: 'Tu squad diseñado',
+			stat2: '24/7', stat2l: 'Tu equipo nunca duerme',
+			stat3: '0', stat3l: 'Rotación de personal',
+			stat4: '∞', stat4l: 'Escalable sin contratar',
+			feat1t: 'Un equipo que no renuncia',
+			feat1p: 'Agentes IA especializados por rol: investigación, desarrollo, contenido, operaciones. Trabajan 24/7, no piden vacaciones, y nunca se van a la competencia.',
+			feat2t: 'Delegación que puedes ver',
+			feat2p: 'Observa en tiempo real cómo tu squad se coordina. Quién delegó a quién, qué están procesando, y dónde está cada tarea. Visibilidad total sin perseguir updates.',
+			feat3t: 'Escala sin entrevistas',
+			feat3p: '¿Necesitas más capacidad? Agrega agentes en minutos, no en meses. Sin job postings, sin onboarding de 90 días, sin curva de aprendizaje.',
+			feat4t: 'Resultados desde la semana 1',
+			feat4p: 'Tu squad empieza a ejecutar inmediatamente. Sin período de prueba, sin ramp-up. La diferencia entre contratar en 3 meses y tener resultados mañana.',
+			quote: '"Necesitábamos un equipo de contenido, research y soporte. Contratar 3 personas nos tomaba 4 meses y $15K/mes. Con Agent Squad tuvimos el equipo funcionando en una semana. Llevan 6 meses sin faltar un solo día."',
+			quoteCite: '— Director de Operaciones, 2026',
+			ctaTitle: 'Tu próximo equipo no necesita oficina.',
+			ctaSub: 'Cuéntanos tu operación por chat. Te diseñamos tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.',
+			ctaBtn: 'Hablar con el equipo',
+			videoSoon: 'Video próximamente',
+		},
+		en: {
+			heroTitle1: 'Hiring is slow. Training is expensive.',
+			heroTitle2: 'Your AI Squad starts today.',
+			heroSub: 'Tell us about your operation and in 24 hours we design the AI agent team you need: roles, tasks they automate, and hours you recover. No cost. No commitment.',
+			heroCta: 'I want my Squad → Let\'s talk',
+			showcaseTitle: 'Agent Squad — Use Case',
+			splitTagBefore: 'Bottleneck',
+			splitTitleBefore: ['A', 'Manager with', '30 employees'],
+			splitSubBefore: 'The manager is the bottleneck',
+			splitTagAfter: 'High profitability',
+			splitTitleAfter: ['A', 'Manager with', '1 AI Squad'],
+			splitSubAfter: 'The manager focuses on growing the business',
+			playLabel: 'Watch use case',
+			stat1: '24h', stat1l: 'Your squad designed',
+			stat2: '24/7', stat2l: 'Your team never sleeps',
+			stat3: '0', stat3l: 'Staff turnover',
+			stat4: '∞', stat4l: 'Scalable without hiring',
+			feat1t: 'A team that never quits',
+			feat1p: 'AI agents specialized by role: research, development, content, operations. They work 24/7, never take vacations, and never leave for the competition.',
+			feat2t: 'Delegation you can see',
+			feat2p: 'Watch in real time how your squad coordinates. Who delegated to whom, what they\'re processing, and where each task is. Full visibility without chasing updates.',
+			feat3t: 'Scale without interviews',
+			feat3p: 'Need more capacity? Add agents in minutes, not months. No job postings, no 90-day onboarding, no learning curve.',
+			feat4t: 'Results from week 1',
+			feat4p: 'Your squad starts executing immediately. No trial period, no ramp-up. The difference between hiring in 3 months and having results tomorrow.',
+			quote: '"We needed a content, research, and support team. Hiring 3 people took us 4 months and $15K/month. With Agent Squad we had the team running in one week. They haven\'t missed a single day in 6 months."',
+			quoteCite: '— Director of Operations, 2026',
+			ctaTitle: 'Your next team doesn\'t need an office.',
+			ctaSub: 'Tell us about your operation via chat. We\'ll design your personalized AI squad: roles, tasks, estimated impact. Free.',
+			ctaBtn: 'Talk to the team',
+			videoSoon: 'Video coming soon',
+		}
+	};
+
+	$: i = t[lang];
+
+	function toggleLang() {
+		lang = lang === 'es' ? 'en' : 'es';
+	}
 
 	function toggleTheme() {
 		theme = theme === 'dark' ? 'light' : 'dark';
@@ -206,6 +280,9 @@
 			<span class="logo-name">Agent Squad</span>
 		</span>
 		<div class="nav-right">
+			<button class="lang-toggle" onclick={toggleLang} aria-label="Toggle language">
+				{lang === 'es' ? 'EN' : 'ES'}
+			</button>
 			<button class="theme-toggle" onclick={toggleTheme} aria-label="Toggle theme">
 				{#if theme === 'dark'}
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.17 3.17l1.06 1.06M11.77 11.77l1.06 1.06M3.17 12.83l1.06-1.06M11.77 4.23l1.06-1.06" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -220,15 +297,15 @@
 	<section class="hero">
 		<div class="hero-centered">
 			<h1 class="hero-title cascade cascade--1">
-				Contratar es lento. Entrenar es caro. <em>Tu Squad IA empieza hoy.</em>
+				{i.heroTitle1} <em>{i.heroTitle2}</em>
 			</h1>
 			<p class="hero-sub cascade cascade--2">
-				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
+				{i.heroSub}
 			</p>
 			<div class="hero-actions cascade cascade--3">
 				<button class="btn-hero-cta" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>
 					<span class="btn-hero-pulse" aria-hidden="true"></span>
-					<span class="btn-hero-text">Quiero mi Squad → Hablemos</span>
+					<span class="btn-hero-text">{i.heroCta}</span>
 					<svg class="btn-hero-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
 						<path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
@@ -245,7 +322,7 @@
 					<div class="showcase-dots">
 						<span></span><span></span><span></span>
 					</div>
-					<span class="showcase-title">Agent Squad — Caso de Uso</span>
+					<span class="showcase-title">{i.showcaseTitle}</span>
 					<div class="showcase-live">
 						<span class="showcase-live-dot"></span>
 						LIVE
@@ -255,9 +332,9 @@
 				<button class="showcase-media showcase-split" onclick={openVideoModal}>
 					<!-- BEFORE panel -->
 					<div class="split-before">
-						<span class="split-tag split-tag--red">Cuello de botella</span>
-						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--red">30 empleados</span></p>
-						<p class="split-subtitle">El gerente es el cuello de botella</p>
+						<span class="split-tag split-tag--red">{i.splitTagBefore}</span>
+						<p class="split-title">{i.splitTitleBefore[0]}<br>{i.splitTitleBefore[1]}<br><span class="split-highlight--red">{i.splitTitleBefore[2]}</span></p>
+						<p class="split-subtitle">{i.splitSubBefore}</p>
 						<div class="split-icon-box split-icon-box--red">
 							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
 								<circle cx="18" cy="13" r="5.5" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>
@@ -277,9 +354,9 @@
 
 					<!-- AFTER panel -->
 					<div class="split-after">
-						<span class="split-tag split-tag--green">Alta rentabilidad</span>
-						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--green">1 Squad AI</span></p>
-						<p class="split-subtitle">El gerente se enfoca en crecer el negocio</p>
+						<span class="split-tag split-tag--green">{i.splitTagAfter}</span>
+						<p class="split-title">{i.splitTitleAfter[0]}<br>{i.splitTitleAfter[1]}<br><span class="split-highlight--green">{i.splitTitleAfter[2]}</span></p>
+						<p class="split-subtitle">{i.splitSubAfter}</p>
 						<div class="split-icon-box split-icon-box--green">
 							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
 								<rect x="5" y="7" width="26" height="18" rx="3" stroke="#22c55e" stroke-width="1.5" opacity="0.6"/>
@@ -299,7 +376,7 @@
 							</svg>
 						</div>
 					</div>
-					<span class="showcase-play-label">Ver caso de uso</span>
+					<span class="showcase-play-label">{i.playLabel}</span>
 				</button>
 			</div>
 		</div>
@@ -323,7 +400,7 @@
 						<circle cx="32" cy="32" r="30" stroke="var(--gold)" stroke-width="2" opacity="0.3"/>
 						<path d="M24 18l20 14-20 14V18z" fill="var(--gold)" opacity="0.5"/>
 					</svg>
-					<p>Video próximamente</p>
+					<p>{i.videoSoon}</p>
 				</div>
 			{/if}
 		</div>
@@ -333,23 +410,23 @@
 	<!-- Stats bar -->
 	<div class="stats-bar">
 		<div class="stat">
-			<span class="stat-num">24h</span>
-			<span class="stat-label">Tu squad diseñado</span>
+			<span class="stat-num">{i.stat1}</span>
+			<span class="stat-label">{i.stat1l}</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">24/7</span>
-			<span class="stat-label">Tu equipo nunca duerme</span>
+			<span class="stat-num">{i.stat2}</span>
+			<span class="stat-label">{i.stat2l}</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">0</span>
-			<span class="stat-label">Rotación de personal</span>
+			<span class="stat-num">{i.stat3}</span>
+			<span class="stat-label">{i.stat3l}</span>
 		</div>
 		<div class="stat-divider"></div>
 		<div class="stat">
-			<span class="stat-num">∞</span>
-			<span class="stat-label">Escalable sin contratar</span>
+			<span class="stat-num">{i.stat4}</span>
+			<span class="stat-label">{i.stat4l}</span>
 		</div>
 	</div>
 
@@ -358,26 +435,26 @@
 		<div class="feature-card" style="--card-delay: 0s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">◉</div>
-			<h3>Un equipo que no renuncia</h3>
-			<p>Agentes IA especializados por rol: investigación, desarrollo, contenido, operaciones. Trabajan 24/7, no piden vacaciones, y nunca se van a la competencia.</p>
+			<h3>{i.feat1t}</h3>
+			<p>{i.feat1p}</p>
 		</div>
 		<div class="feature-card feature-card--accent" style="--card-delay: 0.1s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">✈</div>
-			<h3>Delegación que puedes ver</h3>
-			<p>Observa en tiempo real cómo tu squad se coordina. Quién delegó a quién, qué están procesando, y dónde está cada tarea. Visibilidad total sin perseguir updates.</p>
+			<h3>{i.feat2t}</h3>
+			<p>{i.feat2p}</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.2s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⬡</div>
-			<h3>Escala sin entrevistas</h3>
-			<p>¿Necesitas más capacidad? Agrega agentes en minutos, no en meses. Sin job postings, sin onboarding de 90 días, sin curva de aprendizaje.</p>
+			<h3>{i.feat3t}</h3>
+			<p>{i.feat3p}</p>
 		</div>
 		<div class="feature-card" style="--card-delay: 0.3s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="feature-icon">⚡</div>
-			<h3>Resultados desde la semana 1</h3>
-			<p>Tu squad empieza a ejecutar inmediatamente. Sin período de prueba, sin ramp-up. La diferencia entre contratar en 3 meses y tener resultados mañana.</p>
+			<h3>{i.feat4t}</h3>
+			<p>{i.feat4p}</p>
 		</div>
 	</section>
 
@@ -385,16 +462,16 @@
 	<section class="quote-section">
 		<blockquote class="quote">
 			<div class="quote-mark" aria-hidden="true">"</div>
-			<p>"Necesitábamos un equipo de contenido, research y soporte. Contratar 3 personas nos tomaba 4 meses y $15K/mes. Con Agent Squad tuvimos el equipo funcionando en una semana. Llevan 6 meses sin faltar un solo día."</p>
-			<cite>— Director de Operaciones, 2026</cite>
+			<p>{i.quote}</p>
+			<cite>{i.quoteCite}</cite>
 		</blockquote>
 	</section>
 
 	<!-- Final CTA -->
 	<section class="cta-section">
-		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Cuéntanos tu operación por chat. Te diseñamos tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
-		<button class="btn-primary btn-primary--large" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>Hablar con el equipo</button>
+		<h2 class="cta-title">{i.ctaTitle}</h2>
+		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">{i.ctaSub}</p>
+		<button class="btn-primary btn-primary--large" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>{i.ctaBtn}</button>
 	</section>
 
 	<!-- Footer -->
@@ -593,6 +670,32 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
+	}
+
+	.lang-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 42px;
+		height: 42px;
+		border-radius: 10px;
+		border: 2px solid var(--gold);
+		background: var(--gold-dim);
+		color: var(--gold);
+		cursor: pointer;
+		font-family: var(--mono);
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
+	}
+
+	.lang-toggle:hover {
+		background: rgba(201, 168, 76, 0.22);
+		border-color: var(--gold);
+		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		transform: scale(1.05);
 	}
 
 	.theme-toggle {

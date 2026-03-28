@@ -600,19 +600,21 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 40px;
-		height: 40px;
-		border-radius: 8px;
-		border: 1px solid var(--border);
-		background: transparent;
+		width: 42px;
+		height: 42px;
+		border-radius: 10px;
+		border: 1px solid var(--gold-border);
+		background: var(--gold-dim);
 		color: var(--gold);
 		cursor: pointer;
-		transition: background 0.2s, border-color 0.2s;
+		transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 	}
 
 	.theme-toggle:hover {
-		background: var(--gold-dim);
-		border-color: var(--gold-border);
+		background: rgba(201, 168, 76, 0.18);
+		border-color: var(--gold);
+		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		transform: scale(1.05);
 	}
 
 	/* ── Light Theme ── */

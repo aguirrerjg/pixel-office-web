@@ -197,7 +197,6 @@
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M14 9.5A6.5 6.5 0 016.5 2 5.5 5.5 0 1014 9.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
 				{/if}
 			</button>
-			<a href="#squad-form" class="nav-cta">Diseña tu Squad →</a>
 		</div>
 	</nav>
 

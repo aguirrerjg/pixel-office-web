@@ -303,7 +303,6 @@
 	<!-- Footer -->
 	<footer class="footer">
 		<span class="footer-logo">AI</span>
-		<span class="footer-copy">Agent Squad · Built with SvelteKit 5 &amp; Claude SDK</span>
 	</footer>
 </div>
 

@@ -204,8 +204,7 @@
 	<!-- Hero — split banner -->
 	<section class="hero">
 		<div class="hero-content">
-			<div class="hero-badge cascade cascade--1">Diseño de Squad Gratis · 24h</div>
-			<h1 class="hero-title cascade cascade--2">
+			<h1 class="hero-title cascade cascade--1">
 				Contratar es lento. Entrenar es caro. <em>Tu Squad IA empieza hoy.</em>
 			</h1>
 			<p class="hero-sub cascade cascade--3">

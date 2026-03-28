@@ -8,6 +8,27 @@
 	let formStatus = 'idle'; // idle | sending | sent
 	let theme = 'dark'; // dark | light
 	let lang = 'es'; // es | en
+
+	const meta = {
+		es: {
+			title: 'Agent Squad — Equipos de IA como Servicio | Ve tus Agentes IA Trabajar en Vivo',
+			description: 'Agent Squad: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales.',
+			ogTitle: 'Agent Squad — Equipos de IA como Servicio',
+			ogDescription: 'Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes.',
+			ogLocale: 'es_ES',
+			twitterDescription: 'Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso.',
+		},
+		en: {
+			title: 'Agent Squad — AI Teams as a Service | Watch Your AI Agents Work Live',
+			description: 'Agent Squad: autonomous AI agent teams you can verify in real time. Live dashboard to see delegation, errors and progress — no manual reports needed.',
+			ogTitle: 'Agent Squad — AI Teams as a Service',
+			ogDescription: 'Autonomous AI agent teams you can verify in real time. See who delegates to whom, detect blockers and confirm progress — no waiting for reports.',
+			ogLocale: 'en_US',
+			twitterDescription: 'Autonomous AI agent teams you can verify in real time. Live dashboard to see delegation, errors and progress.',
+		}
+	};
+
+	$: m = meta[lang];
 	let videoModalOpen = false;
 	// Placeholder — replace with Cloudflare Stream URL when ready
 	let videoSrc = '';
@@ -83,6 +104,8 @@
 
 	function toggleLang() {
 		lang = lang === 'es' ? 'en' : 'es';
+		localStorage.setItem('lang', lang);
+		document.documentElement.lang = lang;
 	}
 
 	function toggleTheme() {
@@ -119,6 +142,16 @@
 	onMount(() => {
 		mounted = true;
 
+		// Restore saved language or detect from browser
+		const saved = localStorage.getItem('lang');
+		if (saved === 'es' || saved === 'en') {
+			lang = saved;
+		} else {
+			const browserLang = navigator.language || navigator.languages?.[0] || 'es';
+			lang = browserLang.startsWith('es') ? 'es' : 'en';
+		}
+		document.documentElement.lang = lang;
+
 		const handleScroll = () => {
 			scrollY = window.scrollY;
 			if (navEl) {
@@ -139,26 +172,26 @@
 </script>
 
 <svelte:head>
-	<title>Agent Squad — AI Teams as a Service | Watch Your AI Agents Work Live</title>
-	<meta name="description" content="Agent Squad: equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso — sin reportes manuales. AI Teams as a Service." />
-	<link rel="canonical" href="https://pixel-office-web.vercel.app/" />
+	<title>{m.title}</title>
+	<meta name="description" content={m.description} />
+	<link rel="canonical" href="https://agentsquadai.com/" />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Agent Squad — AI Teams as a Service" />
-	<meta property="og:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Ve quién delega a quién, detecta bloqueos y confirma progreso — sin esperar reportes. Gratis, sin configuración." />
-	<meta property="og:url" content="https://pixel-office-web.vercel.app/" />
-	<meta property="og:image" content="https://pixel-office-web.vercel.app/og-image.png" />
+	<meta property="og:title" content={m.ogTitle} />
+	<meta property="og:description" content={m.ogDescription} />
+	<meta property="og:url" content="https://agentsquadai.com/" />
+	<meta property="og:image" content="https://agentsquadai.com/og-image.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:site_name" content="Agent Squad" />
-	<meta property="og:locale" content="en_US" />
+	<meta property="og:locale" content={m.ogLocale} />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="Agent Squad — AI Teams as a Service" />
-	<meta name="twitter:image" content="https://pixel-office-web.vercel.app/og-image.png" />
-	<meta name="twitter:description" content="Equipos de agentes IA autónomos que puedes verificar en tiempo real. Dashboard en vivo para ver delegación, errores y progreso. Gratis, sin configuración." />
+	<meta name="twitter:title" content={m.ogTitle} />
+	<meta name="twitter:image" content="https://agentsquadai.com/og-image.png" />
+	<meta name="twitter:description" content={m.twitterDescription} />
 
 	<!-- Additional meta -->
 	<meta name="robots" content="index, follow" />
@@ -178,7 +211,7 @@
 		"@context": "https://schema.org",
 		"@type": "Organization",
 		"name": "Agent Squad",
-		"url": "https://pixel-office-web.vercel.app",
+		"url": "https://agentsquadai.com",
 		"description": "AI Teams as a Service — equipos de agentes IA autónomos que trabajan 24/7 con monitoreo en tiempo real",
 		"sameAs": []
 	})}</script>`}
@@ -188,7 +221,7 @@
 		"@context": "https://schema.org",
 		"@type": "SoftwareApplication",
 		"name": "Agent Squad",
-		"url": "https://pixel-office-web.vercel.app",
+		"url": "https://agentsquadai.com",
 		"applicationCategory": "BusinessApplication",
 		"operatingSystem": "Web",
 		"description": "Agent Squad: equipos de agentes IA autónomos con dashboard en tiempo real. Verifica delegación, errores y progreso sin reportes manuales. AI Teams as a Service.",

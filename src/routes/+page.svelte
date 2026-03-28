@@ -78,6 +78,9 @@
 	<meta name="author" content="Agent Squad" />
 	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, Agent Squad, agentes IA, equipos de IA" />
 
+	<!-- Crisp Chat -->
+	{@html `<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="625e06e9-b922-461d-bc68-da2a84077632";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>`}
+
 	<!-- Fonts -->
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -210,7 +213,7 @@
 				Cuéntanos tu operación y en 24 horas diseñamos el equipo de agentes IA que necesitas: qué roles, qué tareas automatizan, y cuántas horas recuperas. Sin costo. Sin compromiso.
 			</p>
 			<div class="hero-actions cascade cascade--4">
-				<a href="#squad-form" class="btn-primary">Diseña tu Squad Gratis</a>
+				<button class="btn-primary" onclick="$crisp.push(['do', 'chat:open'])">Diseña tu Squad Gratis</button>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">
@@ -284,78 +287,11 @@
 		</blockquote>
 	</section>
 
-	<!-- Squad Form -->
-	<section class="squad-form-section" id="squad-form">
-		<div class="squad-form-header">
-			<span class="squad-form-badge">DISEÑO GRATUITO · 48H</span>
-			<h2 class="squad-form-title">Diseña tu Squad IA</h2>
-			<p class="squad-form-sub">Llena el formulario en 2 minutos. Recibe el diseño personalizado de tu equipo de agentes IA en 24 horas.</p>
-		</div>
-
-		<form class="squad-form" id="squad-form-el" on:submit|preventDefault={handleFormSubmit}>
-			<div class="form-row">
-				<div class="form-field">
-					<label class="form-label">Nombre</label>
-					<input type="text" name="nombre" required placeholder="Tu nombre completo" class="form-input" />
-				</div>
-				<div class="form-field">
-					<label class="form-label">Email</label>
-					<input type="email" name="email" required placeholder="tu@empresa.com" class="form-input" />
-				</div>
-			</div>
-
-			<div class="form-row">
-				<div class="form-field">
-					<label class="form-label">¿Qué tareas necesitas automatizar?</label>
-					<select name="tareas" required class="form-input form-select">
-						<option value="" disabled selected>Selecciona</option>
-						<option value="contenido">Contenido / Marketing</option>
-						<option value="research">Investigación / Análisis</option>
-						<option value="dev">Desarrollo / Tech</option>
-						<option value="ops">Operaciones / Admin</option>
-						<option value="soporte">Soporte / Atención</option>
-						<option value="multiple">Múltiples áreas</option>
-					</select>
-				</div>
-				<div class="form-field">
-					<label class="form-label">¿Cuántas personas harían esto hoy?</label>
-					<select name="personas" required class="form-input form-select">
-						<option value="" disabled selected>Selecciona</option>
-						<option value="1-2">1-2 personas</option>
-						<option value="3-5">3-5 personas</option>
-						<option value="6-10">6-10 personas</option>
-						<option value="10+">10+ personas</option>
-						<option value="nadie">Nadie — no doy abasto</option>
-					</select>
-				</div>
-			</div>
-
-			<div class="form-field">
-				<label class="form-label">¿Cuál es tu mayor dolor operativo?</label>
-				<input type="text" name="dolor" required placeholder="Ej: Paso 15h/semana haciendo reportes que nadie lee" class="form-input" />
-			</div>
-
-			<button type="submit" class="btn-primary btn-primary--large squad-submit">
-				{formStatus === 'sending' ? 'Enviando...' : 'Enviar — Recibo el diseño de mi Squad en 24h'}
-			</button>
-
-			<p class="form-trust">Sin spam. Sin llamadas. Solo el diseño de tu squad.</p>
-		</form>
-
-		{#if formStatus === 'sent'}
-		<div class="squad-success">
-			<div class="squad-success-icon">✓</div>
-			<h3>¡Recibido!</h3>
-			<p>El diseño personalizado de tu Squad IA llegará a tu email en las próximas 24 horas.</p>
-		</div>
-		{/if}
-	</section>
-
 	<!-- Final CTA -->
 	<section class="cta-section">
 		<h2 class="cta-title">Tu próximo equipo no necesita oficina.</h2>
-		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Describe tu operación en minutos. Y en pocas horas recibes el diseño de tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
-		<a href="#squad-form" class="btn-primary btn-primary--large">Diseñar mi Squad Gratis</a>
+		<p style="font-size: 24px; color: var(--text-muted); margin: 0 0 32px; line-height: 1.7; font-weight: 500;">Cuéntanos tu operación por chat. Te diseñamos tu squad IA personalizado: roles, tareas, impacto estimado. Gratis.</p>
+		<button class="btn-primary btn-primary--large" onclick="$crisp.push(['do', 'chat:open'])">Hablar con el equipo</button>
 	</section>
 
 	<!-- Footer -->

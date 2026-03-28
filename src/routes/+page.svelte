@@ -220,7 +220,6 @@
 						<path d="M4 10h12M12 6l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</button>
-				<p class="hero-trust">Sin costo · Sin compromiso · Respuesta inmediata</p>
 			</div>
 		</div>
 		<div class="hero-visual cascade cascade--5">

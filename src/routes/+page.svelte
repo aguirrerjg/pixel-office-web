@@ -399,7 +399,6 @@
 
 	<!-- Footer -->
 	<footer class="footer">
-		<span class="footer-logo">AI</span>
 	</footer>
 </div>
 

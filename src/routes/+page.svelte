@@ -257,7 +257,7 @@
 					<div class="split-before">
 						<span class="split-tag split-tag--red">Cuello de botella</span>
 						<p class="split-title">Un<br>Gerente con<br><span class="split-highlight--red">30 empleados</span></p>
-						<p class="split-subtitle">Todo pasa por el gerente</p>
+						<p class="split-subtitle">El gerente es el cuello de botella</p>
 						<div class="split-icon-box split-icon-box--red">
 							<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
 								<circle cx="18" cy="13" r="5.5" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>

@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { formatDate } from '$lib/util';
 
-	let { article, asReadNext = false }: {
+	let { article, asReadNext = false, lang = 'es' }: {
 		article: any;
 		asReadNext?: boolean;
+		lang?: string;
 	} = $props();
 </script>
 
 <div class="group">
 	<div class="grid {asReadNext ? 'md:grid-cols-12 items-center' : 'grid-cols-1'} gap-4 md:gap-5">
-		<a href="/blog/{article.slug}" class="inline-block {asReadNext ? 'md:col-span-6' : ''}">
+		<a href="/{lang}/blog/{article.slug}" class="inline-block {asReadNext ? 'md:col-span-6' : ''}">
 			{#if article.thumbnail}
 				<img
 					src={article.thumbnail}
@@ -33,18 +34,18 @@
 				<span class="text-sm md:text-lg font-medium">{formatDate(article.published_at ?? new Date())}</span>
 			</span>
 			<div>
-				<a class="inline-block my-1" href="/blog/{article.slug}">
+				<a class="inline-block my-1" href="/{lang}/blog/{article.slug}">
 					<h2 class="text-2xl md:text-3xl font-semibold text-[var(--text)] hover:text-[var(--gold)] transition-colors">
 						{article.title}
 					</h2>
 				</a>
 			</div>
 			<div class="pt-1 pb-2">
-				<a href="/blog/{article.slug}" class="line-clamp-3 text-base text-[var(--text-muted)]">
+				<a href="/{lang}/blog/{article.slug}" class="line-clamp-3 text-base text-[var(--text-muted)]">
 					{article.teaser}
 				</a>
 			</div>
-			<a class="text-[var(--gold)] font-semibold text-lg w-fit hover:underline" href="/blog/{article.slug}">
+			<a class="text-[var(--gold)] font-semibold text-lg w-fit hover:underline" href="/{lang}/blog/{article.slug}">
 				<span>
 					Leer más
 					<span class="sr-only">- {article.title}</span>

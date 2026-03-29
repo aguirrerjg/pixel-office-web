@@ -22,9 +22,9 @@
 		const _teaser = teaser || extractTeaser(content);
 		try {
 			const { slug } = await fetchJSON('POST', '/api/create-article', {
-				title, content, teaser: _teaser, thumbnail, thumbnailId
+				title, content, teaser: _teaser, thumbnail, thumbnailId, languageCode: data.lang
 			});
-			goto(`/blog/${slug}`);
+			goto(`/${data.lang}/blog/${slug}`);
 		} catch (err) {
 			console.error(err);
 			alert('Ya existe un artículo con ese título. Elige otro.');
@@ -32,7 +32,7 @@
 	}
 
 	function discardDraft() {
-		goto('/blog');
+		goto(`/${data.lang}/blog`);
 	}
 </script>
 

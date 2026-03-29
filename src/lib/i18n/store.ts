@@ -6,6 +6,7 @@ function createLangStore() {
 
 	return {
 		subscribe,
+		set,
 		toggle() {
 			update(current => {
 				const next: Lang = current === 'es' ? 'en' : 'es';

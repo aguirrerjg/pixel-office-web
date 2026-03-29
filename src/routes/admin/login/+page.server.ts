@@ -1,29 +1,6 @@
-import { fail, redirect } from '@sveltejs/kit';
-import type { Actions, PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export const prerender = false;
-
-export const load: PageServerLoad = async ({ locals }) => {
-	const { session } = await locals.safeGetSession();
-	if (session) throw redirect(303, '/blog');
-	return {};
-};
-
-export const actions: Actions = {
-	default: async ({ request, locals: { supabase } }) => {
-		const formData = await request.formData();
-		const email = formData.get('email') as string;
-		const password = formData.get('password') as string;
-
-		if (!email || !password) {
-			return fail(400, { error: 'Email y contraseña son requeridos.' });
-		}
-
-		const { error } = await supabase.auth.signInWithPassword({ email, password });
-		if (error) {
-			return fail(401, { error: 'Credenciales incorrectas.' });
-		}
-
-		throw redirect(303, '/blog');
-	}
+export const load: PageServerLoad = async () => {
+	throw redirect(301, '/es/admin/login');
 };

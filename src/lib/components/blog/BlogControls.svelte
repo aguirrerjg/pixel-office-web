@@ -4,12 +4,12 @@
 	import { isEditing } from '$lib/stores';
 	import { fetchJSON } from '$lib/util';
 
-	let { session = null }: { session?: any } = $props();
+	let { session = null, lang = 'es' }: { session?: any; lang?: string } = $props();
 
 	let isBlogArticle = $derived(
 		!!$page.data?.article?.article_id &&
 		!!$page.data?.article?.slug &&
-		$page.route.id === '/blog/[slug]'
+		$page.route.id === '/[lang=locale]/blog/[slug]'
 	);
 
 	async function handleDelete() {
@@ -17,7 +17,7 @@
 		if (!session) return alert('No autorizado.');
 		try {
 			await fetchJSON('POST', '/api/delete-article', { articleId: $page.data.article?.article_id });
-			goto('/blog');
+			goto(`/${lang}/blog`);
 		} catch (err) {
 			console.error(err);
 			alert('Error eliminando el artículo.');
@@ -43,7 +43,7 @@
 			Eliminar
 		</button>
 	{:else}
-		<a class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[var(--gold)] text-[#0D0D12] hover:bg-[#d4b460] transition-colors" href="/blog/new">
+		<a class="px-4 py-1.5 rounded-full text-sm font-semibold bg-[var(--gold)] text-[#0D0D12] hover:bg-[#d4b460] transition-colors" href="/{lang}/blog/new">
 			Nuevo artículo
 		</a>
 	{/if}
@@ -51,7 +51,7 @@
 		class="px-4 py-1.5 rounded-full text-sm font-semibold border border-[var(--gold-border)] text-[var(--text)] hover:bg-[var(--gold-dim)] transition-colors"
 		class:pointer-events-none={$isEditing}
 		class:opacity-30={$isEditing}
-		href="/admin/logout"
+		href="/{lang}/admin/logout"
 	>
 		Cerrar sesión
 	</a>

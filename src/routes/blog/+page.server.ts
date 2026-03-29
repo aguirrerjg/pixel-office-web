@@ -1,8 +1,6 @@
-import { getArticles } from '$lib/server/db/article';
+import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ locals }) => {
-	const { session } = await locals.safeGetSession();
-	const articles = await getArticles(session);
-	return { articles };
+export const load: PageServerLoad = async () => {
+	throw redirect(301, '/es/blog');
 };

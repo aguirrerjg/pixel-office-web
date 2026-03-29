@@ -6,8 +6,6 @@ import { articleTranslations, articles } from './schema';
 import { desc, eq, lt, ne, sql, getTableColumns, and } from 'drizzle-orm';
 import type { Article, ArticleTranslation } from './types';
 
-const LANG = 'es';
-
 const articleFields = {
 	...getTableColumns(articleTranslations),
 	...getTableColumns(articles)
@@ -22,7 +20,9 @@ export async function createArticle(data: {
 	teaser: string;
 	thumbnail?: string;
 	thumbnailId?: string;
+	languageCode?: string;
 }): Promise<string> {
+	const languageCode = data.languageCode ?? 'es';
 	let slug = slugify(data.title, { lower: true, strict: true });
 
 	// If slug is already used, add a unique postfix
@@ -51,7 +51,7 @@ export async function createArticle(data: {
 		title: data.title,
 		teaser: data.teaser,
 		content: data.content,
-		language_code: LANG
+		language_code: languageCode
 	});
 
 	return newArticle[0].slug;
@@ -62,6 +62,7 @@ export async function createArticle(data: {
  * When session is present, include drafts (published_at IS NULL).
  */
 export async function getArticles(
+	languageCode: string,
 	session: any,
 	limit?: number
 ): Promise<(Article & ArticleTranslation)[]> {
@@ -78,7 +79,7 @@ export async function getArticles(
 				articleTranslations,
 				and(
 					eq(articles.article_id, articleTranslations.article_id),
-					eq(articleTranslations.language_code, LANG)
+					eq(articleTranslations.language_code, languageCode)
 				)
 			);
 
@@ -97,7 +98,7 @@ export async function getArticles(
 			articleTranslations,
 			and(
 				eq(articles.article_id, articleTranslations.article_id),
-				eq(articleTranslations.language_code, LANG)
+				eq(articleTranslations.language_code, languageCode)
 			)
 		);
 
@@ -115,6 +116,7 @@ export async function getArticles(
  * Retrieve article by slug.
  */
 export async function getArticleBySlug(
+	languageCode: string,
 	slug: string
 ): Promise<{ article: Article & ArticleTranslation } | null> {
 	const result = await db.transaction(async (tx) => {
@@ -145,7 +147,7 @@ export async function getArticleBySlug(
 					.where(
 						and(
 							eq(articles.slug, slug),
-							eq(articleTranslations.language_code, LANG)
+							eq(articleTranslations.language_code, languageCode)
 						)
 					)
 					.limit(1)
@@ -183,6 +185,7 @@ export async function getArticleBySlug(
  * falling back to the latest article (excluding current).
  */
 export async function getNextArticle(
+	languageCode: string,
 	slug: string
 ): Promise<(Article & ArticleTranslation) | null> {
 	const nextSlug = await db.transaction(async (trx) => {
@@ -205,7 +208,7 @@ export async function getNextArticle(
 				articleTranslations,
 				and(
 					lt(articleTranslations.published_at, ca.published_at),
-					eq(articleTranslations.language_code, LANG)
+					eq(articleTranslations.language_code, languageCode)
 				)
 			)
 			.orderBy(desc(articleTranslations.published_at))
@@ -218,7 +221,7 @@ export async function getNextArticle(
 			.where(
 				and(
 					ne(articleTranslations.slug, slug),
-					eq(articleTranslations.language_code, LANG)
+					eq(articleTranslations.language_code, languageCode)
 				)
 			)
 			.orderBy(desc(articleTranslations.published_at))
@@ -239,7 +242,7 @@ export async function getNextArticle(
 
 	if (!nextSlug?.slug) return null;
 
-	const result = await getArticleBySlug(nextSlug.slug);
+	const result = await getArticleBySlug(languageCode, nextSlug.slug);
 	return result ? (result.article as any) : null;
 }
 
@@ -253,7 +256,9 @@ export async function updateArticle(data: {
 	teaser: string;
 	thumbnail?: string;
 	thumbnailId?: string;
+	languageCode?: string;
 }): Promise<void> {
+	const languageCode = data.languageCode ?? 'es';
 	const updatedAt = new Date();
 
 	let slug = slugify(data.title, { lower: true, strict: true });
@@ -275,7 +280,7 @@ export async function updateArticle(data: {
 		teaser: data.teaser,
 		updated_at: updatedAt,
 		article_id: data.articleId,
-		language_code: LANG,
+		language_code: languageCode,
 		created_at: updatedAt,
 		published_at: updatedAt
 	};
@@ -287,7 +292,7 @@ export async function updateArticle(data: {
 			.where(
 				and(
 					eq(articleTranslations.article_id, data.articleId),
-					eq(articleTranslations.language_code, LANG)
+					eq(articleTranslations.language_code, languageCode)
 				)
 			);
 		const existingTranslationId = existingTranslation?.[0]?.translation_id;

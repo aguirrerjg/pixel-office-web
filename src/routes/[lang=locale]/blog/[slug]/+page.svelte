@@ -35,7 +35,8 @@
 				articleId: data.article.article_id,
 				title, content,
 				teaser: _teaser,
-				thumbnail, thumbnailId
+				thumbnail, thumbnailId,
+				languageCode: data.lang
 			});
 			$isEditing = false;
 		} catch (err) {
@@ -51,7 +52,7 @@
 </svelte:head>
 
 <div class="pt-6 pb-12 px-5 max-w-7xl mx-auto">
-	<BlogControls session={data.session} />
+	<BlogControls session={data.session} lang={data.lang} />
 	<EditorToolbar oncancel={initOrReset} onsave={saveArticle} />
 
 	<Article bind:title bind:content bind:teaser bind:thumbnail bind:thumbnailId published_at={data.article.published_at} />
@@ -62,7 +63,7 @@
 				<div class="font-bold text-sm text-[var(--gold)] font-[var(--mono)] uppercase tracking-wider">Leer siguiente</div>
 			</div>
 			{#each data.articles as article}
-				<ArticleTeaser {article} asReadNext />
+				<ArticleTeaser {article} lang={data.lang} asReadNext />
 			{/each}
 		</div>
 	{/if}

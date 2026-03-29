@@ -20,14 +20,14 @@
 </div>
 
 <div class="max-w-7xl mx-auto px-5">
-	<BlogControls session={data.session} />
+	<BlogControls session={data.session} lang={data.lang} />
 
 	{#if data.articles && data.articles.length > 0}
 		{@const firstArticle = data.articles[0]}
 
 		{#if firstArticle}
 			<div class="group grid md:grid-cols-10 w-full items-center gap-4 md:gap-8 pb-8">
-				<a href="/blog/{firstArticle.slug}" class="inline-block md:col-span-6">
+				<a href="/{data.lang}/blog/{firstArticle.slug}" class="inline-block md:col-span-6">
 					{#if firstArticle.thumbnail}
 						<img src={firstArticle.thumbnail} alt={firstArticle.title} loading="lazy" width="1280" height="720" class="w-full aspect-video object-cover rounded-lg border border-[var(--border)]" />
 					{:else}
@@ -43,13 +43,13 @@
 						</svg>
 						<span class="text-lg font-medium">{formatDate(firstArticle.published_at ?? new Date())}</span>
 					</span>
-					<a href="/blog/{firstArticle.slug}" class="inline-block my-1">
+					<a href="/{data.lang}/blog/{firstArticle.slug}" class="inline-block my-1">
 						<h2 class="text-3xl leading-10 font-semibold text-[var(--text)] hover:text-[var(--gold)] transition-colors">{firstArticle.title}</h2>
 					</a>
-					<a href="/blog/{firstArticle.slug}">
+					<a href="/{data.lang}/blog/{firstArticle.slug}">
 						<p class="text-lg text-[var(--text-muted)] line-clamp-3">{firstArticle.teaser}</p>
 					</a>
-					<a class="text-[var(--gold)] font-semibold text-lg w-fit hover:underline" href="/blog/{firstArticle.slug}">
+					<a class="text-[var(--gold)] font-semibold text-lg w-fit hover:underline" href="/{data.lang}/blog/{firstArticle.slug}">
 						<span>Leer más <span class="inline-block ml-1 group-hover:ml-3 transition-all" aria-hidden="true">&rarr;</span></span>
 					</a>
 				</div>
@@ -59,7 +59,7 @@
 		{#if data.articles.length > 1}
 			<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 				{#each data.articles.slice(1) as article}
-					<ArticleTeaser {article} />
+					<ArticleTeaser {article} lang={data.lang} />
 				{/each}
 			</div>
 		{/if}

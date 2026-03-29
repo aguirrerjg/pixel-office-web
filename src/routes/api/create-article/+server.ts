@@ -6,7 +6,7 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 	const { session } = await locals.safeGetSession();
 	if (!session) throw error(401, 'Unauthorized');
 
-	const { title, content, teaser, thumbnail, thumbnailId } = await request.json();
-	const slug = await createArticle({ title, content, teaser, thumbnail, thumbnailId });
+	const { title, content, teaser, thumbnail, thumbnailId, languageCode } = await request.json();
+	const slug = await createArticle({ title, content, teaser, thumbnail, thumbnailId, languageCode });
 	return json({ slug });
 };

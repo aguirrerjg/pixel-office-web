@@ -87,9 +87,7 @@
 					<div class="play-ring">
 						<div class="play-ring-pulse" aria-hidden="true"></div>
 						<div class="play-ring-inner">
-							<svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-								<path d="M10 6.5l14 7.5-14 7.5V6.5z" fill="#fff"/>
-							</svg>
+							<span class="play-triangle" aria-hidden="true"></span>
 						</div>
 					</div>
 					<span class="showcase-play-label">{i.playLabel}</span>
@@ -344,8 +342,8 @@
 
 	.play-ring {
 		position: relative;
-		width: 88px;
-		height: 88px;
+		width: 120px;
+		height: 120px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -361,27 +359,34 @@
 	}
 
 	.play-ring-inner {
-		width: 72px;
-		height: 72px;
+		width: 100px;
+		height: 100px;
 		border-radius: 50%;
-		background: rgba(13, 11, 26, 0.85);
-		-webkit-backdrop-filter: blur(12px);
-		backdrop-filter: blur(12px);
-		border: 2px solid var(--gold);
+		background: rgba(13, 11, 26, 0.92);
+		border: 3px solid var(--gold);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-		box-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+		box-shadow: 0 0 40px rgba(201, 168, 76, 0.25);
 	}
 
 	.showcase-media:hover .play-ring-inner {
 		background: rgba(201, 168, 76, 0.3);
 		transform: scale(1.08);
-		box-shadow: 0 0 50px rgba(201, 168, 76, 0.35);
+		box-shadow: 0 0 60px rgba(201, 168, 76, 0.4);
 	}
 
-	.play-ring-inner svg { margin-left: 4px; }
+	/* CSS triangle — no SVG, works everywhere */
+	.play-triangle {
+		display: block;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 22px 0 22px 38px;
+		border-color: transparent transparent transparent #ffffff;
+		margin-left: 8px;
+	}
 
 	.showcase-play-label {
 		font-family: var(--mono);
@@ -395,16 +400,17 @@
 	.showcase-media:hover .showcase-play-label { color: var(--gold); }
 
 	@media (max-width: 1024px) {
-		.play-ring-inner { width: 60px; height: 60px; }
-		.play-ring { width: 72px; height: 72px; }
+		.play-ring-inner { width: 80px; height: 80px; }
+		.play-ring { width: 96px; height: 96px; }
+		.play-triangle { border-width: 18px 0 18px 30px; margin-left: 6px; }
 	}
 
 	@media (max-width: 640px) {
 		.showcase-chrome { padding: 8px 12px; }
 		.showcase-title { font-size: 10px; }
-		.play-ring-inner { width: 52px; height: 52px; }
-		.play-ring { width: 64px; height: 64px; }
-		.play-ring-inner svg { width: 20px; height: 20px; }
+		.play-ring-inner { width: 64px; height: 64px; }
+		.play-ring { width: 76px; height: 76px; }
+		.play-triangle { border-width: 14px 0 14px 24px; margin-left: 5px; }
 		.showcase-play-label { font-size: 11px; }
 		.showcase-split { min-height: 320px; }
 		.split-before, .split-after { padding: 32px 20px; }

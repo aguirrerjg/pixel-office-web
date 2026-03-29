@@ -66,7 +66,7 @@ export const t = {
 } as const;
 
 export type Lang = 'es' | 'en';
-export type Translations = typeof t['es'];
+export type Translations = typeof t[Lang];
 
 export const meta = {
 	es: {

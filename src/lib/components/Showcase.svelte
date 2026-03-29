@@ -1,10 +1,17 @@
 <script lang="ts">
 	import type { Translations } from '$lib/i18n/translations.js';
+	import { lang } from '$lib/i18n/store.js';
 
 	let { i }: { i: Translations } = $props();
 
 	let videoModalOpen = $state(false);
-	let videoSrc = '';
+
+	// Cloudflare Stream video URLs per language (add EN when ready)
+	const videoUrls: Record<string, string> = {
+		es: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/9f272213ecd6d39be026c7e7215e3261/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2F9f272213ecd6d39be026c7e7215e3261%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600'
+	};
+
+	let videoSrc = $derived(videoUrls[$lang] ?? '');
 
 	function openVideoModal() {
 		videoModalOpen = true;
@@ -85,7 +92,7 @@
 	</button>
 	<div class="video-modal-content">
 		{#if videoSrc}
-			<iframe src={videoSrc} allow="autoplay; fullscreen" allowfullscreen style="width:100%;height:100%;border:none;border-radius:12px;"></iframe>
+			<iframe src={videoSrc} allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture" allowfullscreen style="border:none;position:absolute;top:0;left:0;height:100%;width:100%;border-radius:12px;" title="Agent Squad — Video"></iframe>
 		{:else}
 			<div class="video-placeholder">
 				<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
@@ -378,9 +385,10 @@
 	.video-modal-close:hover { color: #fff; }
 
 	.video-modal-content {
+		position: relative;
 		width: 100%;
 		max-width: 960px;
-		aspect-ratio: 16/9;
+		padding-top: 56.25%;
 		margin: 0 32px;
 		border-radius: 16px;
 		overflow: hidden;
@@ -389,8 +397,8 @@
 	}
 
 	.video-placeholder {
-		width: 100%;
-		height: 100%;
+		position: absolute;
+		inset: 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

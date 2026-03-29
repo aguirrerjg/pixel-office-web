@@ -5,8 +5,8 @@ import type { EditorState } from 'prosemirror-state';
 
 type ProgressCallback = (progress: number) => void;
 
-// Upload image to `/api/upload-asset`
-function upload(file: File, path: string, progressCallback: ProgressCallback) {
+// Upload image to `/api/upload-asset`, returns parsed JSON response
+function upload(file: File, path: string, progressCallback: ProgressCallback): Promise<{ path: string; url: string; fileId: string }> {
 	const formData = new FormData();
 	formData.append('file', file);
 	formData.append('path', path);
@@ -16,7 +16,7 @@ function upload(file: File, path: string, progressCallback: ProgressCallback) {
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
-					resolve(xhr.response);
+					resolve(JSON.parse(xhr.response));
 				} else {
 					reject(new Error(`Upload failed: ${xhr.status}`));
 				}
@@ -40,12 +40,6 @@ export default async function uploadAsset(file: File, path: string, onProgress: 
 	return await upload(file, path, onProgress);
 }
 
-// Build the public URL for an uploaded asset
-function assetUrl(path: string): string {
-	// /api/assets/<path> served by the SvelteKit server
-	return `/api/assets/${path}`;
-}
-
 // Get image metadata from an HTML file input
 export async function getImageMetadataFromInput(input: HTMLInputElement) {
 	if (!input.files) return;
@@ -64,8 +58,7 @@ export async function getImageMetadataFromInput(input: HTMLInputElement) {
 		type: content_type
 	});
 
-	const src = assetUrl(path);
-	return { src, resizedFile, path };
+	return { resizedFile, path };
 }
 
 // Used by InsertImage component for uploading images within the article
@@ -77,40 +70,36 @@ export async function uploadImageFromEditor(
 	editorView: EditorView,
 	editorState: EditorState
 ) {
-	const src = assetUrl(path);
 	const { width, height } = await getDimensions(file as File);
-
 	const noop = () => {};
 
 	try {
-		await uploadAsset(file as File, path, noop);
+		const result = await uploadAsset(file as File, path, noop);
 
 		const newImage = schema.nodes.image.createAndFill({
-			src,
+			src: result.url,
 			width,
 			height,
 			alt
 		});
 		if (newImage) editorView.dispatch(editorState.tr.replaceSelectionWith(newImage));
 		editorView.focus();
+		return { alt, src: result.url };
 	} catch (err) {
 		console.error(err);
+		return { alt, src: '' };
 	}
-
-	return { alt, src };
 }
 
 // Used by Article component for uploading thumbnail
 export async function uploadImage(path: string, file: Blob) {
 	const noop = () => {};
-	const src = assetUrl(path);
 
 	try {
-		const response = await uploadAsset(file as File, path, noop);
-		// @ts-ignore
-		return { src, fileId: JSON.parse(response)?.fileId };
+		const result = await uploadAsset(file as File, path, noop);
+		return { src: result.url, fileId: result.fileId };
 	} catch (err) {
 		console.error(err);
-		return { src };
+		return { src: '' };
 	}
 }

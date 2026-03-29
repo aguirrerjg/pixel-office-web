@@ -1,5 +1,5 @@
 import { json, error } from '@sveltejs/kit';
-import { storeAsset } from '$lib/server/imagekit';
+import { storeAsset } from '$lib/server/storage';
 import type { RequestHandler } from './$types';
 
 export const PUT: RequestHandler = async ({ request, locals }) => {
@@ -7,11 +7,11 @@ export const PUT: RequestHandler = async ({ request, locals }) => {
 	if (!session) throw error(401, 'Unauthorized');
 
 	const data = await request.formData();
-	const assetId = data.get('path') as string;
+	const path = data.get('path') as string;
 	const file = data.get('file') as File;
 
 	const buffer = Buffer.from(await file.arrayBuffer());
-	const { url, fileId } = await storeAsset(assetId, buffer);
+	const { url, fileId } = await storeAsset(path, buffer, file.type || 'image/png');
 
-	return json({ path: assetId, url, fileId });
+	return json({ path, url, fileId });
 };

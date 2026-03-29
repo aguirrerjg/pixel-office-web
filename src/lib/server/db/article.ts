@@ -1,6 +1,6 @@
 import { nanoid } from '$lib/util';
 import slugify from 'slugify';
-import { deleteAsset } from '$lib/server/imagekit';
+import { deleteAsset } from '$lib/server/storage';
 import { db } from '.';
 import { articleTranslations, articles } from './schema';
 import { desc, eq, lt, ne, sql, getTableColumns, and } from 'drizzle-orm';

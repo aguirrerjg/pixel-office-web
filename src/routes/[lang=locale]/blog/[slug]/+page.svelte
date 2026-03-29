@@ -16,6 +16,40 @@
 	let thumbnail = $state(data.article.thumbnail ?? '');
 	let thumbnailId = $state(data.article.thumbnail_id ?? '');
 
+	const BASE_URL = 'https://agentsquadai.com';
+
+	let publishedAt = $derived(data.article.published_at ? new Date(data.article.published_at) : null);
+	let updatedAt = $derived(data.article.updated_at ? new Date(data.article.updated_at) : null);
+
+	let jsonLd = $derived(JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Article",
+		"headline": title,
+		"description": teaser,
+		"image": thumbnail || undefined,
+		"datePublished": publishedAt?.toISOString(),
+		"dateModified": updatedAt?.toISOString() ?? publishedAt?.toISOString(),
+		"author": {
+			"@type": "Person",
+			"name": "Roberto Aguirre"
+		},
+		"publisher": {
+			"@type": "Organization",
+			"name": "Agent Squad",
+			"url": BASE_URL,
+			"logo": {
+				"@type": "ImageObject",
+				"url": BASE_URL + "/logo.svg"
+			}
+		},
+		"mainEntityOfPage": {
+			"@type": "WebPage",
+			"@id": `${BASE_URL}/${data.lang}/blog/${data.article.slug}`
+		}
+	}));
+
+	let ogUrl = $derived(`${BASE_URL}/${data.lang}/blog/${data.article.slug}`);
+
 	function initOrReset() {
 		$isEditing = false;
 		title = data.article.title ?? '';
@@ -50,6 +84,36 @@
 <svelte:head>
 	<title>{title} | Blog — Agent Squad</title>
 	<meta name="description" content={teaser} />
+
+	<!-- Open Graph -->
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={teaser} />
+	{#if thumbnail}
+		<meta property="og:image" content={thumbnail} />
+	{/if}
+	<meta property="og:url" content={ogUrl} />
+	<meta property="og:site_name" content="Agent Squad" />
+	<meta property="og:locale" content={data.lang === 'es' ? 'es_ES' : 'en_US'} />
+	{#if publishedAt}
+		<meta property="article:published_time" content={publishedAt.toISOString()} />
+	{/if}
+	{#if updatedAt}
+		<meta property="article:modified_time" content={updatedAt.toISOString()} />
+	{/if}
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={teaser} />
+	{#if thumbnail}
+		<meta name="twitter:image" content={thumbnail} />
+	{/if}
+
+	<link rel="canonical" href={ogUrl} />
+
+	<!-- JSON-LD Article Schema -->
+	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
 <div class="pt-6 pb-12 px-5 max-w-7xl mx-auto">

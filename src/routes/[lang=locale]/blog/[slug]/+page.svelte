@@ -3,6 +3,7 @@
 	import ArticleTeaser from '$lib/components/blog/ArticleTeaser.svelte';
 	import Article from '$lib/components/blog/Article.svelte';
 	import EditorToolbar from '$lib/components/blog/EditorToolbar.svelte';
+	import LangSwitch from '$lib/components/blog/LangSwitch.svelte';
 	import { isEditing } from '$lib/stores';
 	import { onDestroy, onMount } from 'svelte';
 	import BlogControls from '$lib/components/blog/BlogControls.svelte';
@@ -52,7 +53,10 @@
 </svelte:head>
 
 <div class="pt-6 pb-12 px-5 max-w-7xl mx-auto">
-	<BlogControls session={data.session} lang={data.lang} />
+	<div class="flex items-center justify-between pt-24 pb-4">
+		<BlogControls session={data.session} lang={data.lang} />
+		<LangSwitch lang={data.lang} />
+	</div>
 	<EditorToolbar oncancel={initOrReset} onsave={saveArticle} />
 
 	<Article bind:title bind:content bind:teaser bind:thumbnail bind:thumbnailId published_at={data.article.published_at} />

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ArticleTeaser from '$lib/components/blog/ArticleTeaser.svelte';
 	import BlogControls from '$lib/components/blog/BlogControls.svelte';
+	import LangSwitch from '$lib/components/blog/LangSwitch.svelte';
 	import { formatDate } from '$lib/util';
 
 	let { data } = $props();
@@ -15,6 +16,7 @@
 	<div class="mx-auto px-5 py-6">
 		<div class="flex flex-col md:flex-row justify-between md:items-center gap-10 pt-24 pb-6 max-w-2xl">
 			<h1 class="text-4xl md:text-5xl font-bold font-[var(--display)] text-[var(--text)]">Blog</h1>
+			<LangSwitch lang={data.lang} />
 		</div>
 	</div>
 </div>

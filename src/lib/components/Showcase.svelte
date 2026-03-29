@@ -364,7 +364,8 @@
 		width: 72px;
 		height: 72px;
 		border-radius: 50%;
-		background: rgba(201, 168, 76, 0.15);
+		background: rgba(13, 11, 26, 0.85);
+		-webkit-backdrop-filter: blur(12px);
 		backdrop-filter: blur(12px);
 		border: 2px solid var(--gold);
 		display: flex;

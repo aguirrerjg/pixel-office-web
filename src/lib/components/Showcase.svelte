@@ -51,7 +51,7 @@
 			</div>
 		{:else}
 			<!-- Split before/after panels -->
-			<button class="showcase-media showcase-split" onclick={() => { if (hasVideo) playing = true; }}>
+			<div class="showcase-split" role="button" tabindex="0" onclick={() => { if (hasVideo) playing = true; }} onkeydown={(e) => { if (e.key === 'Enter' && hasVideo) playing = true; }}>
 				<div class="split-before">
 					<span class="split-tag split-tag--red">{i.splitTagBefore}</span>
 					<p class="split-title">{i.splitTitleBefore[0]}<br>{i.splitTitleBefore[1]}<br><span class="split-highlight--red">{i.splitTitleBefore[2]}</span></p>
@@ -83,16 +83,16 @@
 						</svg>
 					</div>
 				</div>
-				{#if hasVideo}
-					<div class="play-ring">
-						<div class="play-ring-pulse" aria-hidden="true"></div>
-						<div class="play-ring-inner">
-							<span class="play-triangle" aria-hidden="true"></span>
-						</div>
+			</div>
+			<!-- Play overlay — OUTSIDE the button, on top of showcase-window -->
+			{#if hasVideo && !playing}
+				<div class="play-overlay" onclick={() => (playing = true)} role="button" tabindex="0" onkeydown={(e) => { if (e.key === 'Enter') playing = true; }}>
+					<div class="play-circle">
+						<span class="play-triangle" aria-hidden="true"></span>
 					</div>
-					<span class="showcase-play-label">{i.playLabel}</span>
-				{/if}
-			</button>
+					<span class="play-label">{i.playLabel}</span>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>
@@ -220,17 +220,8 @@
 	}
 
 	/* ── Split panels ── */
-	.showcase-media {
-		position: relative;
-		display: block;
-		width: 100%;
-		border: none;
-		padding: 0;
-		cursor: pointer;
-		background: none;
-	}
-
 	.showcase-split {
+		cursor: pointer;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		min-height: 420px;
@@ -324,93 +315,78 @@
 		pointer-events: none;
 	}
 
-	.showcase-split .play-ring {
-		position: absolute;
-		bottom: 24px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 10;
-	}
-
-	.showcase-split .showcase-play-label {
-		position: absolute;
-		bottom: -2px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 10;
-	}
-
-	.play-ring {
-		position: relative;
-		width: 120px;
-		height: 120px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.play-ring-pulse {
+	/* ── Play overlay — centered on showcase-window ── */
+	.play-overlay {
 		position: absolute;
 		inset: 0;
-		border-radius: 50%;
-		border: 2px solid var(--gold);
-		opacity: 0;
-		animation: playPulse 2.5s ease-out infinite;
+		top: 40px; /* below chrome */
+		z-index: 20;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		cursor: pointer;
+		background: rgba(7, 7, 15, 0.35);
+		transition: background 0.3s;
 	}
 
-	.play-ring-inner {
-		width: 100px;
-		height: 100px;
+	.play-overlay:hover {
+		background: rgba(7, 7, 15, 0.5);
+	}
+
+	.play-circle {
+		width: 110px;
+		height: 110px;
 		border-radius: 50%;
-		background: rgba(13, 11, 26, 0.92);
-		border: 3px solid var(--gold);
+		background: rgba(13, 11, 26, 0.95);
+		border: 3px solid #c9a84c;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
-		box-shadow: 0 0 40px rgba(201, 168, 76, 0.25);
+		box-shadow: 0 0 50px rgba(201, 168, 76, 0.3);
+		transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 	}
 
-	.showcase-media:hover .play-ring-inner {
-		background: rgba(201, 168, 76, 0.3);
-		transform: scale(1.08);
-		box-shadow: 0 0 60px rgba(201, 168, 76, 0.4);
+	.play-overlay:hover .play-circle {
+		transform: scale(1.1);
+		box-shadow: 0 0 70px rgba(201, 168, 76, 0.5);
+		background: rgba(201, 168, 76, 0.25);
 	}
 
-	/* CSS triangle — no SVG, works everywhere */
+	/* CSS triangle — no SVG, works on all browsers */
 	.play-triangle {
 		display: block;
 		width: 0;
 		height: 0;
 		border-style: solid;
-		border-width: 22px 0 22px 38px;
+		border-width: 24px 0 24px 42px;
 		border-color: transparent transparent transparent #ffffff;
-		margin-left: 8px;
+		margin-left: 10px;
 	}
 
-	.showcase-play-label {
+	.play-label {
 		font-family: var(--mono);
-		font-size: 14px;
-		color: rgba(255, 255, 255, 0.8);
-		letter-spacing: 0.08em;
+		font-size: 15px;
+		color: rgba(255, 255, 255, 0.9);
+		letter-spacing: 0.1em;
 		text-transform: uppercase;
-		transition: color 0.3s;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 	}
 
-	.showcase-media:hover .showcase-play-label { color: var(--gold); }
+	.play-overlay:hover .play-label { color: #c9a84c; }
 
 	@media (max-width: 1024px) {
-		.play-ring-inner { width: 80px; height: 80px; }
-		.play-ring { width: 96px; height: 96px; }
-		.play-triangle { border-width: 18px 0 18px 30px; margin-left: 6px; }
+		.play-circle { width: 90px; height: 90px; }
+		.play-triangle { border-width: 20px 0 20px 34px; margin-left: 8px; }
 	}
 
 	@media (max-width: 640px) {
 		.showcase-chrome { padding: 8px 12px; }
 		.showcase-title { font-size: 10px; }
-		.play-ring-inner { width: 64px; height: 64px; }
-		.play-ring { width: 76px; height: 76px; }
-		.play-triangle { border-width: 14px 0 14px 24px; margin-left: 5px; }
+		.play-circle { width: 72px; height: 72px; }
+		.play-triangle { border-width: 16px 0 16px 28px; margin-left: 6px; }
+		.play-label { font-size: 12px; }
 		.showcase-play-label { font-size: 11px; }
 		.showcase-split { min-height: 320px; }
 		.split-before, .split-after { padding: 32px 20px; }

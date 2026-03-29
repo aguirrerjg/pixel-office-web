@@ -1,10 +1,10 @@
-import { json, error } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
+import { requireAuth } from '$lib/server/auth';
 import { storeAsset } from '$lib/server/storage';
 import type { RequestHandler } from './$types';
 
 export const PUT: RequestHandler = async ({ request, locals }) => {
-	const { session } = await locals.safeGetSession();
-	if (!session) throw error(401, 'Unauthorized');
+	await requireAuth(request, locals);
 
 	const data = await request.formData();
 	const path = data.get('path') as string;

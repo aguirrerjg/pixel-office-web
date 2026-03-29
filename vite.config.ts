@@ -3,8 +3,5 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
-	ssr: {
-		noExternal: ['three', '@threlte/core', '@threlte/extras'],
-	},
+	plugins: [tailwindcss(), sveltekit()]
 });

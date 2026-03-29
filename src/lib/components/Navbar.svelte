@@ -27,6 +27,7 @@
 		<span class="logo-name">Agent Squad</span>
 	</span>
 	<div class="nav-right">
+		<a class="blog-link" href="/{$lang}/blog">Blog</a>
 		<button class="lang-toggle" onclick={() => lang.toggle()} aria-label="Toggle language">
 			{$lang === 'es' ? 'EN' : 'ES'}
 		</button>
@@ -98,6 +99,27 @@
 		display: flex;
 		align-items: center;
 		gap: 12px;
+	}
+
+	.blog-link {
+		font-family: var(--mono);
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--gold);
+		text-decoration: none;
+		padding: 8px 16px;
+		border-radius: 10px;
+		border: 2px solid var(--gold);
+		background: var(--gold-dim);
+		transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
+		letter-spacing: 0.04em;
+	}
+
+	.blog-link:hover {
+		background: rgba(201, 168, 76, 0.22);
+		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		transform: scale(1.05);
 	}
 
 	.lang-toggle {

@@ -263,13 +263,13 @@ export async function updateArticle(data: {
 
 	let slug = slugify(data.title, { lower: true, strict: true });
 
-	// If slug is already used by a different translation, add a unique postfix
+	// If slug is already used by a different translation (not this article), add a unique postfix
 	const existing = await db
-		.select({ id: articleTranslations.translation_id })
+		.select({ id: articleTranslations.translation_id, article_id: articleTranslations.article_id })
 		.from(articleTranslations)
 		.where(eq(articleTranslations.slug, slug));
 
-	if (existing?.length > 0) {
+	if (existing?.length > 0 && !existing.some((e) => e.article_id === data.articleId)) {
 		slug = slug + '-' + nanoid(8);
 	}
 

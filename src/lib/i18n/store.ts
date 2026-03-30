@@ -1,4 +1,5 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
+import { goto } from '$app/navigation';
 import type { Lang } from './translations.js';
 
 function createLangStore() {
@@ -12,6 +13,10 @@ function createLangStore() {
 				const next: Lang = current === 'es' ? 'en' : 'es';
 				localStorage.setItem('lang', next);
 				document.documentElement.lang = next;
+				// Navigate to the same page in the new language
+				const path = window.location.pathname;
+				const newPath = path.replace(/^\/(es|en)/, `/${next}`);
+				goto(newPath);
 				return next;
 			});
 		},

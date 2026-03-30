@@ -105,20 +105,19 @@
 		font-family: var(--mono);
 		font-size: 14px;
 		font-weight: 600;
-		color: var(--gold);
+		color: var(--text);
 		text-decoration: none;
 		padding: 8px 16px;
 		border-radius: 10px;
-		border: 2px solid var(--gold);
-		background: var(--gold-dim);
+		border: 2px solid var(--text);
+		background: transparent;
 		transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
 		letter-spacing: 0.04em;
 	}
 
 	.blog-link:hover {
-		background: rgba(201, 168, 76, 0.22);
-		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		background: rgba(255, 255, 255, 0.08);
+		box-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
 		transform: scale(1.05);
 	}
 
@@ -129,22 +128,21 @@
 		width: 42px;
 		height: 42px;
 		border-radius: 10px;
-		border: 2px solid var(--gold);
-		background: var(--gold-dim);
-		color: var(--gold);
+		border: 2px solid var(--text);
+		background: transparent;
+		color: var(--text);
 		cursor: pointer;
 		font-family: var(--mono);
 		font-size: 13px;
 		font-weight: 700;
 		letter-spacing: 0.04em;
 		transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
 	}
 
 	.lang-toggle:hover {
-		background: rgba(201, 168, 76, 0.22);
-		border-color: var(--gold);
-		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		background: rgba(255, 255, 255, 0.08);
+		border-color: var(--text);
+		box-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
 		transform: scale(1.05);
 	}
 
@@ -155,18 +153,17 @@
 		width: 42px;
 		height: 42px;
 		border-radius: 10px;
-		border: 2px solid var(--gold);
-		background: var(--gold-dim);
-		color: var(--gold);
+		border: 2px solid var(--text);
+		background: transparent;
+		color: var(--text);
 		cursor: pointer;
 		transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-		box-shadow: 0 0 8px rgba(201, 168, 76, 0.12);
 	}
 
 	.theme-toggle:hover {
-		background: rgba(201, 168, 76, 0.22);
-		border-color: var(--gold);
-		box-shadow: 0 0 16px rgba(201, 168, 76, 0.2);
+		background: rgba(255, 255, 255, 0.08);
+		border-color: var(--text);
+		box-shadow: 0 0 16px rgba(255, 255, 255, 0.1);
 		transform: scale(1.05);
 	}
 

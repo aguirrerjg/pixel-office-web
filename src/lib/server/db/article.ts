@@ -118,15 +118,16 @@ export async function getArticles(
 export async function getArticleBySlug(
 	languageCode: string,
 	slug: string
-): Promise<{ article: Article & ArticleTranslation } | null> {
+): Promise<{ article: Article & ArticleTranslation; availables: Record<string, string> } | null> {
 	const result = await db.transaction(async (tx) => {
-		// Try finding translation by slug first
-		let translation = (
+		// Step 1: Find any translation matching this slug (regardless of language)
+		let matchedTranslation = (
 			await tx
 				.select({
 					translation_id: articleTranslations.translation_id,
 					slug: articleTranslations.slug,
-					article_id: articleTranslations.article_id
+					article_id: articleTranslations.article_id,
+					language_code: articleTranslations.language_code
 				})
 				.from(articleTranslations)
 				.where(eq(articleTranslations.slug, slug))
@@ -134,34 +135,50 @@ export async function getArticleBySlug(
 		)?.[0];
 
 		// Fallback: look up by article slug
-		if (!translation) {
-			translation = (
+		if (!matchedTranslation) {
+			matchedTranslation = (
 				await tx
 					.select({
 						translation_id: articleTranslations.translation_id,
 						slug: articleTranslations.slug,
-						article_id: articleTranslations.article_id
+						article_id: articleTranslations.article_id,
+						language_code: articleTranslations.language_code
 					})
 					.from(articles)
 					.innerJoin(articleTranslations, eq(articleTranslations.article_id, articles.article_id))
-					.where(
-						and(
-							eq(articles.slug, slug),
-							eq(articleTranslations.language_code, languageCode)
-						)
-					)
+					.where(eq(articles.slug, slug))
 					.limit(1)
 			)?.[0];
 		}
 
-		if (!translation?.translation_id) return null;
+		if (!matchedTranslation?.article_id) return null;
+
+		// Step 2: Get ALL translations for this article (for availables map + correct language)
+		const allTranslations = await tx
+			.select({
+				translation_id: articleTranslations.translation_id,
+				slug: articleTranslations.slug,
+				language_code: articleTranslations.language_code
+			})
+			.from(articleTranslations)
+			.where(eq(articleTranslations.article_id, matchedTranslation.article_id));
+
+		const availables: Record<string, string> = {};
+		for (const t of allTranslations) {
+			if (t.language_code && t.slug) {
+				availables[t.language_code] = t.slug;
+			}
+		}
+
+		// Step 3: Pick the translation for the REQUESTED language, fallback to matched
+		let targetTranslation = allTranslations.find(t => t.language_code === languageCode) ?? matchedTranslation;
 
 		const article = await tx
 			.select(articleFields)
 			.from(articles)
 			.leftJoin(
 				articleTranslations,
-				eq(articleTranslations.translation_id, translation.translation_id)
+				eq(articleTranslations.translation_id, targetTranslation.translation_id)
 			)
 			.where(eq(articles.article_id, articleTranslations.article_id))
 			.limit(1);
@@ -172,7 +189,8 @@ export async function getArticleBySlug(
 			article: {
 				...article[0],
 				translation_id: article[0].translation_id as number
-			}
+			},
+			availables
 		};
 	});
 

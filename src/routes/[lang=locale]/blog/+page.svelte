@@ -13,8 +13,8 @@
 
 <div class="w-full">
 	<div class="mx-auto px-5 py-6">
-		<div class="flex flex-col md:flex-row justify-between md:items-center gap-10 pt-24 pb-6 max-w-2xl overflow-visible">
-			<h1 class="text-4xl md:text-5xl font-bold font-[var(--display)] text-[var(--text)] pb-2" style="line-height: 1.4;">Blog</h1>
+		<div class="flex flex-col md:flex-row justify-between md:items-center gap-10 pt-24 pb-6 max-w-2xl">
+			<h1 class="text-4xl md:text-5xl font-bold text-[var(--text)] pb-3" style="font-family: var(--display); line-height: 1.5; overflow: visible;">Blog</h1>
 		</div>
 	</div>
 </div>

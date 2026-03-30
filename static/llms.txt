@@ -1,0 +1,24 @@
+# Agent Squad AI
+
+> Agent Squad AI is a platform for building and deploying coordinated teams of AI agents — called Agent Squads — that automate complex business workflows for managers and executives. Unlike single-purpose AI tools, Agent Squads combine specialized agents (research, analysis, writing, coordination) that share context and execute multi-step tasks autonomously. Founded by Roberto Aguirre.
+
+## Product
+
+- [Agent Squad Platform](https://agentsquadai.com/en): Build and deploy coordinated AI agent teams for business operations, customer service, sales, and knowledge work.
+- [How It Works](https://agentsquadai.com/en#how-it-works): Three-phase deployment — Diagnosis, Implementation, Mastery. 48-hour workflow audit, 2-4 week deployment.
+
+## Key Concepts
+
+- Agent Squad: A coordinated team of 3-7 specialized AI agents that share context and execute complex workflows autonomously.
+- Agent Maestro: A manager who orchestrates AI agent squads — the most valuable management skill of 2026.
+- Design OS: Methodology for non-technical managers to architect AI agent systems without coding.
+
+## Blog
+
+- [Blog (English)](https://agentsquadai.com/en/blog): Articles on AI agent squads, management automation, ROI analysis, and the future of AI-augmented leadership.
+- [Blog (Español)](https://agentsquadai.com/es/blog): Artículos sobre agent squads de IA, automatización de gestión, y liderazgo aumentado con IA.
+
+## Contact
+
+- Website: https://agentsquadai.com
+- Founder: Roberto Aguirre

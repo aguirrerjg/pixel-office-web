@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://agentsquadai.com/en</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://agentsquadai.com/es</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://agentsquadai.com/en/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://agentsquadai.com/es/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://agentsquadai.com/en/blog/why-every-manager-needs-an-ai-agent-squad-not-just-another-ai-tool</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://agentsquadai.com/en/blog/what-happens-when-a-manager-replaces-their-workflow-with-7-ai-agents</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://agentsquadai.com/en/blog/the-agent-maestro-why-managing-ai-agents-is-the-most-valuable-skill-of-2026</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://agentsquadai.com/es/blog/por-que-todo-manager-necesita-un-agent-squad-y-no-solo-otra-herramienta-de-ia</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://agentsquadai.com/es/blog/que-pasa-cuando-un-manager-reemplaza-su-flujo-de-trabajo-con-7-agentes-de-ia</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://agentsquadai.com/es/blog/el-agent-maestro-la-habilidad-mas-valiosa-para-managers-en-2026</loc><lastmod>2026-03-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>

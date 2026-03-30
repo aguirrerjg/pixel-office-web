@@ -22,10 +22,10 @@
 </script>
 
 <nav class="nav" bind:this={navEl}>
-	<span class="logo">
-		<span class="logo-pixel">AS</span>
-		<span class="logo-name">Agent Squad</span>
-	</span>
+	<a href="/" class="logo" aria-label="Agent Squad">
+		<span class="logo-agent">Agent</span>
+		<span class="logo-squad">Squad</span>
+	</a>
 	<div class="nav-right">
 		<a class="blog-link" href="/{$lang}/blog">Blog</a>
 		<button class="lang-toggle" onclick={() => lang.toggle()} aria-label="Toggle language">
@@ -73,26 +73,26 @@
 
 	.logo {
 		display: flex;
-		align-items: center;
-		gap: 10px;
+		align-items: baseline;
+		gap: 6px;
+		text-decoration: none;
 	}
 
-	.logo-pixel {
-		font-family: var(--mono);
-		font-weight: 500;
-		font-size: 18px;
-		background: var(--accent);
-		color: #fff;
-		padding: 3px 7px;
-		border-radius: 4px;
-		letter-spacing: 0.05em;
+	.logo-agent {
+		font-family: 'Instrument Serif', serif;
+		font-style: italic;
+		font-weight: 400;
+		font-size: 26px;
+		color: var(--text);
+		letter-spacing: 0.01em;
 	}
 
-	.logo-name {
+	.logo-squad {
+		font-family: 'Sora', sans-serif;
 		font-weight: 700;
 		font-size: 24px;
-		letter-spacing: -0.01em;
 		color: var(--text);
+		letter-spacing: 0.02em;
 	}
 
 	.nav-right {
@@ -172,6 +172,7 @@
 
 	@media (max-width: 640px) {
 		.nav { padding: 14px 16px; }
-		.logo-name { font-size: 18px; }
+		.logo-agent { font-size: 20px; }
+		.logo-squad { font-size: 18px; }
 	}
 </style>

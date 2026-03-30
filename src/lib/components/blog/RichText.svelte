@@ -26,27 +26,27 @@
 	.rich-content :global(h2) {
 		font-family: 'Playfair Display', serif;
 		font-size: 1.5rem;
-		color: #FAF8F5;
+		color: var(--text);
 		margin: 1.5rem 0 0.75rem;
 	}
 
 	.rich-content :global(h3) {
 		font-family: 'Playfair Display', serif;
 		font-size: 1.25rem;
-		color: #C9A84C;
+		color: var(--gold, #C9A84C);
 		margin: 1.25rem 0 0.5rem;
 	}
 
 	.rich-content :global(blockquote) {
-		border-left: 3px solid #C9A84C;
+		border-left: 3px solid var(--gold, #C9A84C);
 		padding-left: 1rem;
-		color: rgba(250, 248, 245, 0.7);
+		color: var(--text-muted);
 		font-style: italic;
 		margin: 1rem 0;
 	}
 
 	.rich-content :global(a) {
-		color: #C9A84C;
+		color: var(--gold, #C9A84C);
 		text-decoration: underline;
 	}
 
@@ -54,10 +54,15 @@
 	.rich-content :global(ol) {
 		padding-left: 1.5rem;
 		margin: 0.75rem 0;
+		color: var(--text);
+	}
+
+	.rich-content :global(li) {
+		color: var(--text);
 	}
 
 	.rich-content :global(p) {
-		color: #FAF8F5;
+		color: var(--text);
 		line-height: 1.7;
 		margin: 0.5rem 0;
 	}

@@ -52,18 +52,20 @@
 
 	.stat-label {
 		font-family: var(--mono);
-		font-size: 16px;
+		font-size: 13px;
 		color: var(--text-muted);
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
+		max-width: 140px;
+		line-height: 1.4;
 	}
 
-	.stat-divider { width: 1px; height: 40px; background: var(--border); }
+	.stat-divider { width: 1px; height: 40px; background: var(--border); flex-shrink: 0; }
 
 	@media (max-width: 640px) {
 		.stats-bar { gap: 20px; flex-wrap: wrap; justify-content: center; }
 		.stat-num { font-size: 36px; }
-		.stat-label { font-size: 12px; }
+		.stat-label { font-size: 11px; max-width: 100px; }
 		.stat-divider { display: none; }
 	}
 </style>

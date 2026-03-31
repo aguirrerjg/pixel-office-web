@@ -5,7 +5,6 @@
 	import Showcase from '$lib/components/Showcase.svelte';
 	import Stats from '$lib/components/Stats.svelte';
 	import Features from '$lib/components/Features.svelte';
-	import Quote from '$lib/components/Quote.svelte';
 	import CtaSection from '$lib/components/CtaSection.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 
@@ -16,6 +15,5 @@
 <Showcase {i} />
 <Stats {i} />
 <Features {i} />
-<Quote {i} />
 <CtaSection {i} />
 <Footer />

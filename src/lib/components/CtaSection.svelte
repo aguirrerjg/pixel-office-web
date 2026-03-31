@@ -5,34 +5,78 @@
 </script>
 
 <section class="cta-section">
+	<div class="cta-glow" aria-hidden="true"></div>
 	<h2 class="cta-title">{i.ctaTitle}</h2>
 	<p class="cta-sub">{i.ctaSub}</p>
-	<button class="btn-primary btn-primary--large" onclick={() => window.$crisp?.push(['do', 'chat:open'])}>{i.ctaBtn}</button>
+	<div class="cta-actions">
+		<a
+			class="btn-primary btn-primary--large"
+			href="https://thalx.io"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			{i.ctaBtn}
+		</a>
+		<a
+			class="btn-secondary"
+			href="https://ai4managers.net"
+			target="_blank"
+			rel="noopener noreferrer"
+		>
+			{i.ctaBtnSecondary}
+		</a>
+	</div>
 </section>
 
 <style>
 	.cta-section {
 		text-align: center;
-		padding: 80px 0;
+		padding: 80px 0 96px;
 		opacity: 0;
 		animation: cascadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.1s forwards;
+		position: relative;
+	}
+
+	.cta-glow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 600px;
+		height: 300px;
+		background: radial-gradient(ellipse, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+		pointer-events: none;
 	}
 
 	.cta-title {
 		font-family: var(--display);
-		font-size: clamp(40px, 6vw, 64px);
+		font-size: clamp(36px, 5vw, 56px);
 		font-weight: 800;
 		color: var(--text);
-		margin: 0 0 36px;
+		margin: 0 0 24px;
 		letter-spacing: -0.02em;
+		position: relative;
 	}
 
 	.cta-sub {
-		font-size: 24px;
+		font-size: 20px;
 		color: var(--text-muted);
-		margin: 0 0 32px;
+		margin: 0 0 40px;
 		line-height: 1.7;
 		font-weight: 500;
+		max-width: 520px;
+		margin-left: auto;
+		margin-right: auto;
+		position: relative;
+	}
+
+	.cta-actions {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		flex-wrap: wrap;
+		position: relative;
 	}
 
 	.btn-primary {
@@ -43,11 +87,9 @@
 		color: #fff;
 		text-decoration: none;
 		font-weight: 700;
-		font-size: 21px;
+		font-size: 18px;
 		padding: 14px 28px;
 		border-radius: 8px;
-		border: none;
-		cursor: pointer;
 		letter-spacing: -0.01em;
 		transition: transform 0.2s, box-shadow 0.3s;
 		box-shadow: 0 0 0 0 rgba(99, 102, 241, 0), 0 4px 16px rgba(99, 102, 241, 0.2);
@@ -72,13 +114,38 @@
 	.btn-primary:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35), 0 0 20px rgba(201, 168, 76, 0.12);
+		color: #fff;
 	}
 
 	.btn-primary:hover::before { opacity: 1; }
-	.btn-primary--large { font-size: 24px; padding: 16px 36px; }
+	.btn-primary--large { font-size: 20px; padding: 16px 36px; }
+
+	.btn-secondary {
+		display: inline-flex;
+		align-items: center;
+		font-family: 'Syne', sans-serif;
+		font-weight: 600;
+		font-size: 18px;
+		color: var(--text-muted);
+		text-decoration: none;
+		padding: 16px 28px;
+		border-radius: 8px;
+		border: 1px solid var(--border);
+		transition: color 0.2s, border-color 0.2s, background 0.2s;
+		letter-spacing: -0.01em;
+	}
+
+	.btn-secondary:hover {
+		color: var(--text);
+		border-color: var(--accent);
+		background: rgba(99, 102, 241, 0.06);
+	}
 
 	@media (max-width: 640px) {
 		.cta-title { font-size: clamp(28px, 7vw, 40px) !important; }
-		.btn-primary--large { font-size: 18px; padding: 14px 24px; }
+		.cta-sub { font-size: 17px; margin-bottom: 32px; }
+		.cta-actions { flex-direction: column; align-items: stretch; }
+		.btn-primary--large { font-size: 18px; padding: 14px 24px; text-align: center; justify-content: center; }
+		.btn-secondary { font-size: 16px; padding: 14px 24px; text-align: center; justify-content: center; }
 	}
 </style>

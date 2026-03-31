@@ -1,172 +1,400 @@
 <script lang="ts">
 	import type { Translations } from '$lib/i18n/translations.js';
+	import { lang } from '$lib/i18n/store.js';
 
 	let { i }: { i: Translations } = $props();
 
-	const stepIcons = ['🎯', '⚙️', '📈'];
+	let playing = $state(false);
+
+	// Cloudflare Stream video URLs per language (add EN when ready)
+	const videoUrls: Record<string, string> = {
+		es: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/9f272213ecd6d39be026c7e7215e3261/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2F9f272213ecd6d39be026c7e7215e3261%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&autoplay=true'
+	};
+
+	let videoSrc = $derived(videoUrls[$lang] ?? '');
+	let hasVideo = $derived(!!videoSrc);
 </script>
 
-<section class="how-it-works" id="how-it-works">
-	<div class="section-label">{i.howItWorksLabel}</div>
-	<h2 class="section-heading">{i.howItWorksHeading}</h2>
-
-	<div class="steps-row">
-		<!-- Step 1 -->
-		<div class="step-card cascade cascade--1">
-			<div class="step-icon">{stepIcons[0]}</div>
-			<div class="step-num">{i.step1Num}</div>
-			<h3 class="step-title">{i.step1Title}</h3>
-			<p class="step-desc">{i.step1Desc}</p>
+<div class="showcase cascade cascade--4">
+	<div class="showcase-glow" aria-hidden="true"></div>
+	<div class="showcase-window" class:showcase-window--playing={playing}>
+		<div class="showcase-chrome">
+			<div class="showcase-dots">
+				<span></span><span></span><span></span>
+			</div>
+			<span class="showcase-title">{playing ? (i.showcaseTitle) : i.showcaseTitle}</span>
+			<div class="showcase-chrome-right">
+				{#if playing}
+					<button class="showcase-close" onclick={() => (playing = false)} aria-label="Close video">
+						<svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+							<path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+						</svg>
+					</button>
+				{:else}
+					<div class="showcase-live">
+						<span class="showcase-live-dot"></span>
+						LIVE
+					</div>
+				{/if}
+			</div>
 		</div>
 
-		<!-- Arrow -->
-		<div class="step-arrow" aria-hidden="true">
-			<svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-				<path d="M6 16h20M20 10l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</div>
-
-		<!-- Step 2 -->
-		<div class="step-card cascade cascade--2">
-			<div class="step-icon">{stepIcons[1]}</div>
-			<div class="step-num">{i.step2Num}</div>
-			<h3 class="step-title">{i.step2Title}</h3>
-			<p class="step-desc">{i.step2Desc}</p>
-		</div>
-
-		<!-- Arrow -->
-		<div class="step-arrow" aria-hidden="true">
-			<svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-				<path d="M6 16h20M20 10l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</div>
-
-		<!-- Step 3 -->
-		<div class="step-card cascade cascade--3">
-			<div class="step-icon">{stepIcons[2]}</div>
-			<div class="step-num">{i.step3Num}</div>
-			<h3 class="step-title">{i.step3Title}</h3>
-			<p class="step-desc">{i.step3Desc}</p>
-		</div>
+		{#if playing && videoSrc}
+			<!-- Inline video player -->
+			<div class="showcase-video">
+				<iframe
+					src={videoSrc}
+					allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
+					allowfullscreen
+					title="Agent Squad — Video"
+				></iframe>
+			</div>
+		{:else}
+			<!-- Split before/after panels -->
+			<div class="showcase-split" role="button" tabindex="0" onclick={() => { if (hasVideo) playing = true; }} onkeydown={(e) => { if (e.key === 'Enter' && hasVideo) playing = true; }}>
+				<div class="split-before">
+					<span class="split-tag split-tag--red">{i.splitTagBefore}</span>
+					<p class="split-title">{i.splitTitleBefore[0]}<br>{i.splitTitleBefore[1]}<br><span class="split-highlight--red">{i.splitTitleBefore[2]}</span></p>
+					<p class="split-subtitle">{i.splitSubBefore}</p>
+					<div class="split-icon-box split-icon-box--red">
+						<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+							<circle cx="18" cy="13" r="5.5" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>
+							<path d="M9 29c0-5 4-9 9-9s9 4 9 9" stroke="#ff6b6b" stroke-width="1.5" opacity="0.6"/>
+							<path d="M12 18l12 12M24 18L12 30" stroke="#ff6b6b" stroke-width="1" opacity="0.3"/>
+						</svg>
+					</div>
+				</div>
+				<div class="split-divider" aria-hidden="true"></div>
+				<div class="split-arrow" aria-hidden="true">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+						<path d="M4 9h10M10 5l4 4-4 4" stroke="#0d0b1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</div>
+				<div class="split-after">
+					<span class="split-tag split-tag--green">{i.splitTagAfter}</span>
+					<p class="split-title">{i.splitTitleAfter[0]}<br>{i.splitTitleAfter[1]}<br><span class="split-highlight--green">{i.splitTitleAfter[2]}</span></p>
+					<p class="split-subtitle">{i.splitSubAfter}</p>
+					<div class="split-icon-box split-icon-box--green">
+						<svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+							<rect x="5" y="7" width="26" height="18" rx="3" stroke="#22c55e" stroke-width="1.5" opacity="0.6"/>
+							<path d="M12 16h6M12 20h10" stroke="#22c55e" stroke-width="1" opacity="0.4"/>
+							<circle cx="28" cy="27" r="5" fill="#22c55e" opacity="0.25"/>
+							<path d="M26 27l1.5 1.5 3-3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+			<!-- Play overlay — OUTSIDE the button, on top of showcase-window -->
+			{#if hasVideo && !playing}
+				<div class="play-overlay" onclick={() => (playing = true)} role="button" tabindex="0" onkeydown={(e) => { if (e.key === 'Enter') playing = true; }}>
+					<div class="play-circle">
+						<span class="play-triangle" aria-hidden="true"></span>
+					</div>
+					<span class="play-label">{i.playLabel}</span>
+				</div>
+			{/if}
+		{/if}
 	</div>
-</section>
+</div>
 
 <style>
-	.how-it-works {
-		padding: 80px 0 64px;
-		text-align: center;
+	.showcase {
+		position: relative;
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
 	}
 
-	.section-label {
-		font-family: var(--mono);
-		font-size: 12px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--gold);
-		margin-bottom: 16px;
+	.showcase-glow {
+		position: absolute;
+		inset: -40px;
+		border-radius: 32px;
+		background: radial-gradient(ellipse at center, var(--gold-glow) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 70%);
+		filter: blur(60px);
+		z-index: 0;
+		animation: showcaseGlow 4s ease-in-out infinite;
 	}
 
-	.section-heading {
-		font-family: var(--display);
-		font-size: clamp(32px, 4vw, 48px);
-		font-weight: 800;
-		color: var(--text);
-		margin: 0 0 56px;
-		letter-spacing: -0.02em;
+	.showcase-window {
+		position: relative;
+		z-index: 1;
+		border-radius: 16px;
+		overflow: hidden;
+		border: 1px solid rgba(99, 102, 241, 0.25);
+		box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(201, 168, 76, 0.06), 0 0 0 1px rgba(99, 102, 241, 0.1);
+		transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
 	}
 
-	.steps-row {
+	.showcase-window:hover {
+		transform: translateY(-6px);
+		box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7), 0 0 60px rgba(201, 168, 76, 0.1), 0 0 0 1px rgba(99, 102, 241, 0.2);
+	}
+
+	/* When video is playing, no hover lift */
+	.showcase-window--playing:hover {
+		transform: none;
+	}
+
+	.showcase-chrome {
 		display: flex;
 		align-items: center;
+		gap: 12px;
+		padding: 12px 18px;
+		background: rgba(13, 11, 26, 0.95);
+		border-bottom: 1px solid rgba(99, 102, 241, 0.12);
+	}
+
+	.showcase-chrome-right {
+		display: flex;
+		align-items: center;
+	}
+
+	.showcase-dots { display: flex; gap: 6px; }
+	.showcase-dots span { width: 10px; height: 10px; border-radius: 50%; }
+	.showcase-dots span:nth-child(1) { background: #ff5f57; }
+	.showcase-dots span:nth-child(2) { background: #ffbd2e; }
+	.showcase-dots span:nth-child(3) { background: #28c840; }
+
+	.showcase-title {
+		flex: 1;
+		text-align: center;
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--text-muted);
+		letter-spacing: 0.04em;
+	}
+
+	.showcase-live {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-family: var(--mono);
+		font-size: 10px;
+		color: #22c55e;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.showcase-live-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: #22c55e;
+		box-shadow: 0 0 8px #22c55e;
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	.showcase-close {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 6px;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.05);
+		color: var(--text-muted);
+		cursor: pointer;
+		transition: background 0.2s, color 0.2s;
+	}
+
+	.showcase-close:hover {
+		background: rgba(255, 255, 255, 0.12);
+		color: var(--text);
+	}
+
+	/* ── Inline video ── */
+	.showcase-video {
+		position: relative;
+		width: 100%;
+		padding-top: 56.25%;
+		background: #000;
+	}
+
+	.showcase-video iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: none;
+	}
+
+	/* ── Split panels ── */
+	.showcase-split {
+		cursor: pointer;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		min-height: 420px;
+		position: relative;
+	}
+
+	.split-before {
+		background: linear-gradient(145deg, #1a1018 0%, #0d0b1a 100%);
+		padding: 48px 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
 		gap: 16px;
 	}
 
-	.step-card {
-		flex: 1;
-		background: var(--bg2);
-		border: 1px solid var(--border);
-		border-radius: 16px;
-		padding: 36px 28px;
-		text-align: left;
-		position: relative;
-		overflow: hidden;
-		transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+	.split-after {
+		background: linear-gradient(145deg, #0d0b1a 0%, #0f1a14 100%);
+		padding: 48px 40px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
 	}
 
-	.step-card:hover {
-		border-color: var(--gold-border);
-		transform: translateY(-4px);
-		box-shadow: 0 12px 40px rgba(201, 168, 76, 0.08);
-	}
-
-	.step-card::before {
-		content: '';
-		position: absolute;
-		top: 0; left: 0; right: 0;
-		height: 2px;
-		background: linear-gradient(90deg, transparent, var(--accent), transparent);
-		opacity: 0;
-		transition: opacity 0.3s;
-	}
-
-	.step-card:hover::before { opacity: 1; }
-
-	.step-icon {
-		font-size: 36px;
-		margin-bottom: 12px;
-		line-height: 1;
-	}
-
-	.step-num {
+	.split-tag {
 		font-family: var(--mono);
 		font-size: 11px;
 		letter-spacing: 0.1em;
-		color: var(--gold);
 		text-transform: uppercase;
-		margin-bottom: 12px;
+		padding: 5px 14px;
+		border-radius: 20px;
 	}
 
-	.step-title {
+	.split-tag--red { color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.3); background: rgba(255, 107, 107, 0.08); }
+	.split-tag--green { color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.08); }
+
+	.split-title {
 		font-family: var(--display);
-		font-size: 24px;
-		font-weight: 700;
-		color: var(--text);
-		margin: 0 0 12px;
-		letter-spacing: -0.01em;
+		font-size: 32px;
+		font-weight: 800;
+		color: rgba(255, 255, 255, 0.8);
+		text-align: center;
+		line-height: 1.2;
 	}
 
-	.step-desc {
-		font-size: 16px;
-		line-height: 1.7;
-		color: var(--text-muted);
-		margin: 0;
+	.split-highlight--red { color: #ff6b6b; }
+	.split-highlight--green { color: #22c55e; }
+
+	.split-subtitle { font-size: 15px; color: var(--text-muted); text-align: center; }
+
+	.split-icon-box {
+		width: 140px;
+		height: 80px;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin-top: 8px;
 	}
 
-	.step-arrow {
-		flex-shrink: 0;
-		color: var(--gold);
-		opacity: 0.6;
+	.split-icon-box--red { background: rgba(255, 107, 107, 0.06); border: 1px solid rgba(255, 107, 107, 0.15); }
+	.split-icon-box--green { background: rgba(34, 197, 94, 0.06); border: 1px solid rgba(34, 197, 94, 0.15); }
+
+	.split-divider {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 50%;
+		width: 2px;
+		background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+		z-index: 5;
+		pointer-events: none;
 	}
 
-	:global([data-theme="light"]) .step-card {
-		background: #ffffff;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+	.split-arrow {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background: var(--gold);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 6;
+		box-shadow: 0 0 24px rgba(201, 168, 76, 0.4);
+		pointer-events: none;
 	}
 
-	@media (max-width: 768px) {
-		.steps-row {
-			flex-direction: column;
-			align-items: stretch;
-		}
-		.step-arrow {
-			transform: rotate(90deg);
-			align-self: center;
-		}
-		.step-card {
-			text-align: center;
-		}
-		.step-icon { font-size: 28px; }
-		.step-title { font-size: 20px; }
-		.step-desc { font-size: 15px; }
+	/* ── Play overlay — centered on showcase-window ── */
+	.play-overlay {
+		position: absolute;
+		inset: 0;
+		top: 40px; /* below chrome */
+		z-index: 20;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		cursor: pointer;
+		background: rgba(7, 7, 15, 0.35);
+		transition: background 0.3s;
+	}
+
+	.play-overlay:hover {
+		background: rgba(7, 7, 15, 0.5);
+	}
+
+	.play-circle {
+		width: 110px;
+		height: 110px;
+		border-radius: 50%;
+		background: rgba(13, 11, 26, 0.95);
+		border: 3px solid #c9a84c;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: 0 0 50px rgba(201, 168, 76, 0.3);
+		transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+	}
+
+	.play-overlay:hover .play-circle {
+		transform: scale(1.1);
+		box-shadow: 0 0 70px rgba(201, 168, 76, 0.5);
+		background: rgba(201, 168, 76, 0.25);
+	}
+
+	/* CSS triangle — no SVG, works on all browsers */
+	.play-triangle {
+		display: block;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 24px 0 24px 42px;
+		border-color: transparent transparent transparent #ffffff;
+		margin-left: 10px;
+	}
+
+	.play-label {
+		font-family: var(--mono);
+		font-size: 15px;
+		color: rgba(255, 255, 255, 0.9);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+	}
+
+	.play-overlay:hover .play-label { color: #c9a84c; }
+
+	@media (max-width: 1024px) {
+		.play-circle { width: 90px; height: 90px; }
+		.play-triangle { border-width: 20px 0 20px 34px; margin-left: 8px; }
+	}
+
+	@media (max-width: 640px) {
+		.showcase-chrome { padding: 8px 12px; }
+		.showcase-title { font-size: 10px; }
+		.play-circle { width: 72px; height: 72px; }
+		.play-triangle { border-width: 16px 0 16px 28px; margin-left: 6px; }
+		.play-label { font-size: 12px; }
+		.showcase-play-label { font-size: 11px; }
+		.showcase-split { min-height: 320px; }
+		.split-before, .split-after { padding: 32px 20px; }
+		.split-title { font-size: 22px; }
+		.split-subtitle { font-size: 13px; }
+		.split-icon-box { width: 100px; height: 60px; }
+		.split-icon-box svg { width: 28px; height: 28px; }
+		.split-arrow { width: 36px; height: 36px; }
+		.split-arrow svg { width: 14px; height: 14px; }
 	}
 </style>

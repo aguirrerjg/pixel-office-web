@@ -35,34 +35,34 @@
 			</a>
 		</div>
 
-		<!-- Flavor 2: Research -->
+		<!-- Flavor 2: Coming Soon -->
 		<div class="flavor-card" style="--card-delay: 0.1s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="flavor-header">
 				<span class="flavor-icon">{i.flavor2Icon}</span>
-				<span class="flavor-badge flavor-badge--research">{i.flavor2StatusLabel}</span>
+				<span class="flavor-badge flavor-badge--coming-soon">{i.flavor2StatusLabel}</span>
 			</div>
 			<h3>{i.flavor2Title}</h3>
 			<p>{i.flavor2Desc}</p>
 		</div>
 
-		<!-- Flavor 3: Research -->
+		<!-- Flavor 3: Coming Soon -->
 		<div class="flavor-card" style="--card-delay: 0.2s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="flavor-header">
 				<span class="flavor-icon">{i.flavor3Icon}</span>
-				<span class="flavor-badge flavor-badge--research">{i.flavor3StatusLabel}</span>
+				<span class="flavor-badge flavor-badge--coming-soon">{i.flavor3StatusLabel}</span>
 			</div>
 			<h3>{i.flavor3Title}</h3>
 			<p>{i.flavor3Desc}</p>
 		</div>
 
-		<!-- Flavor 4: Research -->
+		<!-- Flavor 4: Coming Soon -->
 		<div class="flavor-card" style="--card-delay: 0.3s">
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="flavor-header">
 				<span class="flavor-icon">{i.flavor4Icon}</span>
-				<span class="flavor-badge flavor-badge--research">{i.flavor4StatusLabel}</span>
+				<span class="flavor-badge flavor-badge--coming-soon">{i.flavor4StatusLabel}</span>
 			</div>
 			<h3>{i.flavor4Title}</h3>
 			<p>{i.flavor4Desc}</p>
@@ -193,7 +193,7 @@
 		background: rgba(34, 197, 94, 0.1);
 	}
 
-	.flavor-badge--research {
+	.flavor-badge--coming-soon {
 		color: var(--text-muted);
 		border: 1px solid var(--border);
 		background: rgba(255, 255, 255, 0.04);
@@ -263,7 +263,7 @@
 		background: linear-gradient(135deg, #ffffff 0%, rgba(154, 125, 46, 0.04) 100%);
 	}
 
-	:global([data-theme="light"]) .flavor-badge--research {
+	:global([data-theme="light"]) .flavor-badge--coming-soon {
 		background: rgba(0, 0, 0, 0.04);
 	}
 

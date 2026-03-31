@@ -3,7 +3,7 @@
 
 	let { i }: { i: Translations } = $props();
 
-	const stepIcons = ['🧪', '✅', '🏭'];
+	const stepIcons = ['🎯', '⚙️', '📈'];
 </script>
 
 <section class="how-it-works" id="how-it-works">

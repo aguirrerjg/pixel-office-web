@@ -27,7 +27,7 @@
 	<div style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse at center, rgba(99,102,241,0.09) 0%, transparent 65%); pointer-events: none;"></div>
 	<div style="max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; position: relative; display: flex; flex-direction: column; gap: 3rem;">
 		<div style="text-align: center;">
-			<p style="font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.28em; color: var(--gold, #c9a55a); font-weight: 600;">Blog</p>
+			<p style="font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.28em; color: var(--gold, #c9a55a); font-weight: 600;">Blog</p>
 			<h2 style="margin-top: 0.75rem; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; font-family: 'Playfair Display', serif; color: var(--text, #fff); line-height: 1.2;">
 				{$lang === 'es' ? 'Últimas publicaciones' : 'Latest posts'}
 			</h2>

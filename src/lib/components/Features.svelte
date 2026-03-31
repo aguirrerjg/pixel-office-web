@@ -15,7 +15,10 @@
 			<div class="feature-glow" aria-hidden="true"></div>
 			<div class="flavor-header">
 				<span class="flavor-icon">{i.flavor1Icon}</span>
-				<span class="flavor-badge flavor-badge--live">{i.flavor1StatusLabel}</span>
+				<div class="flavor-badges">
+					<span class="flavor-badge flavor-badge--live">{i.flavor1StatusLabel}</span>
+					<span class="product-name">Thalx</span>
+				</div>
 			</div>
 			<h3>{i.flavor1Title}</h3>
 			<p>{i.flavor1Desc}</p>
@@ -194,6 +197,21 @@
 		color: var(--text-muted);
 		border: 1px solid var(--border);
 		background: rgba(255, 255, 255, 0.04);
+	}
+
+	.flavor-badges {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.product-name {
+		font-family: var(--mono);
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gold);
+		opacity: 0.7;
 	}
 
 	.flavor-card h3 {

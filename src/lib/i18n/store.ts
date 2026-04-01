@@ -25,14 +25,21 @@ function createLangStore() {
 				set(pathLang);
 				localStorage.setItem('lang', pathLang);
 			} else {
+				// No locale in URL — detect and redirect
+				let detected: Lang;
 				const saved = localStorage.getItem('lang');
 				if (saved === 'es' || saved === 'en') {
-					set(saved);
+					detected = saved;
 				} else {
 					const browserLang = navigator.language || navigator.languages?.[0] || 'es';
-					const detected: Lang = browserLang.startsWith('es') ? 'es' : 'en';
-					set(detected);
+					detected = browserLang.startsWith('es') ? 'es' : 'en';
 				}
+				// Redirect to /{lang}{current_path}
+				const path = window.location.pathname;
+				const search = window.location.search;
+				const hash = window.location.hash;
+				window.location.replace(`/${detected}${path === '/' ? '' : path}${search}${hash}`);
+				return;
 			}
 			subscribe(value => {
 				if (typeof document !== 'undefined') {

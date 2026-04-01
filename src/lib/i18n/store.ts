@@ -19,13 +19,20 @@ function createLangStore() {
 			});
 		},
 		init() {
-			const saved = localStorage.getItem('lang');
-			if (saved === 'es' || saved === 'en') {
-				set(saved);
+			// URL locale takes priority over everything
+			const pathLang = window.location.pathname.match(/^\/(es|en)/)?.[1] as Lang | undefined;
+			if (pathLang) {
+				set(pathLang);
+				localStorage.setItem('lang', pathLang);
 			} else {
-				const browserLang = navigator.language || navigator.languages?.[0] || 'es';
-				const detected: Lang = browserLang.startsWith('es') ? 'es' : 'en';
-				set(detected);
+				const saved = localStorage.getItem('lang');
+				if (saved === 'es' || saved === 'en') {
+					set(saved);
+				} else {
+					const browserLang = navigator.language || navigator.languages?.[0] || 'es';
+					const detected: Lang = browserLang.startsWith('es') ? 'es' : 'en';
+					set(detected);
+				}
 			}
 			subscribe(value => {
 				if (typeof document !== 'undefined') {

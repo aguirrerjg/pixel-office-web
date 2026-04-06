@@ -8,8 +8,8 @@
 
 	// Cloudflare Stream video URLs per language (add EN when ready)
 	const videoUrls: Record<string, string> = {
-		es: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/c03c82350f4e5544af166616fd0cf92c/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2Fc03c82350f4e5544af166616fd0cf92c%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&autoplay=true',
-		en: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/b1f1cd258d84b86fb8efbf4b47546684/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2Fb1f1cd258d84b86fb8efbf4b47546684%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D%26height%3D600&autoplay=true'
+		es: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/1e6af73ac6e9eac2768d8a0d30fb51d0/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2F1e6af73ac6e9eac2768d8a0d30fb51d0%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D5%26height%3D600&autoplay=true',
+		en: 'https://customer-w9ibixuc04vgp9p1.cloudflarestream.com/0494b9427e8ad6305b7d7ad522148e16/iframe?poster=https%3A%2F%2Fcustomer-w9ibixuc04vgp9p1.cloudflarestream.com%2F0494b9427e8ad6305b7d7ad522148e16%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D5%26height%3D600&autoplay=true'
 	};
 
 	let videoSrc = $derived(videoUrls[$lang] ?? '');

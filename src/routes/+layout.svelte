@@ -1,14 +1,17 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { lang } from '$lib/i18n/store.js';
-	import { meta } from '$lib/i18n/translations.js';
+	import { meta, type Lang } from '$lib/i18n/translations.js';
 	import { theme } from '$lib/stores/theme.js';
 	import Navbar from '$lib/components/Navbar.svelte';
 
 	let { children } = $props();
 
-	let m = $derived(meta[$lang]);
+	// Use server-provided lang (SSR-safe for crawlers) with client store as fallback
+	let serverLang = $derived(($page.data?.lang ?? $lang) as Lang);
+	let m = $derived(meta[serverLang]);
 
 	onMount(() => {
 		lang.init();
@@ -19,12 +22,12 @@
 <svelte:head>
 	<title>{m.title}</title>
 	<meta name="description" content={m.description} />
-	<link rel="canonical" href="https://agentsquadai.com/" />
+	<link rel="canonical" href="https://agentsquadai.com/{serverLang}" />
 
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content={m.ogTitle} />
 	<meta property="og:description" content={m.ogDescription} />
-	<meta property="og:url" content="https://agentsquadai.com/" />
+	<meta property="og:url" content="https://agentsquadai.com/{serverLang}" />
 	<meta property="og:image" content="https://agentsquadai.com/og-image.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />

@@ -16,6 +16,19 @@
 	onMount(() => {
 		lang.init();
 		theme.init();
+
+		// Crisp widget bootstrap — run from compiled bundle (first-party JS)
+		// instead of an inline <script> in app.html so CSP script-src can omit
+		// 'unsafe-inline' while still loading the Crisp widget.
+		if (!(window as unknown as { $crisp?: unknown }).$crisp) {
+			(window as unknown as { $crisp: unknown[] }).$crisp = [];
+			(window as unknown as { CRISP_WEBSITE_ID: string }).CRISP_WEBSITE_ID =
+				'625e06e9-b922-461d-bc68-da2a84077632';
+			const s = document.createElement('script');
+			s.src = 'https://client.crisp.chat/l.js';
+			s.async = true;
+			document.getElementsByTagName('head')[0].appendChild(s);
+		}
 	});
 </script>
 
@@ -42,8 +55,6 @@
 	<meta name="robots" content="index, follow" />
 	<meta name="author" content="Agent Squad" />
 	<meta name="keywords" content="AI Teams as a Service, AI agents, multi-agent orchestration, real-time AI dashboard, autonomous AI, Agent Squad, agentes IA, equipos de IA" />
-
-	{@html `<script type="text/javascript">window.$crisp=[];window.CRISP_WEBSITE_ID="625e06e9-b922-461d-bc68-da2a84077632";(function(){d=document;s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script>`}
 
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />

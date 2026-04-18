@@ -65,7 +65,13 @@
 		"@type": "Organization",
 		"name": "Agent Squad",
 		"url": "https://agentsquadai.com",
+		"logo": "https://agentsquadai.com/og-image.png",
 		"description": "AI Teams as a Service — equipos de agentes IA autónomos que trabajan 24/7 con monitoreo en tiempo real",
+		"contactPoint": {
+			"@type": "ContactPoint",
+			"contactType": "customer support",
+			"url": "https://agentsquadai.com"
+		},
 		"sameAs": []
 	})}</script>`}
 

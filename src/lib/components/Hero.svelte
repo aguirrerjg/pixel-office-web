@@ -21,6 +21,13 @@
 				</svg>
 			</button>
 		</div>
+		<a class="btn-hero-demo cascade cascade--4" href="https://app.agentsquadai.com/demo">
+			<span class="demo-dot" aria-hidden="true"></span>
+			<span class="demo-text">
+				<span class="demo-main">{i.heroCtaDemo}</span>
+				<span class="demo-sub">{i.heroCtaDemoSub}</span>
+			</span>
+		</a>
 	</div>
 </section>
 
@@ -140,6 +147,64 @@
 
 	.btn-hero-cta:hover .btn-hero-arrow {
 		transform: translateX(4px);
+	}
+
+	/* ── Secondary CTA — link to live demo office ───────────────────── */
+	.btn-hero-demo {
+		display: inline-flex;
+		align-items: center;
+		gap: 12px;
+		margin-top: 24px;
+		padding: 14px 22px;
+		background: rgba(201, 168, 76, 0.08);
+		border: 1px solid rgba(201, 168, 76, 0.35);
+		border-radius: 10px;
+		color: var(--text);
+		text-decoration: none;
+		font-family: 'Syne', sans-serif;
+		font-weight: 500;
+		transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+		box-shadow: 0 4px 18px -8px rgba(201, 168, 76, 0.3);
+	}
+	.btn-hero-demo:hover {
+		background: rgba(201, 168, 76, 0.16);
+		border-color: rgba(201, 168, 76, 0.65);
+		transform: translateY(-2px);
+		box-shadow: 0 8px 28px -10px rgba(201, 168, 76, 0.5);
+	}
+	.demo-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--gold, #c9a84c);
+		box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.7);
+		animation: demoPulse 2s ease-out infinite;
+		flex-shrink: 0;
+	}
+	@keyframes demoPulse {
+		0% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.6); }
+		70% { box-shadow: 0 0 0 12px rgba(201, 168, 76, 0); }
+		100% { box-shadow: 0 0 0 0 rgba(201, 168, 76, 0); }
+	}
+	.demo-text {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		line-height: 1.2;
+	}
+	.demo-main {
+		font-size: 15px;
+		font-weight: 600;
+		color: var(--text);
+		letter-spacing: 0;
+	}
+	.demo-sub {
+		font-family: 'JetBrains Mono', ui-monospace, monospace;
+		font-size: 11px;
+		font-weight: 400;
+		color: var(--text-muted);
+		margin-top: 3px;
+		letter-spacing: 0.04em;
 	}
 
 	@media (max-width: 640px) {
